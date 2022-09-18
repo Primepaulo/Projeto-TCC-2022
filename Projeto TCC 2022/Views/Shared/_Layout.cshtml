@@ -10,23 +10,29 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="mais opções">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nome do aplicativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Página Inicial", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Sobre", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contato", "Contact", "Home")</li>
+     <div class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <!--Botão de Toggle-->
+            <button type="button"
+                  class="navbar-toggler"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#mainCollapse"
+                  aria-controls="mainCollapse"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+
+                  <span class="navbar-toggler-icon"></span>
+            </button>
+
+             @Html.ActionLink("Nome do aplicativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            <div class="collapse navbar-collapse" id="mainCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                     <li class="nav-item">@Html.ActionLink("Página Inicial", "Index", "Home", new { @class = "nav-link" })</li>
+                     <li class="nav-item">@Html.ActionLink("Sobre", "About", "Home", new { @class = "nav-link" })</li>
+                     <li class="nav-item">@Html.ActionLink("Contato", "Contact", "Home", new { @class = "nav-link" })</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                 @*@Html.Partial("_LoginPartial")*@
             </div>
         </div>
     </div>
