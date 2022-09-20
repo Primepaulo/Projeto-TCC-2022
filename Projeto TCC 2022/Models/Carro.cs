@@ -28,8 +28,71 @@ namespace Projeto_TCC_2022.Models
             Fk_Pessoa_Id = fk_Pessoa_Id;
 
         }
-        
 
+        public static List<Carro> GetCarros()
+        {
+            var listaCarros = new List<Carro>();
+            var rSQL = "SELECT * FROM Carro";
+            try
+            {
+                using (var cn = new SqlConnection(_conn))
+                {
+                    cn.Open();
+                    using (var cmd = new SqlCommand(rSQL, cn))
+                    {
+                        using (var dr = cmd.ExecuteReader())
+                        {
+                            if (dr.HasRows)
+                                while (dr.Read())
+                                {
+                                    listaCarros.Add(new Veiculos(
+                                        dr["Placa"].ToString(),
+                                        dr["Modelo"].ToString(),
+                                        dr["Cor"].ToString(),
+                                        Convert.ToInt32(dr["Motorização"]),
+                                        dr["Marca"].ToString()
+                                        ));
+                                }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Falha: " + ex.Message);
+            }
+            return listaCarros;
+        }
+
+        public void Salvar()
+        {
+
+            var iSQL = "INSERT INTO Carro (placa, modelo, cor, motorização, marca) " +
+                "VALUES(@placa, @modelo, @cor, @motorização, @marca)";
+            try
+            {
+                using (var cn = new SqlConnection(_conn))
+                {
+                    cn.Open();
+                    using (var cmd = new SqlCommand(iSQL, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@placa", Placa);
+                        cmd.Parameters.AddWithValue("@modelo", Modelo);
+                        cmd.Parameters.AddWithValue("@cor", Cor);
+                        cmd.Parameters.AddWithValue("@motorização", Motorização);
+                        cmd.Parameters.AddWithValue("@marca", Marca);
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Falha: " + ex.Message);
+            }
+
+
+        }
 
 
 
