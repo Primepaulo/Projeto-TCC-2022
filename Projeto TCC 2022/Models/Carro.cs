@@ -7,7 +7,7 @@ namespace Projeto_TCC_2022.Models
 {
     public class Carro
     {
-        private readonly static string _conn = @"";
+        private readonly static string _conn = @"Data Source=EN2D09466CE6722\SQLEXPRESS;Initial Catalog = TdIdD(IN305); Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public string Placa { get; set; }
         public string Cor { get; set; }
