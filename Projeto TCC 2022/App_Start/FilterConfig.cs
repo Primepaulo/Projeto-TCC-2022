@@ -8,6 +8,8 @@ namespace Projeto_TCC_2022
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+
+            //comentário
         }
     }
 }
