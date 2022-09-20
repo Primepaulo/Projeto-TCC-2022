@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.SqlClient;
 
 namespace Projeto_TCC_2022.Models
 {
-    public class Carro
+    public class CarrosModels
     {
         private readonly static string _conn = @"Data Source=EN2D09466CE6722\SQLEXPRESS;Initial Catalog = TdIdD(IN305); Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
@@ -16,9 +17,9 @@ namespace Projeto_TCC_2022.Models
         public string Marca { get; set; }
         public int Fk_Pessoa_Id { get; set; }
 
-        public Carro(){}
+        public CarrosModels(){}
 
-        public Carro(string placa, string cor, string modelo, decimal motorização, string marca, int fk_Pessoa_Id)
+        public CarrosModels(string placa, string cor, string modelo, decimal motorização, string marca, int fk_Pessoa_Id)
         {
             Placa = placa;
             Cor = cor;
@@ -29,9 +30,9 @@ namespace Projeto_TCC_2022.Models
 
         }
 
-        public static List<Carro> GetCarros()
+        public static List<CarrosModels> GetCarros()
         {
-            var listaCarros = new List<Carro>();
+            var listaCarros = new List<CarrosModels>();
             var rSQL = "SELECT * FROM Carro";
             try
             {
@@ -45,12 +46,13 @@ namespace Projeto_TCC_2022.Models
                             if (dr.HasRows)
                                 while (dr.Read())
                                 {
-                                    listaCarros.Add(new Veiculos(
+                                    listaCarros.Add(new CarrosModels(
                                         dr["Placa"].ToString(),
                                         dr["Modelo"].ToString(),
                                         dr["Cor"].ToString(),
                                         Convert.ToInt32(dr["Motorização"]),
-                                        dr["Marca"].ToString()
+                                        dr["Marca"].ToString(),
+                                        Convert.ToInt32(dr["Fk_Pessoa_Id"])
                                         ));
                                 }
                         }
@@ -91,10 +93,6 @@ namespace Projeto_TCC_2022.Models
                 Console.WriteLine("Falha: " + ex.Message);
             }
 
-
         }
-
-
-
     }
 }

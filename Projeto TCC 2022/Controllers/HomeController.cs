@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -15,8 +16,10 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
+            ViewBag.Title = "Vende-se";
+            ViewBag.Message = "Relação de carros";
+            var lista = CarrosModels.GetCarros();
+            ViewBag.Lista = lista;
             return View();
         }
 
