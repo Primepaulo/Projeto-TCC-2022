@@ -20,8 +20,6 @@ namespace Projeto_TCC_2022.Models
         public string Email { get; set; }
         public string CNPJ { get; set; }
 
-
-
         public OficinaModels(){}
 
         public OficinaModels(string nome,string estado, string cidade, string rua, int número, string complemento,
@@ -36,7 +34,6 @@ namespace Projeto_TCC_2022.Models
             Fk_TelefoneCelular_Id = fk_TelefoneCelular_Id;
             Email = email;
             CNPJ = cnpj;
-
         }
 
 

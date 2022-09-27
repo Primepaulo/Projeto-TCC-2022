@@ -27,7 +27,6 @@ namespace Projeto_TCC_2022.Models
             Motorização = motorização;
             Marca = marca;
             Fk_Pessoa_Id = fk_Pessoa_Id;
-
         }
 
         public static List<CarrosModels> GetCarros()
