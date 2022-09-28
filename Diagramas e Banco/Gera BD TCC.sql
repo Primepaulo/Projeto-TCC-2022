@@ -1,9 +1,9 @@
-/* TCC_Lógico_5_ATUALIZADO (1): */
+/* TCC_LÃ³gico_5_ATUALIZADO (1): */
 
-CREATE TABLE Orçamento (
+CREATE TABLE OrÃ§amento (
     Valor money NOT NULL,
     Status int NOT NULL,
-    Id_Orçamento int PRIMARY KEY,
+    Id_OrÃ§amento int PRIMARY KEY,
     fk_Pessoa_Id int,
     fk_Oficina_CNPJ nvarchar(14),
     fk_Carro_Placa nvarchar(7)
@@ -17,36 +17,36 @@ CREATE TABLE Oficina (
     Estado nvarchar(25) NOT NULL,
     Cidade nvarchar(30) NOT NULL,
     Rua nvarchar(50) NOT NULL,
-    Número int NOT NULL,
-    Complemento int
+    NÃºmero int NOT NULL,
+    Complemento nvarchar(20)
 );
 
 CREATE TABLE Carro (
     Placa nvarchar(7) PRIMARY KEY,
     Cor nvarchar(15) NOT NULL,
     Modelo nvarchar(25) NOT NULL,
-    Motorização decimal(2,1) NOT NULL,
+    MotorizaÃ§Ã£o decimal(2,1) NOT NULL,
     Marca nvarchar(15) NOT NULL,
     fk_Pessoa_Id int
 );
 
-CREATE TABLE Peça (
+CREATE TABLE PeÃ§a (
     Id int PRIMARY KEY,
     Nome nvarchar(30) NOT NULL,
-    Preço int NOT NULL
+    PreÃ§o money NOT NULL
 );
 
-CREATE TABLE Serviços (
+CREATE TABLE ServiÃ§os (
     Id int PRIMARY KEY,
     Nome nvarchar(50) NOT NULL,
-    Preço money NOT NULL
+    PreÃ§o money NOT NULL
 );
 
-CREATE TABLE Avaliação (
+CREATE TABLE AvaliaÃ§Ã£o (
     Id int PRIMARY KEY,
     Estrelas int NOT NULL,
     Texto nvarchar(250),
-    fk_Serviços_Id int,
+    fk_ServiÃ§os_Id int,
     fk_Pessoa_Id int
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE Pessoa (
     Estado nvarchar(25) NOT NULL,
     Cidade nvarchar(30) NOT NULL,
     Rua nvarchar(50) NOT NULL,
-    Número int NOT NULL,
+    NÃºmero int NOT NULL,
     Complemento int,
     fk_CelularTelefone_Id int,
     Email nvarchar(50) NOT NULL,
@@ -78,30 +78,30 @@ CREATE TABLE CelularTelefone  (
 
 CREATE TABLE Oferece (
     fk_Oficina_CNPJ nvarchar(14),
-    fk_Serviços_Id int
+    fk_ServiÃ§os_Id int
 );
 
-CREATE TABLE Contém (
-    fk_Serviços_Id int,
-    fk_Peça_Id int
+CREATE TABLE ContÃ©m (
+    fk_ServiÃ§os_Id int,
+    fk_PeÃ§a_Id int
 );
 
 CREATE TABLE Possui (
-    fk_Serviços_Id int,
-    fk_Orçamento_Id_Orçamento int
+    fk_ServiÃ§os_Id int,
+    fk_OrÃ§amento_Id_OrÃ§amento int
 );
  
-ALTER TABLE Orçamento ADD CONSTRAINT FK_Orçamento_2
+ALTER TABLE OrÃ§amento ADD CONSTRAINT FK_OrÃ§amento_2
     FOREIGN KEY (fk_Pessoa_Id)
     REFERENCES Pessoa (Id)
     ON DELETE CASCADE;
  
-ALTER TABLE Orçamento ADD CONSTRAINT FK_Orçamento_3
+ALTER TABLE OrÃ§amento ADD CONSTRAINT FK_OrÃ§amento_3
     FOREIGN KEY (fk_Oficina_CNPJ)
     REFERENCES Oficina (CNPJ)
     ON DELETE CASCADE;
  
-ALTER TABLE Orçamento ADD CONSTRAINT FK_Orçamento_4
+ALTER TABLE OrÃ§amento ADD CONSTRAINT FK_OrÃ§amento_4
     FOREIGN KEY (fk_Carro_Placa)
     REFERENCES Carro (Placa)
     ON DELETE NO ACTION;
@@ -116,12 +116,12 @@ ALTER TABLE Carro ADD CONSTRAINT FK_Carro_2
     REFERENCES Pessoa (Id)
     ON DELETE CASCADE;
  
-ALTER TABLE Avaliação ADD CONSTRAINT FK_Avaliação_2
-    FOREIGN KEY (fk_Serviços_Id)
-    REFERENCES Serviços (Id)
+ALTER TABLE AvaliaÃ§Ã£o ADD CONSTRAINT FK_AvaliaÃ§Ã£o_2
+    FOREIGN KEY (fk_ServiÃ§os_Id)
+    REFERENCES ServiÃ§os (Id)
     ON DELETE NO ACTION;
  
-ALTER TABLE Avaliação ADD CONSTRAINT FK_Avaliação_3
+ALTER TABLE AvaliaÃ§Ã£o ADD CONSTRAINT FK_AvaliaÃ§Ã£o_3
     FOREIGN KEY (fk_Pessoa_Id)
     REFERENCES Pessoa (Id)
     ON DELETE CASCADE;
@@ -142,26 +142,26 @@ ALTER TABLE Oferece ADD CONSTRAINT FK_Oferece_1
     ON DELETE NO ACTION;
  
 ALTER TABLE Oferece ADD CONSTRAINT FK_Oferece_2
-    FOREIGN KEY (fk_Serviços_Id)
-    REFERENCES Serviços (Id)
+    FOREIGN KEY (fk_ServiÃ§os_Id)
+    REFERENCES ServiÃ§os (Id)
     ON DELETE NO ACTION;
  
-ALTER TABLE Contém ADD CONSTRAINT FK_Contém_1
-    FOREIGN KEY (fk_Serviços_Id)
-    REFERENCES Serviços (Id)
+ALTER TABLE ContÃ©m ADD CONSTRAINT FK_ContÃ©m_1
+    FOREIGN KEY (fk_ServiÃ§os_Id)
+    REFERENCES ServiÃ§os (Id)
     ON DELETE NO ACTION;
  
-ALTER TABLE Contém ADD CONSTRAINT FK_Contém_2
-    FOREIGN KEY (fk_Peça_Id)
-    REFERENCES Peça (Id)
+ALTER TABLE ContÃ©m ADD CONSTRAINT FK_ContÃ©m_2
+    FOREIGN KEY (fk_PeÃ§a_Id)
+    REFERENCES PeÃ§a (Id)
     ON DELETE SET NULL;
  
 ALTER TABLE Possui ADD CONSTRAINT FK_Possui_1
-    FOREIGN KEY (fk_Serviços_Id)
-    REFERENCES Serviços (Id)
+    FOREIGN KEY (fk_ServiÃ§os_Id)
+    REFERENCES ServiÃ§os (Id)
     ON DELETE NO ACTION;
  
 ALTER TABLE Possui ADD CONSTRAINT FK_Possui_2
-    FOREIGN KEY (fk_Orçamento_Id_Orçamento)
-    REFERENCES Orçamento (Id_Orçamento)
+    FOREIGN KEY (fk_OrÃ§amento_Id_OrÃ§amento)
+    REFERENCES OrÃ§amento (Id_OrÃ§amento)
     ON DELETE SET NULL;
