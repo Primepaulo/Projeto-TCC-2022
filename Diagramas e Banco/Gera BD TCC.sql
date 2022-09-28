@@ -77,20 +77,20 @@ CREATE TABLE CelularTelefone  (
 );
 
 CREATE TABLE Oferece (
-    fk_Oficina_CNPJ nvarchar(14) PRIMARY KEY,
-    fk_Serviços_Id int PRIMARY KEY,
+    fk_Oficina_CNPJ nvarchar(14),
+    fk_Serviços_Id int,
     PRIMARY KEY (fk_Oficina_CNPJ, fk_Serviços_Id)
 );
 
 CREATE TABLE Contém (
-    fk_Serviços_Id int PRIMARY KEY,
-    fk_Peça_Id int PRIMARY KEY,
+    fk_Serviços_Id int,
+    fk_Peça_Id int,
     PRIMARY KEY (fk_Serviços_Id, fk_Peça_Id)
 );
 
 CREATE TABLE Possui (
-    fk_Serviços_Id int PRIMARY KEY,
-    fk_Orçamento_Id_Orçamento int PRIMARY KEY,
+    fk_Serviços_Id int,
+    fk_Orçamento_Id_Orçamento int,
     PRIMARY KEY (fk_Serviços_Id, fk_Orçamento_Id_Orçamento)
 );
  
