@@ -63,7 +63,7 @@ CREATE TABLE Pessoa (
     Cidade nvarchar(30) NOT NULL,
     Rua nvarchar(50) NOT NULL,
     Número int NOT NULL,
-    Complemento int,
+    Complemento nvarchar(30),
     fk_CelularTelefone_Id int,
     Email nvarchar(50) NOT NULL,
     CPF nvarchar(11) UNIQUE,
