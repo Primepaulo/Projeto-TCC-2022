@@ -104,5 +104,15 @@ namespace Projeto_TCC_2022.Models
                 .WithMany(e => e.Serviços)
                 .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
         }
+
+        public void SearchAllCarros()
+        {
+            using (var context = new Model1())
+            {
+
+                var Carro = context.Carro.SqlQuery("SELECT * FROM dbo.Carro").ToList();
+            }
+        }
+    
     }
 }
