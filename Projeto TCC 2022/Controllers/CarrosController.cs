@@ -17,11 +17,11 @@ namespace Aula3108.Controllers
             return View();
         }
 
-        [HttpPost]
+        //[HttpPost]
 
-        public void Salvar()
+        /*public void Salvar()
         {
-            var Carro = new CarrosModels();
+            var Carro = new ();
             Carro.Placa = Request["placa"];
             Carro.Modelo = Request["modelo"];
             Carro.Cor = Request["cor"];
@@ -30,7 +30,7 @@ namespace Aula3108.Controllers
             Carro.Fk_Pessoa_Id = Convert.ToInt32(Request["fk_Pessoa_Id"]);
             Carro.Salvar();
             Response.Redirect("/Home/About");
-        }
+        }*/
 
     }
 }

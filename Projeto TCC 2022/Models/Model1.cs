@@ -8,7 +8,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=Model1")
+            : base("name=Model1" /*is on Web.config file at line 12 in connectionString*/)
         {
         }
 
@@ -109,8 +109,10 @@ namespace Projeto_TCC_2022.Models
         {
             using (var context = new Model1())
             {
-
-                var Carro = context.Carro.SqlQuery("SELECT * FROM dbo.Carro").ToList();
+                //var Carro = context.Carro.SqlQuery("SELECT * FROM dbo.Carro").ToList();
+                var query = from Carro in context.Carro.Include("Standard") select Carro;
+                var carros = query.FirstOrDefault<Carro>();
+                
             }
         }
     
