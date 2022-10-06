@@ -10,7 +10,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=Model1" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
         {
         }
 
@@ -112,21 +112,24 @@ namespace Projeto_TCC_2022.Models
             var set = new <Carro>();
         }*/
 
-        public static void SearchAllCarros()
+        public static List<Carro> SearchAllCarros()
         {
-            using (var context = new Model1())
-            {
-                // Create Carro
-                context.Carro.Add(new Carro
-                {
-                    Placa = "123ABCD"
-                });
-              
+             using (var context = new Model1())
+             {
+                    /* Create Carro
+                    context.Carro.Add(new Carro
+                    {
+                        Placa = "123ABCD"
+                    });
+                    */
 
-                // Select * Carros
-                var query = from Carro in context.Carro.Include("Standard") select Carro;
-                var carros = query.ToList();
-            }
+
+                    // Select * Carros
+                    var query = from Carro in context.Carro select Carro;
+                    var carros = query.ToList();
+                    return carros;
+             }
+            
         }
     
     }
