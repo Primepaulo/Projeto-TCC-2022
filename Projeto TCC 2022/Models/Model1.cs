@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -105,14 +107,25 @@ namespace Projeto_TCC_2022.Models
                 .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
         }
 
-        public void SearchAllCarros()
+       /* public override DbSet<Carro> Set<Carro>()
+        {
+            var set = new <Carro>();
+        }*/
+
+        public static void SearchAllCarros()
         {
             using (var context = new Model1())
             {
-                //var Carro = context.Carro.SqlQuery("SELECT * FROM dbo.Carro").ToList();
+                // Create Carro
+                context.Carro.Add(new Carro
+                {
+                    Placa = "123ABCD"
+                });
+              
+
+                // Select * Carros
                 var query = from Carro in context.Carro.Include("Standard") select Carro;
-                var carros = query.FirstOrDefault<Carro>();
-                
+                var carros = query.ToList();
             }
         }
     
