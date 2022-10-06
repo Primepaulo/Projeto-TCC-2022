@@ -19,6 +19,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.Title = "Vende-se";
             ViewBag.Message = "Relação de carros";
             ViewBag.Lista = Model1.SearchAllCarros();
+            ViewBag.Item1 = Model1.SearchAllCarros().FirstOrDefault();
             return View();
         }
 
