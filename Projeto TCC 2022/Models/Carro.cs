@@ -1,37 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
 namespace Projeto_TCC_2022.Models
 {
-    public class Carro
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
+    [Table("Carro")]
+    public partial class Carro
     {
-        private readonly static string _conn = @"";
-
-        public string Placa { get; set; }
-        public string Cor { get; set; }
-        public string Modelo { get; set; }
-        public decimal Motorização { get; set; }
-        public string Marca { get; set; }
-        public int Fk_Pessoa_Id { get; set; }
-
-        public Carro(){}
-
-        public Carro(string placa, string cor, string modelo, decimal motorização, string marca, int fk_Pessoa_Id)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Carro()
         {
-            Placa = placa;
-            Cor = cor;
-            Modelo = modelo;
-            Motorização = motorização;
-            Marca = marca;
-            Fk_Pessoa_Id = fk_Pessoa_Id;
-
+            Orçamento = new HashSet<Orçamento>();
         }
-        
 
+        [Key]
+        [StringLength(7)]
+        public string Placa { get; set; }
 
+        [Required]
+        [StringLength(15)]
+        public string Cor { get; set; }
 
+        [Required]
+        [StringLength(25)]
+        public string Modelo { get; set; }
 
+        public decimal Motorização { get; set; }
+
+        [Required]
+        [StringLength(15)]
+        public string Marca { get; set; }
+
+        public int? fk_Pessoa_Id { get; set; }
+
+        public virtual Pessoa Pessoa { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Orçamento> Orçamento { get; set; }
     }
 }

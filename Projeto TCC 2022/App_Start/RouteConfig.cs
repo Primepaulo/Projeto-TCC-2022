@@ -14,6 +14,13 @@ namespace Projeto_TCC_2022
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Carros",
+                url: "Carros",
+                new { controller = "Carros", action = "Carros" }
+                );
+
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
