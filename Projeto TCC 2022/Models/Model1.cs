@@ -5,14 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web.UI;
 
 namespace Projeto_TCC_2022.Models
 {
+    // Debug Writer, como visto no artigo: https://damieng.com/blog/2008/07/30/linq-to-sql-log-to-debug-window-file-memory-or-multiple-writers/
+
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
         {
         }
 
@@ -113,7 +116,7 @@ namespace Projeto_TCC_2022.Models
         {
             using (var context = new Model1())
             {
-
+                //Este query é o problema.
                 var query = from Pessoa in context.Pessoa
                             where Pessoa.Id == x
                             select Pessoa;
