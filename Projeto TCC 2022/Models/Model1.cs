@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Web.UI;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -107,10 +109,31 @@ namespace Projeto_TCC_2022.Models
                 .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
         }
 
-       /* public override DbSet<Carro> Set<Carro>()
+        public static List<Pessoa> GetPessoa(int x)
         {
-            var set = new <Carro>();
-        }*/
+            using (var context = new Model1())
+            {
+
+                var query = from Pessoa in context.Pessoa
+                            where Pessoa.Id == x
+                            select Pessoa;
+
+                var pessoa = query.ToList();
+                return pessoa;
+            }
+        }
+
+        public static List<Pessoa> SearchAllPessoas()
+        {
+            using ( var context = new Model1())
+            {
+                var query = from Pessoa in context.Pessoa
+                            select Pessoa;
+
+                var pessoa = query.ToList();
+                return pessoa;
+            }
+        }
 
         public static List<Carro> SearchAllCarros()
         {

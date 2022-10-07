@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
@@ -25,7 +26,23 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            try
+            {
+                if (!Request.QueryString["navSearch"].IsEmpty())
+                {
+                    int searchTerm = Convert.ToInt32(Request.QueryString["navSearch"]);
+                    ViewBag.Pessoa = Model1.GetPessoa(searchTerm).FirstOrDefault();
+                    
+                }
+                else
+                {
+                    ViewBag.Pessoa = new Pessoa();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Falha: " + ex.Message);
+            }
 
             return View();
         }
