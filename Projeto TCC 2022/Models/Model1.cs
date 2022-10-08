@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.UI;
+using Microsoft.AspNet.Identity;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -15,7 +17,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
         {
         }
 
@@ -112,33 +114,20 @@ namespace Projeto_TCC_2022.Models
                 .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
         }
 
-        public static List<Pessoa> GetPessoa(int x)
+        public static List<Oficina> GetOficina(string x)
         {
             using (var context = new Model1())
             {
-                //Este query é o problema.
-                var query = from Pessoa in context.Pessoa
-                            where Pessoa.Id == x
-                            select Pessoa;
-
-                var pessoa = query.ToList();
-                return pessoa;
+                //Select Oficina WHERE Nome LIKE %x% e Eager Load de Serviços e Peça.
+                var query = from Oficina in context.Oficina.Include("Serviços.Peça")
+                            where Oficina.Nome.Contains(x)
+                            select Oficina;
+                var oficinas = query.ToList();
+                return oficinas;
             }
         }
 
-        public static List<Pessoa> SearchAllPessoas()
-        {
-            using ( var context = new Model1())
-            {
-                var query = from Pessoa in context.Pessoa
-                            select Pessoa;
-
-                var pessoa = query.ToList();
-                return pessoa;
-            }
-        }
-
-        public static List<Carro> SearchAllCarros()
+        public static List<Carro> GetAllCarros()
         {
              using (var context = new Model1())
              {

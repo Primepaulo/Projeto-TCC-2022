@@ -1,13 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
+using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
 {
+    /* Adiciona item para todos os controllers que o herdam.
+    Ideia original de herdar um controller que herda outro controller retirada de: 
+    https://stackoverflow.com/questions/27308524/access-viewbag-property-on-all-views
+    public class SearchController : Controller
+    {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (!Request.QueryString["navSearch"].IsEmpty())
+            {
+                string searchTerm = Request.QueryString["navSearch"];
+                ViewBag.Oficinas = Model1.GetOficina(searchTerm);
+            }
+        }
+    }*/
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -17,33 +33,20 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Title = "Vende-se";
-            ViewBag.Message = "Relação de carros";
-            ViewBag.Lista = Model1.SearchAllCarros();
-            ViewBag.Item1 = Model1.SearchAllCarros().FirstOrDefault();
+            ViewBag.Lista = Model1.GetAllCarros();
+            ViewBag.Item1 = Model1.GetAllCarros().FirstOrDefault();
+            string userId = User.Identity.GetUserId();
+            Debug.WriteLine(userId);
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Search()
         {
-            try
+            if (!Request.QueryString["navSearch"].IsEmpty())
             {
-                if (!Request.QueryString["navSearch"].IsEmpty())
-                {
-                    int searchTerm = Convert.ToInt32(Request.QueryString["navSearch"]);
-                    ViewBag.Pessoa = Model1.GetPessoa(searchTerm).FirstOrDefault();
-                    
-                }
-                else
-                {
-                    ViewBag.Pessoa = new Pessoa();
-                }
+                string searchTerm = Request.QueryString["navSearch"];
+                ViewBag.Oficinas = Model1.GetOficina(searchTerm);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Falha: " + ex.Message);
-            }
-
             return View();
         }
     }

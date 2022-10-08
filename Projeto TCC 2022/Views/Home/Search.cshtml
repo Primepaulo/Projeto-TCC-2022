@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Search Results";
+}
+
+@{
+    if (ViewBag.Oficinas != null)
+    {
+        foreach (var item in ViewBag.Oficinas)
+        {
+            <p class="text-bg-danger text-center text-capitalize mt-5">@item.Nome</p>
+        }
+    }
+    else
+    {
+        <h1 class="text-bg-danger text-center text-capitalize">Pesquisa inválida *_*</h1>
+    }
+}
