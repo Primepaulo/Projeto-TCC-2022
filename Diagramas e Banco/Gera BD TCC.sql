@@ -5,13 +5,14 @@ CREATE TABLE Orçamento (
     Status int NOT NULL,
     Id_Orçamento int PRIMARY KEY,
     fk_Pessoa_Id int,
-    fk_Oficina_CNPJ nvarchar(14),
+    fk_Oficina_Id int,
     fk_Carro_Placa nvarchar(7)
 );
 
 CREATE TABLE Oficina (
+    Id int PRIMARY KEY,
     Email nvarchar(50) NOT NULL,
-    CNPJ nvarchar(14) PRIMARY KEY,
+    CNPJ nvarchar(14) NOT NULL,
     Nome nvarchar(50) NOT NULL,
     fk_TelefoneCelular_Id int,
     Estado nvarchar(25) NOT NULL,
@@ -77,7 +78,7 @@ CREATE TABLE CelularTelefone  (
 );
 
 CREATE TABLE Oferece (
-    fk_Oficina_CNPJ nvarchar(14),
+    fk_Oficina_Id int,
     fk_Serviços_Id int,
     PRIMARY KEY (fk_Oficina_CNPJ, fk_Serviços_Id)
 );
