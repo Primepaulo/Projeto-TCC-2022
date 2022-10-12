@@ -9,6 +9,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.UI;
 using Microsoft.AspNet.Identity;
+using System.Security.Claims;
+using System.Data.SqlTypes;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -55,12 +57,12 @@ namespace Projeto_TCC_2022.Models
             modelBuilder.Entity<Oficina>()
                 .HasMany(e => e.Administrador)
                 .WithOptional(e => e.Oficina)
-                .HasForeignKey(e => e.fk_Oficina_CNPJ);
+                .HasForeignKey(e => e.fk_Oficina_Id);
 
             modelBuilder.Entity<Oficina>()
                 .HasMany(e => e.Orçamento)
                 .WithOptional(e => e.Oficina)
-                .HasForeignKey(e => e.fk_Oficina_CNPJ)
+                .HasForeignKey(e => e.fk_Oficina_Id)
                 .WillCascadeOnDelete();
 
             modelBuilder.Entity<Oficina>()
@@ -113,7 +115,6 @@ namespace Projeto_TCC_2022.Models
                 .WithMany(e => e.Serviços)
                 .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
         }
-
         public static List<Oficina> GetOficina(string x)
         {
             using (var context = new Model1())
@@ -127,6 +128,62 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static List<Carro> GetCarros(string x)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Carro in context.Carro
+                            join Pessoa in context.Pessoa
+                            on Carro.fk_Pessoa_Id equals Pessoa.Id
+                            select Carro;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
+
+        public static void InsertCelular(int Id, string Celular)
+        {
+            using (var context = new Model1())
+            {
+                context.Pessoa.Add(new CelularTelefone
+                {
+                    int Id = Id,
+                    CelularTelefone1 = Celular
+                    // Posteriormente, adicionar um If User.Role == Pessoa pra usar o id da pessoa, senão usar gerar novo
+                });
+                context.SaveChanges();
+                //Colocar isso após um redirect que ocorre no botão register ou posteriormente em configurações do usuário
+            }
+        }
+
+
+        public static void InsertPessoa(int Id, string Nome, string Sobrenome, string Estado, string Cidade, string Rua,
+            int Número, string Complemento, int CelId, string Email, string CPF, string CNPJ, int Tipo)
+        {
+            using (var context = new Model1())
+            {
+                context.Pessoa.Add(new Pessoa
+                {
+                    Id = Id,
+                    Nome = Nome,
+                    Sobrenome = Sobrenome,
+                    Estado = Estado,
+                    Cidade = Cidade,
+                    Rua = Rua,
+                    Número = Número,
+                    Complemento = Complemento,
+                    fk_CelularTelefone_Id = CelId,
+                    Email = Email,
+                    CPF = CPF,
+                    CNPJ = CNPJ,
+                    Pessoa_TIPO = Tipo
+                });
+                context.SaveChanges();
+                //Colocar isso após um redirect que ocorre no botão register ou posteriormente em configurações do usuário
+            }
+        }
+
+
         public static List<Carro> GetAllCarros()
         {
              using (var context = new Model1())
@@ -137,8 +194,6 @@ namespace Projeto_TCC_2022.Models
                         Placa = "123ABCD"
                     });
                     */
-
-
                     // Select * Carros
                     var query = from Carro in context.Carro select Carro;
                     var carros = query.ToList();

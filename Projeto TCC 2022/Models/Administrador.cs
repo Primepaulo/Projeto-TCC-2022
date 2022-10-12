@@ -10,7 +10,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Administrador
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id_Administrativo { get; set; }
 
         [StringLength(14)]

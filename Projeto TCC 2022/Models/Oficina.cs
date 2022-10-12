@@ -17,11 +17,15 @@ namespace Projeto_TCC_2022.Models
             Serviços = new HashSet<Serviços>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Email { get; set; }
 
-        [Key]
+        [Required]
         [StringLength(14)]
         public string CNPJ { get; set; }
 

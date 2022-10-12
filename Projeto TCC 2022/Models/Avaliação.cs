@@ -8,7 +8,7 @@ namespace Projeto_TCC_2022.Models
 
     public partial class Avaliação
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public int Estrelas { get; set; }

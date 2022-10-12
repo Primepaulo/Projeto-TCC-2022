@@ -49,5 +49,18 @@ namespace Projeto_TCC_2022.Controllers
             }
             return View();
         }
+
+        public ActionResult InsertPessoa()
+        {
+            [HttpPost]
+            Model1.InsertCelular(User.Identity.GetUserId(), Request["Celular"]);
+            Model1.InsertPessoa(User.Identity.GetUserId(), Request["Nome"], Request["Sobrenome"], Request["Estado"]
+                , Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]), Request["Complemento"], 
+                User.Identity.GetUserId(), Request["Email"], Request["CPF"], Request["CNPJ"], Convert.ToInt32(Request["Tipo"]));
+
+            //Mudar pra acomodar ou físico ou jurídico
+
+            return View();
+        }
     }
 }

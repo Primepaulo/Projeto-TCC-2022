@@ -17,7 +17,7 @@ namespace Projeto_TCC_2022.Models
             Orçamento = new HashSet<Orçamento>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

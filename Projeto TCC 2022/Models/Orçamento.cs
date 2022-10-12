@@ -20,13 +20,12 @@ namespace Projeto_TCC_2022.Models
         public int Status { get; set; }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id_Orçamento { get; set; }
 
-        public int? fk_Pessoa_Id { get; set; }
+        public int fk_Pessoa_Id { get; set; }
 
-        [StringLength(14)]
-        public string fk_Oficina_CNPJ { get; set; }
+        public int fk_Oficina_Id { get; set; }
 
         [StringLength(7)]
         public string fk_Carro_Placa { get; set; }

@@ -14,7 +14,7 @@ namespace Projeto_TCC_2022.Models
             Serviços = new HashSet<Serviços>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

@@ -45,7 +45,7 @@ namespace Projeto_TCC_2022.Models
         [StringLength(30)]
         public string Complemento { get; set; }
 
-        public int? fk_CelularTelefone_Id { get; set; }
+        public int fk_CelularTelefone_Id { get; set; }
 
         [Required]
         [StringLength(50)]

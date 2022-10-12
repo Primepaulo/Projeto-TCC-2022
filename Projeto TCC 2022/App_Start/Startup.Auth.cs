@@ -30,9 +30,12 @@ namespace Projeto_TCC_2022
                 {
                     // Permite que o aplicativo valide o carimbo de segurança quando o usuário efetuar login.
                     // Este é um recurso de segurança que é usado quando você altera uma senha ou adiciona um login externo à sua conta.  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-                        validateInterval: TimeSpan.FromMinutes(30),
-                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
+                   OnValidateIdentity = SecurityStampValidator
+                .OnValidateIdentity<ApplicationUserManager, ApplicationUser, int>(
+                    validateInterval: TimeSpan.FromMinutes(30),
+                    regenerateIdentityCallback: (manager, user) =>
+                        user.GenerateUserIdentityAsync(manager),
+                    getUserIdCallback: (id) => (id.GetUserId<int>()))
                 }
             });            
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
