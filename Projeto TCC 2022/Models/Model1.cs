@@ -145,9 +145,9 @@ namespace Projeto_TCC_2022.Models
         {
             using (var context = new Model1())
             {
-                context.Pessoa.Add(new CelularTelefone
+                context.CelularTelefone.Add(new CelularTelefone
                 {
-                    int Id = Id,
+                    Id = Id,
                     CelularTelefone1 = Celular
                     // Posteriormente, adicionar um If User.Role == Pessoa pra usar o id da pessoa, senão usar gerar novo
                 });

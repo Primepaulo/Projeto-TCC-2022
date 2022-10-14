@@ -53,7 +53,7 @@ CREATE TABLE Avaliação (
 
 CREATE TABLE Administrador (
     Id_Administrativo int PRIMARY KEY,
-    fk_Oficina_CNPJ nvarchar(14)
+    fk_Oficina_Id int
 );
 
 CREATE TABLE Pessoa (
@@ -80,7 +80,7 @@ CREATE TABLE CelularTelefone  (
 CREATE TABLE Oferece (
     fk_Oficina_Id int,
     fk_Serviços_Id int,
-    PRIMARY KEY (fk_Oficina_CNPJ, fk_Serviços_Id)
+    PRIMARY KEY (fk_Oficina_Id, fk_Serviços_Id)
 );
 
 CREATE TABLE Contém (
@@ -101,8 +101,8 @@ ALTER TABLE Orçamento ADD CONSTRAINT FK_Orçamento_2
     ON DELETE CASCADE;
  
 ALTER TABLE Orçamento ADD CONSTRAINT FK_Orçamento_3
-    FOREIGN KEY (fk_Oficina_CNPJ)
-    REFERENCES Oficina (CNPJ)
+    FOREIGN KEY (fk_Oficina_Id)
+    REFERENCES Oficina (Id)
     ON DELETE CASCADE;
  
 ALTER TABLE Orçamento ADD CONSTRAINT FK_Orçamento_4
@@ -131,8 +131,8 @@ ALTER TABLE Avaliação ADD CONSTRAINT FK_Avaliação_3
     ON DELETE CASCADE;
  
 ALTER TABLE Administrador ADD CONSTRAINT FK_Administrador_2
-    FOREIGN KEY (fk_Oficina_CNPJ)
-    REFERENCES Oficina (CNPJ)
+    FOREIGN KEY (fk_Oficina_Id)
+    REFERENCES Oficina (Id)
     ON DELETE NO ACTION;
  
 ALTER TABLE Pessoa ADD CONSTRAINT FK_Pessoa_2
@@ -141,8 +141,8 @@ ALTER TABLE Pessoa ADD CONSTRAINT FK_Pessoa_2
     ON DELETE NO ACTION;
  
 ALTER TABLE Oferece ADD CONSTRAINT FK_Oferece_1
-    FOREIGN KEY (fk_Oficina_CNPJ)
-    REFERENCES Oficina (CNPJ)
+    FOREIGN KEY (fk_Oficina_Id)
+    REFERENCES Oficina (Id)
     ON DELETE NO ACTION;
  
 ALTER TABLE Oferece ADD CONSTRAINT FK_Oferece_2
