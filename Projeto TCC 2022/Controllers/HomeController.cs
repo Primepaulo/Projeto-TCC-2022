@@ -22,19 +22,19 @@ namespace Projeto_TCC_2022.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Search()
         {
             try
             {
                 if (!Request.QueryString["navSearch"].IsEmpty())
                 {
-                    string searchTerm = Request.QueryString["navSearch"];
-                    ViewBag.Pessoa = Model1.GetOficina(searchTerm);
+                    string searchTerm = Request.QueryString["n'avSearch"];
+                    ViewBag.Oficina = Model1.SearchOficina(searchTerm);
                     
                 }
                 else
                 {
-                    ViewBag.Pessoa = new Pessoa();
+                    ViewBag.Oficina = new Oficina();
                 }
             }
             catch (Exception ex)

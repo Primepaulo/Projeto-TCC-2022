@@ -14,7 +14,7 @@ namespace Projeto_TCC_2022.Models
         public int Id_Administrativo { get; set; }
 
         [StringLength(14)]
-        public string fk_Oficina_CNPJ { get; set; }
+        public string fk_Oficina_Id { get; set; }
 
         public virtual Oficina Oficina { get; set; }
     }

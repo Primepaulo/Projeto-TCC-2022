@@ -19,7 +19,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
         {
         }
 
@@ -115,11 +115,15 @@ namespace Projeto_TCC_2022.Models
                 .WithMany(e => e.Serviços)
                 .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
         }
-        public static List<Oficina> GetOficina(string x)
+
+        //SELECTS:
+
+        public static List<Oficina> SearchOficina(string x)
         {
             using (var context = new Model1())
             {
                 //Select Oficina WHERE Nome LIKE %x% e Eager Load de Serviços e Peça.
+                // Para uso na barra de pesquisa de oficinas.
                 var query = from Oficina in context.Oficina.Include("Serviços.Peça")
                             where Oficina.Nome.Contains(x)
                             select Oficina;
@@ -128,10 +132,24 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static List<Carro> GetCarros(string x)
+        public static List<Oficina> GetOficina (int Id)
         {
             using (var context = new Model1())
             {
+                // Para uso no perfil da oficina.
+                var query = from Oficina in context.Oficina
+                            where Oficina.Id == Id
+                            select Oficina;
+                var oficina = query.ToList();
+                return oficina;
+            }
+        }
+
+        public static List<Carro> GetCarros()
+        {
+            using (var context = new Model1())
+            {
+                //Para uso na lista de carros. (Revisar JOIN, tem algo estranho nisso.)
                 var query = from Carro in context.Carro
                             join Pessoa in context.Pessoa
                             on Carro.fk_Pessoa_Id equals Pessoa.Id
@@ -140,6 +158,22 @@ namespace Projeto_TCC_2022.Models
                 return oficinas;
             }
         }
+
+        public static List<Pessoa> GetPessoa(int Id)
+        {
+            using (var context = new Model1())
+            {
+                // Para uso no perfil do usuário.
+
+                var query = from Pessoa in context.Pessoa
+                            where Pessoa.Id == Id
+                            select Pessoa;
+                var pessoa = query.ToList();
+                return pessoa;
+            }
+        }
+
+        //INSERTS
 
         public static void InsertCelular(int Id, string Celular)
         {
@@ -181,25 +215,6 @@ namespace Projeto_TCC_2022.Models
                 context.SaveChanges();
                 //Colocar isso após um redirect que ocorre no botão register ou posteriormente em configurações do usuário
             }
-        }
-
-
-        public static List<Carro> GetAllCarros()
-        {
-             using (var context = new Model1())
-             {
-                    /* Create Carro
-                    context.Carro.Add(new Carro
-                    {
-                        Placa = "123ABCD"
-                    });
-                    */
-                    // Select * Carros
-                    var query = from Carro in context.Carro select Carro;
-                    var carros = query.ToList();
-                    return carros;
-             }
-            
         }
     
     }
