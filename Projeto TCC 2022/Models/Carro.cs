@@ -33,7 +33,7 @@ namespace Projeto_TCC_2022.Models
         [StringLength(15)]
         public string Marca { get; set; }
 
-        public int? fk_Pessoa_Id { get; set; }
+        public int fk_Pessoa_Id { get; set; }
 
         public virtual Pessoa Pessoa { get; set; }
 

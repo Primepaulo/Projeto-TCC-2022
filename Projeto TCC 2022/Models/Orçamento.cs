@@ -20,19 +20,18 @@ namespace Projeto_TCC_2022.Models
         public int Status { get; set; }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id_Orçamento { get; set; }
 
         public int fk_Pessoa_Id { get; set; }
 
         public int fk_Oficina_Id { get; set; }
 
+        [Required]
         [StringLength(7)]
         public string fk_Carro_Placa { get; set; }
 
         public virtual Carro Carro { get; set; }
-
-        public virtual Oficina Oficina { get; set; }
 
         public virtual Pessoa Pessoa { get; set; }
 

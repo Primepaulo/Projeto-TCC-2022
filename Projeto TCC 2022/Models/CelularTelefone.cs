@@ -9,25 +9,16 @@ namespace Projeto_TCC_2022.Models
     [Table("CelularTelefone")]
     public partial class CelularTelefone
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CelularTelefone()
-        {
-            Oficina = new HashSet<Oficina>();
-            Pessoa = new HashSet<Pessoa>();
-        }
+        public int id { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
-
-        [Column("CelularTelefone")]
         [Required]
         [StringLength(11)]
         public string CelularTelefone1 { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Oficina> Oficina { get; set; }
+        public int Fk_User_Id { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pessoa> Pessoa { get; set; }
+        public virtual Oficina Oficina { get; set; }
+
+        public virtual Pessoa Pessoa { get; set; }
     }
 }

@@ -13,11 +13,10 @@ namespace Projeto_TCC_2022.Models
         public Oficina()
         {
             Administrador = new HashSet<Administrador>();
-            Orçamento = new HashSet<Orçamento>();
+            CelularTelefone = new HashSet<CelularTelefone>();
             Serviços = new HashSet<Serviços>();
         }
 
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
@@ -32,8 +31,6 @@ namespace Projeto_TCC_2022.Models
         [Required]
         [StringLength(50)]
         public string Nome { get; set; }
-
-        public int? fk_TelefoneCelular_Id { get; set; }
 
         [Required]
         [StringLength(25)]
@@ -53,13 +50,9 @@ namespace Projeto_TCC_2022.Models
         public string Complemento { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Administrador> Administrador { get; set; }
-
-        public virtual CelularTelefone CelularTelefone { get; set; }
-
+        public virtual ICollection<CelularTelefone> CelularTelefone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Orçamento> Orçamento { get; set; }
-
+        public virtual ICollection<Administrador> Administrador { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Serviços> Serviços { get; set; }
     }

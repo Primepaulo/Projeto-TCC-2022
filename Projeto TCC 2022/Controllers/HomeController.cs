@@ -24,7 +24,17 @@ namespace Projeto_TCC_2022.Controllers
             }
         }
     }*/
-    public class HomeController : Controller
+
+    public abstract class DefaultController : Controller
+    {
+        public int UserID
+        {
+            get { return User.Identity.GetUserId<int>(); }
+        }
+    }
+
+
+    public class HomeController : DefaultController
     {
         public ActionResult Index()
         {
@@ -50,17 +60,21 @@ namespace Projeto_TCC_2022.Controllers
             return View();
         }
 
-        public ActionResult InsertPessoa()
+
+        //Provavelmente seria sábio criar outro controller (CadastroController) a partir daqui.
+        public ActionResult Cadastro()
         {
-            [HttpPost]
-            Model1.InsertCelular(User.Identity.GetUserId(), Request["Celular"]);
-            Model1.InsertPessoa(User.Identity.GetUserId(), Request["Nome"], Request["Sobrenome"], Request["Estado"]
-                , Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]), Request["Complemento"], 
-                User.Identity.GetUserId(), Request["Email"], Request["CPF"], Request["CNPJ"], Convert.ToInt32(Request["Tipo"]));
-
-            //Mudar pra acomodar ou físico ou jurídico
-
             return View();
         }
+
+        [HttpPost]
+        public void CadastrarFísico()
+        {
+            Model1.InsertPessoa(UserID, Request["Nome"], Request["Sobrenome"], Request["Estado"],
+            Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]), Request["Complemento"],
+            UserID, Request["Email"], Request["CPF"], null, Convert.ToInt32(Request["Tipo"]));
+            Response.Redirect("/Home/Index");
+        }
+        
     }
 }

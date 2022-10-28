@@ -14,6 +14,7 @@ namespace Projeto_TCC_2022.Models
         {
             Avaliação = new HashSet<Avaliação>();
             Carro = new HashSet<Carro>();
+            CelularTelefone = new HashSet<CelularTelefone>();
             Orçamento = new HashSet<Orçamento>();
         }
 
@@ -45,8 +46,6 @@ namespace Projeto_TCC_2022.Models
         [StringLength(30)]
         public string Complemento { get; set; }
 
-        public int fk_CelularTelefone_Id { get; set; }
-
         [Required]
         [StringLength(50)]
         public string Email { get; set; }
@@ -65,7 +64,8 @@ namespace Projeto_TCC_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Carro> Carro { get; set; }
 
-        public virtual CelularTelefone CelularTelefone { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CelularTelefone> CelularTelefone { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orçamento> Orçamento { get; set; }

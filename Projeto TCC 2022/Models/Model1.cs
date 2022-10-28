@@ -11,6 +11,7 @@ using System.Web.UI;
 using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using System.Data.SqlTypes;
+using System.Data.Entity.Validation;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -41,34 +42,15 @@ namespace Projeto_TCC_2022.Models
 
             modelBuilder.Entity<Carro>()
                 .HasMany(e => e.Orçamento)
-                .WithOptional(e => e.Carro)
-                .HasForeignKey(e => e.fk_Carro_Placa);
-
-            modelBuilder.Entity<CelularTelefone>()
-                .HasMany(e => e.Oficina)
-                .WithOptional(e => e.CelularTelefone)
-                .HasForeignKey(e => e.fk_TelefoneCelular_Id);
-
-            modelBuilder.Entity<CelularTelefone>()
-                .HasMany(e => e.Pessoa)
-                .WithOptional(e => e.CelularTelefone)
-                .HasForeignKey(e => e.fk_CelularTelefone_Id);
+                .WithRequired(e => e.Carro)
+                .HasForeignKey(e => e.fk_Carro_Placa)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Oficina>()
-                .HasMany(e => e.Administrador)
-                .WithOptional(e => e.Oficina)
-                .HasForeignKey(e => e.fk_Oficina_Id);
-
-            modelBuilder.Entity<Oficina>()
-                .HasMany(e => e.Orçamento)
-                .WithOptional(e => e.Oficina)
-                .HasForeignKey(e => e.fk_Oficina_Id)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Oficina>()
-                .HasMany(e => e.Serviços)
-                .WithMany(e => e.Oficina)
-                .Map(m => m.ToTable("Oferece").MapLeftKey("fk_Oficina_CNPJ").MapRightKey("fk_Serviços_Id"));
+                .HasMany(e => e.CelularTelefone)
+                .WithRequired(e => e.Oficina)
+                .HasForeignKey(e => e.Fk_User_Id)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Orçamento>()
                 .Property(e => e.Valor)
@@ -80,21 +62,24 @@ namespace Projeto_TCC_2022.Models
 
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.Avaliação)
-                .WithOptional(e => e.Pessoa)
-                .HasForeignKey(e => e.fk_Pessoa_Id)
-                .WillCascadeOnDelete();
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.fk_Pessoa_Id);
 
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.Carro)
-                .WithOptional(e => e.Pessoa)
-                .HasForeignKey(e => e.fk_Pessoa_Id)
-                .WillCascadeOnDelete();
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.fk_Pessoa_Id);
+
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.CelularTelefone)
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.Fk_User_Id)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.Orçamento)
-                .WithOptional(e => e.Pessoa)
-                .HasForeignKey(e => e.fk_Pessoa_Id)
-                .WillCascadeOnDelete();
+                .WithRequired(e => e.Pessoa)
+                .HasForeignKey(e => e.fk_Pessoa_Id);
 
             modelBuilder.Entity<Serviços>()
                 .Property(e => e.Preço)
@@ -102,8 +87,9 @@ namespace Projeto_TCC_2022.Models
 
             modelBuilder.Entity<Serviços>()
                 .HasMany(e => e.Avaliação)
-                .WithOptional(e => e.Serviços)
-                .HasForeignKey(e => e.fk_Serviços_Id);
+                .WithRequired(e => e.Serviços)
+                .HasForeignKey(e => e.fk_Serviços_Id)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Serviços>()
                 .HasMany(e => e.Peça)
@@ -114,6 +100,12 @@ namespace Projeto_TCC_2022.Models
                 .HasMany(e => e.Orçamento)
                 .WithMany(e => e.Serviços)
                 .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
+
+            modelBuilder.Entity<Oficina>()
+                .HasMany(e => e.Serviços)
+                .WithMany(e => e.Oficina)
+                .Map(m => m.ToTable("Oferece").MapLeftKey("fk_Oficina_Id").MapRightKey("fk_Serviços_Id"));
+
         }
         public static List<Oficina> GetOficina(string x)
         {
@@ -141,17 +133,29 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void InsertCelular(int Id, string Celular)
+        public static void InsertCelular(int Id, string CT)
         {
             using (var context = new Model1())
             {
-                context.Pessoa.Add(new CelularTelefone
+                context.CelularTelefone.Add(new CelularTelefone
                 {
-                    int Id = Id,
-                    CelularTelefone1 = Celular
-                    // Posteriormente, adicionar um If User.Role == Pessoa pra usar o id da pessoa, senão usar gerar novo
+                    id = Id,
+                    CelularTelefone1 = CT
                 });
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
                 //Colocar isso após um redirect que ocorre no botão register ou posteriormente em configurações do usuário
             }
         }
@@ -172,17 +176,27 @@ namespace Projeto_TCC_2022.Models
                     Rua = Rua,
                     Número = Número,
                     Complemento = Complemento,
-                    fk_CelularTelefone_Id = CelId,
                     Email = Email,
                     CPF = CPF,
                     CNPJ = CNPJ,
                     Pessoa_TIPO = Tipo
                 });
-                context.SaveChanges();
-                //Colocar isso após um redirect que ocorre no botão register ou posteriormente em configurações do usuário
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
             }
         }
-
 
         public static List<Carro> GetAllCarros()
         {

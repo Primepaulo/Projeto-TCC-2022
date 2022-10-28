@@ -10,12 +10,8 @@ namespace Projeto_TCC_2022.Models
     public partial class Administrador
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id_Administrativo { get; set; }
 
-        [StringLength(14)]
-        public string fk_Oficina_CNPJ { get; set; }
-
-        public virtual Oficina Oficina { get; set; }
+        public int fk_Oficina_Id { get; set; }
     }
 }

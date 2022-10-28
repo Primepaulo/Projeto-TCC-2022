@@ -12,12 +12,12 @@ namespace Projeto_TCC_2022.Models
         public Serviços()
         {
             Avaliação = new HashSet<Avaliação>();
-            Peça = new HashSet<Peça>();
             Oficina = new HashSet<Oficina>();
+            Peça = new HashSet<Peça>();
             Orçamento = new HashSet<Orçamento>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Required]
@@ -31,10 +31,10 @@ namespace Projeto_TCC_2022.Models
         public virtual ICollection<Avaliação> Avaliação { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Peça> Peça { get; set; }
+        public virtual ICollection<Oficina> Oficina { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Oficina> Oficina { get; set; }
+        public virtual ICollection<Peça> Peça { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orçamento> Orçamento { get; set; }

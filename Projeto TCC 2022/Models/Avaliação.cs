@@ -8,7 +8,7 @@ namespace Projeto_TCC_2022.Models
 
     public partial class Avaliação
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         public int Estrelas { get; set; }
@@ -16,9 +16,9 @@ namespace Projeto_TCC_2022.Models
         [StringLength(250)]
         public string Texto { get; set; }
 
-        public int? fk_Serviços_Id { get; set; }
+        public int fk_Serviços_Id { get; set; }
 
-        public int? fk_Pessoa_Id { get; set; }
+        public int fk_Pessoa_Id { get; set; }
 
         public virtual Serviços Serviços { get; set; }
 
