@@ -19,7 +19,7 @@ namespace Aula3108.Controllers
     }
     public class CarrosController : DefaultController
     {
-        public ActionResult VisualisarCarros()
+        public ActionResult VisualizarCarros()
         {
             ViewBag.Lista = Model1.GetCarros(UserID);
             return View();

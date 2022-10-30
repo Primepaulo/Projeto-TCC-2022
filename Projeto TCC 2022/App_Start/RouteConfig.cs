@@ -16,7 +16,7 @@ namespace Projeto_TCC_2022
             routes.MapRoute(
                 name: "Carros",
                 url: "Carros/{action}",
-                new { controller = "Carros", action = "VisualisarCarros" }
+                new { controller = "Carros", action = "VisualizarCarros" }
                 );
 
             routes.MapRoute(
