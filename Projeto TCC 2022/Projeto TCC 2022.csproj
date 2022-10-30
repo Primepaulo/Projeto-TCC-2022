@@ -267,7 +267,7 @@
     <Content Include="Views\Cadastro\CadastroPessoa.cshtml" />
     <Content Include="Views\Cadastro\CadastroNúmero.cshtml" />
     <Content Include="Views\Carros\CadastroCarros.cshtml" />
-    <Content Include="Views\Carros\VisualisarCarros.cshtml" />
+    <Content Include="Views\Carros\VisualizarCarros.cshtml" />
     <Content Include="Views\Cadastro\CadastroOficina.cshtml" />
     <Content Include="Views\Cadastro\Cadastro.cshtml" />
   </ItemGroup>
