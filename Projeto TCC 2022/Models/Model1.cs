@@ -107,6 +107,10 @@ namespace Projeto_TCC_2022.Models
                 .Map(m => m.ToTable("Oferece").MapLeftKey("fk_Oficina_Id").MapRightKey("fk_Serviços_Id"));
 
         }
+
+        // ----------------------------------------------------------------------------------------------------
+        // OFICINA
+
         public static List<Oficina> GetOficina(string x)
         {
             using (var context = new Model1())
@@ -120,27 +124,22 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static List<Carro> GetCarros(string x)
+        public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, 
+        string Rua, int Número, string Complemento)
         {
             using (var context = new Model1())
             {
-                var query = from Carro in context.Carro
-                            join Pessoa in context.Pessoa
-                            on Carro.fk_Pessoa_Id equals Pessoa.Id
-                            select Carro;
-                var oficinas = query.ToList();
-                return oficinas;
-            }
-        }
-
-        public static void InsertCelular(int Id, string CT)
-        {
-            using (var context = new Model1())
-            {
-                context.CelularTelefone.Add(new CelularTelefone
+                context.Oficina.Add(new Oficina
                 {
-                    id = Id,
-                    CelularTelefone1 = CT
+                    Id = Id,
+                    Email = Email,
+                    CNPJ = CNPJ,
+                    Nome = Nome,
+                    Estado = Estado,
+                    Cidade = Cidade,
+                    Rua = Rua,
+                    Número = Número,
+                    Complemento = Complemento
                 });
                 try
                 {
@@ -156,10 +155,101 @@ namespace Projeto_TCC_2022.Models
                         }
                     }
                 }
-                //Colocar isso após um redirect que ocorre no botão register ou posteriormente em configurações do usuário
             }
         }
 
+
+        // ----------------------------------------------------------------------------------------------------
+        // CARROS
+
+        public static List<Carro> GetCarros(int uID)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Carro in context.Carro
+                            join Pessoa in context.Pessoa
+                            on Carro.fk_Pessoa_Id equals Pessoa.Id
+                            where Pessoa.Id == uID
+                            select Carro;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
+
+        public static List<Carro> GetAllCarros()
+        {
+            using (var context = new Model1())
+            {
+                var query = from Carro in context.Carro select Carro;
+                var carros = query.ToList();
+                return carros;
+            }
+
+        }
+
+        public static void InsertCarro(string Placa, string Cor, string Modelo, decimal Motorização, string Marca, int uID)
+        {
+            using (var context = new Model1())
+            {
+                context.Carro.Add(new Carro
+                {
+                    Placa = Placa,
+                    Cor = Cor,
+                    Modelo = Modelo,
+                    Motorização = Motorização,
+                    Marca = Marca,
+                    fk_Pessoa_Id = uID
+
+                }); 
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+        // ----------------------------------------------------------------------------------------------------
+        // CELULAR
+
+        public static void InsertCelular(string CT, int uID)
+        {
+            using (var context = new Model1())
+            {
+                context.CelularTelefone.Add(new CelularTelefone
+                {
+                    CelularTelefone1 = CT,
+                    Fk_User_Id = uID
+
+                }); 
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+        // ----------------------------------------------------------------------------------------------------
+        // PESSOA
 
         public static void InsertPessoa(int Id, string Nome, string Sobrenome, string Estado, string Cidade, string Rua,
             int Número, string Complemento, int CelId, string Email, string CPF, string CNPJ, int Tipo)
@@ -197,24 +287,5 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
-
-        public static List<Carro> GetAllCarros()
-        {
-             using (var context = new Model1())
-             {
-                    /* Create Carro
-                    context.Carro.Add(new Carro
-                    {
-                        Placa = "123ABCD"
-                    });
-                    */
-                    // Select * Carros
-                    var query = from Carro in context.Carro select Carro;
-                    var carros = query.ToList();
-                    return carros;
-             }
-            
-        }
-    
     }
 }

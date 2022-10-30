@@ -1,36 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Projeto_TCC_2022.Controllers;
 using Projeto_TCC_2022.Models;
 
 namespace Aula3108.Controllers
 {
-    public class CarrosController : Controller
+    public abstract class DefaultController : Controller
     {
-        // GET: Carros
-        public ActionResult Carros()
+        public int UserID
         {
-            ViewBag.Title = "Carro";
-            ViewBag.Title = "Cadastro de Carros";
+            get { return User.Identity.GetUserId<int>(); }
+        }
+    }
+    public class CarrosController : DefaultController
+    {
+        public ActionResult VisualisarCarros()
+        {
+            ViewBag.Lista = Model1.GetCarros(UserID);
+            return View();
+        }
+        public ActionResult CadastroCarros()
+        {
             return View();
         }
 
-        //[HttpPost]
-
-        /*public void Salvar()
+        [HttpPost]
+        public void CadastrarCarros()
         {
-            var Carro = new ();
-            Carro.Placa = Request["placa"];
-            Carro.Modelo = Request["modelo"];
-            Carro.Cor = Request["cor"];
-            Carro.Motorização = Convert.ToDecimal(Request["motorização"]);
-            Carro.Marca = Request["marca"];
-            Carro.Fk_Pessoa_Id = Convert.ToInt32(Request["fk_Pessoa_Id"]);
-            Carro.Salvar();
-            Response.Redirect("/Home/About");
-        }*/
-
+            Model1.InsertCarro(Request["Placa"], Request["Cor"], Request["Modelo"], Decimal.Parse(Request["Motorização"].Replace(".",",")), Request["Marca"], UserID);
+            Response.Redirect("/Carros/");
+        }
     }
 }
