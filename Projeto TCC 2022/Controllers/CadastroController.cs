@@ -28,6 +28,7 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public void CadastrarPessoa()
         {
             Model1.InsertPessoa(UserID, Request["Nome"], Request["Sobrenome"], Request["Estado"],
@@ -42,6 +43,7 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public void CadastrarNúmero()
         {
             Model1.InsertCelular(Request["Número"], UserID);
@@ -60,6 +62,7 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public void CadastrarOficina()
         {
             Model1.InsertOficina(UserID, Request["Email"], Request["CNPJ"], Request["Nome"],

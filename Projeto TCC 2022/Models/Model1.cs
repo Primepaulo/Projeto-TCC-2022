@@ -15,8 +15,6 @@ using System.Data.Entity.Validation;
 
 namespace Projeto_TCC_2022.Models
 {
-    // Debug Writer, como visto no artigo: https://damieng.com/blog/2008/07/30/linq-to-sql-log-to-debug-window-file-memory-or-multiple-writers/
-
     public partial class Model1 : DbContext
     {
         public Model1()
@@ -124,6 +122,17 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static List<Carro> GetAllOficinas()
+        {
+            using (var context = new Model1())
+            {
+                var query = from Carro in context.Carro select Carro;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+
+        }
+
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, 
         string Rua, int Número, string Complemento)
         {
@@ -176,15 +185,16 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static List<Carro> GetAllCarros()
+        public static Carro GetCarro(string Placa)
         {
             using (var context = new Model1())
             {
-                var query = from Carro in context.Carro select Carro;
-                var carros = query.ToList();
-                return carros;
+                var query = from Carro in context.Carro
+                            where Carro.Placa == Placa
+                            select Carro;
+                var carro = query.FirstOrDefault();
+                return carro;
             }
-
         }
 
         public static void InsertCarro(string Placa, string Cor, string Modelo, decimal Motorização, string Marca, int uID)
@@ -217,6 +227,83 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
+
+        public static void UpdateCarro(Carro carro)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(carro).State = EntityState.Modified;
+                try
+                {
+                      context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                   foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                   {
+                       foreach (var validationError in entityValidationErrors.ValidationErrors)
+                       {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                       }
+                   }
+                }
+            }
+        }
+
+        public static void DeleteCarro(string Placa)
+        {
+            using (var context = new Model1())
+            {
+                Carro carro = context.Carro.Find(Placa);
+                context.Carro.Remove(carro);
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+        //public static void UpdateCarro(string Placa, string Cor, string Modelo, decimal Motorização, string Marca, int uID)
+        //{
+        //    using (var context = new Model1())
+        //    {
+        //        /*var carro = context.Carro.FirstOrDefault(x => x.fk_Pessoa_Id == uID); //Válido pra coisas únicas, mas não pra carro. Se 1 pessoa
+        //                                                                              tiver mais de 1 carro quebra.*/
+        //        var carro = context.Carro.FirstOrDefault(x => x.fk_Pessoa_Id == uID && x.Placa == Placa);
+
+        //        if (carro != null)
+        //        {
+        //            carro.Cor = Cor;
+        //            carro.Modelo = Modelo;
+        //            carro.Motorização = Motorização;
+        //            carro.Marca = Marca;
+        //            try
+        //            {
+        //                context.SaveChanges();
+        //            }
+        //            catch (DbEntityValidationException ex)
+        //            {
+        //                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+        //                {
+        //                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+        //                    {
+        //                        Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         // ----------------------------------------------------------------------------------------------------
         // CELULAR

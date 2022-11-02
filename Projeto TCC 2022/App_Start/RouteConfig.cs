@@ -15,14 +15,14 @@ namespace Projeto_TCC_2022
 
             routes.MapRoute(
                 name: "Carros",
-                url: "Carros/{action}",
-                new { controller = "Carros", action = "VisualizarCarros" }
+                url: "{controller}/{action}/{id}",
+                new { controller = "Carros", action = "VisualizarCarros", id = UrlParameter.Optional }
                 );
 
             routes.MapRoute(
                 name: "Cadastro",
-                url: "Cadastro/{action}",
-                new { controller = "Cadastro", action = "Cadastro" }
+                url: "{controller}/{action}/{id}",
+                new { controller = "Cadastro", action = "Cadastro", id = UrlParameter.Optional }
                );
 
             routes.MapRoute(

@@ -10,32 +10,16 @@ using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    /* Adiciona item para todos os controllers que o herdam.
-    Ideia original de herdar um controller que herda outro controller retirada de: 
-    https://stackoverflow.com/questions/27308524/access-viewbag-property-on-all-views
-    public class SearchController : Controller
-    {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (!Request.QueryString["navSearch"].IsEmpty())
-            {
-                string searchTerm = Request.QueryString["navSearch"];
-                ViewBag.Oficinas = Model1.GetOficina(searchTerm);
-            }
-        }
-    }*/
-
     public class HomeController : DefaultController
     {
         public ActionResult Index()
         {
+            ViewBag.Oficinas = Model1.GetAllOficinas();
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Lista = Model1.GetAllCarros();
-            ViewBag.Item1 = Model1.GetAllCarros().FirstOrDefault();
             return View();
         }
 
