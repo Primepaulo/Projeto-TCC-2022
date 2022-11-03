@@ -223,7 +223,7 @@ CREATE TABLE [dbo].[Carro](
 	[Placa] [nvarchar](7) NOT NULL,
 	[Cor] [nvarchar](15) NOT NULL,
 	[Modelo] [nvarchar](25) NOT NULL,
-	[Motorização] [decimal](2, 1) NOT NULL,
+	[Motorização] [nvarchar](3) NOT NULL,
 	[Marca] [nvarchar](15) NOT NULL,
 	[fk_Pessoa_Id] [int] NOT NULL,
  CONSTRAINT [PK__Carro__8310F99CC5D2A0FE] PRIMARY KEY CLUSTERED 

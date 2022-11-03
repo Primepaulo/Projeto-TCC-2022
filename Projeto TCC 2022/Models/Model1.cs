@@ -18,7 +18,8 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=LabVS2022" /*is on Web.config file at line 12 in connectionString*/)
+            //Trocar também no IdentityModels.
         {
         }
 
@@ -35,8 +36,7 @@ namespace Projeto_TCC_2022.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Carro>()
-                .Property(e => e.Motorização)
-                .HasPrecision(2, 1);
+                .Property(e => e.Motorização);
 
             modelBuilder.Entity<Carro>()
                 .HasMany(e => e.Orçamento)
@@ -196,8 +196,7 @@ namespace Projeto_TCC_2022.Models
                 return carro;
             }
         }
-
-        public static void InsertCarro(string Placa, string Cor, string Modelo, decimal Motorização, string Marca, int uID)
+        public static void InsertCarro(string Placa, string Cor, string Modelo, string Motorização, string Marca, int uID)
         {
             using (var context = new Model1())
             {

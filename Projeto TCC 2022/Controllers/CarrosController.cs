@@ -35,7 +35,7 @@ namespace Aula3108.Controllers
         [ValidateAntiForgeryToken]
         public void CadastrarCarros()
         {
-            Model1.InsertCarro(Request["Placa"], Request["Cor"], Request["Modelo"], Decimal.Parse(Request["Motorização"].Replace(".",",")), Request["Marca"], UserID);
+            Model1.InsertCarro(Request["Placa"], Request["Cor"], Request["Modelo"], Request["Motorização"], Request["Marca"], UserID);
             Response.Redirect("/Carros/");
         }
 

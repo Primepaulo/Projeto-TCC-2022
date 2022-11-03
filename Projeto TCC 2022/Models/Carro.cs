@@ -27,7 +27,7 @@ namespace Projeto_TCC_2022.Models
         [StringLength(25)]
         public string Modelo { get; set; }
 
-        public decimal Motorização { get; set; }
+        public string Motorização { get; set; }
 
         [Required]
         [StringLength(15)]

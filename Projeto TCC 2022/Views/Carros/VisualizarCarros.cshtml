@@ -18,7 +18,7 @@
             <td>@item.Placa</td>
             <td>@item.Modelo</td>
             <td>@item.Cor</td>
-            <td>@Convert.ToString(item.Motorização).Replace(",", ".")</td>
+            <td>@item.Motorização.Replace(",", ".")</td>
             <td>@item.Marca</td>
             <td>
                 @Html.ActionLink("Editar", "EditarCarro", new { Placa = item.Placa }) |
