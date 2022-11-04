@@ -13,10 +13,7 @@
 
         [Required]
         [StringLength(100)]
-        public string Nome { get; set; }
-
-        [Required]
-        public byte[] Image { get; set; }
+        public string Url { get; set; }
 
         public int Fk_Oficina_Id { get; set; }
 

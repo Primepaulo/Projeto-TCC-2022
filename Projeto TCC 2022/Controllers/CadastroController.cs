@@ -34,6 +34,10 @@ namespace Projeto_TCC_2022.Controllers
             Model1.InsertPessoa(UserID, Request["Nome"], Request["Sobrenome"], Request["Estado"],
             Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]), Request["Complemento"],
             UserID, Request["Email"], Request["CPF"], Request["CNPJ"], Convert.ToInt32(Request["Tipo"]));
+            if (Request["CNPJ"] != null)
+            {
+                Response.Redirect("/Imagem/AdicionarImagem");
+            }
             Response.Redirect("/Cadastro/CadastroNúmero");
         }
 

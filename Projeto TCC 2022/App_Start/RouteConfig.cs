@@ -26,6 +26,12 @@ namespace Projeto_TCC_2022
                );
 
             routes.MapRoute(
+                name: "Imagem",
+                url: "Imagem/{action}/{id}",
+                new { controller = "Imagem", action = "MudarImagem", id = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

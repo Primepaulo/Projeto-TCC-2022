@@ -348,7 +348,7 @@ namespace Projeto_TCC_2022.Models
         // PESSOA
 
         public static void InsertPessoa(int Id, string Nome, string Sobrenome, string Estado, string Cidade, string Rua,
-            int Número, string Complemento, int CelId, string Email, string CPF, string CNPJ, int Tipo)
+            int Número, string Complemento, string Email, string CPF, string CNPJ, int Tipo)
         {
             using (var context = new Model1())
             {
@@ -386,35 +386,13 @@ namespace Projeto_TCC_2022.Models
         //---------------------------------------------------------------------------------------------------
 
         // Imagens
-
-        public byte[] ImageToByteArray(Image imageIn)
-        {
-            using (var ms = new MemoryStream())
-            {
-                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-
-                return ms.ToArray();
-            }
-        }
-
-        public Image ByteArrayToImage(byte[] byteArrayIn)
-        {
-            using (var ms = new MemoryStream(byteArrayIn))
-            {
-                var returnImage = Image.FromStream(ms);
-
-                return returnImage;
-            }
-        }
-
-        public static void SalvarImagem(string Nome, byte[] Image, int Fk_Oficina_Id)
+        public static void SalvarImagem(string Url, int Fk_Oficina_Id)
         {
             using(var context = new Model1())
             {
                 context.Images.Add(new Images
                 {
-                    Nome = Nome,
-                    Image = Image,
+                    Url = Url,
                     Fk_Oficina_Id = Fk_Oficina_Id
 
                 });
