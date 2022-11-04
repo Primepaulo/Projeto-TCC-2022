@@ -18,10 +18,12 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=LabVS2022" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=BibliotecaPC3" /*is on Web.config file at line 12 in connectionString*/)
             //Trocar também no IdentityModels.
         {
         }
+
+        //https://stackoverflow.com/questions/65171255/efficiently-storing-images-with-access-and-sql-server
 
         public virtual DbSet<Administrador> Administrador { get; set; }
         public virtual DbSet<Avaliação> Avaliação { get; set; }

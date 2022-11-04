@@ -51,7 +51,7 @@ namespace Projeto_TCC_2022.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public ApplicationDbContext()
-            : base("LabVS2022")
+            : base("BibliotecaPC3")
         {
         }
 
