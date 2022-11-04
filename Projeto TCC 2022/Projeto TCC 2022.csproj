@@ -183,6 +183,7 @@
     <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Images.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\Oficina.cs" />

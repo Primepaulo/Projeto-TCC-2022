@@ -15,6 +15,7 @@ namespace Projeto_TCC_2022.Models
             Administrador = new HashSet<Administrador>();
             CelularTelefone = new HashSet<CelularTelefone>();
             Serviços = new HashSet<Serviços>();
+            Images = new HashSet<Images>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -55,5 +56,7 @@ namespace Projeto_TCC_2022.Models
         public virtual ICollection<Administrador> Administrador { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Serviços> Serviços { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Images> Images { get; set; }
     }
 }

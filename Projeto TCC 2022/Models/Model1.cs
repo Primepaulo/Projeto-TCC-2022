@@ -12,13 +12,15 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using System.Data.SqlTypes;
 using System.Data.Entity.Validation;
+using System.IO;
+using System.Drawing;
 
 namespace Projeto_TCC_2022.Models
 {
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPC3" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
             //Trocar também no IdentityModels.
         {
         }
@@ -34,6 +36,7 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<Peça> Peça { get; set; }
         public virtual DbSet<Pessoa> Pessoa { get; set; }
         public virtual DbSet<Serviços> Serviços { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -105,6 +108,11 @@ namespace Projeto_TCC_2022.Models
                 .HasMany(e => e.Serviços)
                 .WithMany(e => e.Oficina)
                 .Map(m => m.ToTable("Oferece").MapLeftKey("fk_Oficina_Id").MapRightKey("fk_Serviços_Id"));
+
+            modelBuilder.Entity<Oficina>()
+                .HasMany(e => e.Images)
+                .WithRequired(e => e.Oficina)
+                .HasForeignKey(e => e.Fk_Oficina_Id);
 
         }
 
@@ -375,5 +383,44 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
+        //---------------------------------------------------------------------------------------------------
+
+        // Imagens
+
+        public byte[] ImageToByteArray(Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+
+                return ms.ToArray();
+            }
+        }
+
+        public Image ByteArrayToImage(byte[] byteArrayIn)
+        {
+            using (var ms = new MemoryStream(byteArrayIn))
+            {
+                var returnImage = Image.FromStream(ms);
+
+                return returnImage;
+            }
+        }
+
+        public static void SalvarImagem(string Nome, byte[] Image, int Fk_Oficina_Id)
+        {
+            using(var context = new Model1())
+            {
+                context.Images.Add(new Images
+                {
+                    Nome = Nome,
+                    Image = Image,
+                    Fk_Oficina_Id = Fk_Oficina_Id
+
+                });
+            }
+        }
+
+
     }
 }
