@@ -36,7 +36,7 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<Peça> Peça { get; set; }
         public virtual DbSet<Pessoa> Pessoa { get; set; }
         public virtual DbSet<Serviços> Serviços { get; set; }
-        public virtual DbSet<Images> Images { get; set; }
+        public virtual DbSet<Imagem> Images { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -390,7 +390,7 @@ namespace Projeto_TCC_2022.Models
         {
             using(var context = new Model1())
             {
-                context.Images.Add(new Images
+                context.Images.Add(new Imagem
                 {
                     Url = Url,
                     Fk_Oficina_Id = Fk_Oficina_Id
