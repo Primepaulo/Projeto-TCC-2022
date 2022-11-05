@@ -269,7 +269,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Imagem](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Url] [nvarchar](100) NOT NULL,
+	[Url] [nvarchar](200) NOT NULL,
 	[Fk_Oficina_Id] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
