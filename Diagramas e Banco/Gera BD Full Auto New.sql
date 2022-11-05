@@ -197,18 +197,18 @@ CREATE TABLE [dbo].[AspNetUsers](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Avaliação]    Script Date: 05/11/2022 13:00:51 ******/
+/****** Object:  Table [dbo].[AvaliaÃ§Ã£o]    Script Date: 05/11/2022 13:00:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Avaliação](
+CREATE TABLE [dbo].[AvaliaÃ§Ã£o](
 	[Id] [int] NOT NULL,
 	[Estrelas] [int] NOT NULL,
 	[Texto] [nvarchar](250) NULL,
-	[fk_Serviços_Id] [int] NOT NULL,
+	[fk_ServiÃ§os_Id] [int] NOT NULL,
 	[fk_Pessoa_Id] [int] NOT NULL,
- CONSTRAINT [PK__Avaliaçã__3214EC0790A8D09E] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK__AvaliaÃ§Ã£__3214EC0790A8D09E] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -223,7 +223,7 @@ CREATE TABLE [dbo].[Carro](
 	[Placa] [nvarchar](7) NOT NULL,
 	[Cor] [nvarchar](15) NOT NULL,
 	[Modelo] [nvarchar](25) NOT NULL,
-	[Motorização] [decimal](2, 1) NOT NULL,
+	[MotorizaÃ§Ã£o] [nvarchar](3) NOT NULL,
 	[Marca] [nvarchar](15) NOT NULL,
 	[fk_Pessoa_Id] [int] NOT NULL,
  CONSTRAINT [PK__Carro__8310F99CC5D2A0FE] PRIMARY KEY CLUSTERED 
@@ -247,18 +247,18 @@ CREATE TABLE [dbo].[CelularTelefone](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Contém]    Script Date: 05/11/2022 13:00:51 ******/
+/****** Object:  Table [dbo].[ContÃ©m]    Script Date: 05/11/2022 13:00:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Contém](
-	[fk_Serviços_Id] [int] NOT NULL,
-	[fk_Peça_Id] [int] NOT NULL,
+CREATE TABLE [dbo].[ContÃ©m](
+	[fk_ServiÃ§os_Id] [int] NOT NULL,
+	[fk_PeÃ§a_Id] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[fk_Serviços_Id] ASC,
-	[fk_Peça_Id] ASC
+	[fk_ServiÃ§os_Id] ASC,
+	[fk_PeÃ§a_Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -284,11 +284,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Oferece](
 	[fk_Oficina_Id] [int] NOT NULL,
-	[fk_Serviços_Id] [int] NOT NULL,
+	[fk_ServiÃ§os_Id] [int] NOT NULL,
  CONSTRAINT [PK__Oferece__EC17DE2B77103F8C] PRIMARY KEY CLUSTERED 
 (
 	[fk_Oficina_Id] ASC,
-	[fk_Serviços_Id] ASC
+	[fk_ServiÃ§os_Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -305,7 +305,7 @@ CREATE TABLE [dbo].[Oficina](
 	[Estado] [nvarchar](25) NOT NULL,
 	[Cidade] [nvarchar](30) NOT NULL,
 	[Rua] [nvarchar](50) NOT NULL,
-	[Número] [int] NOT NULL,
+	[NÃºmero] [int] NOT NULL,
 	[Complemento] [nvarchar](20) NULL,
  CONSTRAINT [PK_Oficina_1] PRIMARY KEY CLUSTERED 
 (
@@ -313,34 +313,34 @@ CREATE TABLE [dbo].[Oficina](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Orçamento]    Script Date: 05/11/2022 13:00:51 ******/
+/****** Object:  Table [dbo].[OrÃ§amento]    Script Date: 05/11/2022 13:00:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Orçamento](
+CREATE TABLE [dbo].[OrÃ§amento](
 	[Valor] [money] NOT NULL,
 	[Status] [int] NOT NULL,
-	[Id_Orçamento] [int] NOT NULL,
+	[Id_OrÃ§amento] [int] NOT NULL,
 	[fk_Pessoa_Id] [int] NOT NULL,
 	[fk_Oficina_Id] [int] NOT NULL,
 	[fk_Carro_Placa] [nvarchar](7) NOT NULL,
- CONSTRAINT [PK__Orçament__78BB6B8C169CF93E] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK__OrÃ§ament__78BB6B8C169CF93E] PRIMARY KEY CLUSTERED 
 (
-	[Id_Orçamento] ASC
+	[Id_OrÃ§amento] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Peça]    Script Date: 05/11/2022 13:00:51 ******/
+/****** Object:  Table [dbo].[PeÃ§a]    Script Date: 05/11/2022 13:00:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Peça](
+CREATE TABLE [dbo].[PeÃ§a](
 	[Id] [int] NOT NULL,
 	[Nome] [nvarchar](30) NOT NULL,
-	[Preço] [money] NOT NULL,
- CONSTRAINT [PK__Peça__3214EC07766891AF] PRIMARY KEY CLUSTERED 
+	[PreÃ§o] [money] NOT NULL,
+ CONSTRAINT [PK__PeÃ§a__3214EC07766891AF] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -358,7 +358,7 @@ CREATE TABLE [dbo].[Pessoa](
 	[Estado] [nvarchar](25) NOT NULL,
 	[Cidade] [nvarchar](30) NOT NULL,
 	[Rua] [nvarchar](50) NOT NULL,
-	[Número] [int] NOT NULL,
+	[NÃºmero] [int] NOT NULL,
 	[Complemento] [nvarchar](30) NULL,
 	[Email] [nvarchar](50) NOT NULL,
 	[CPF] [nvarchar](11) NULL,
@@ -376,25 +376,25 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Possui](
-	[fk_Serviços_Id] [int] NOT NULL,
-	[fk_Orçamento_Id_Orçamento] [int] NOT NULL,
+	[fk_ServiÃ§os_Id] [int] NOT NULL,
+	[fk_OrÃ§amento_Id_OrÃ§amento] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[fk_Serviços_Id] ASC,
-	[fk_Orçamento_Id_Orçamento] ASC
+	[fk_ServiÃ§os_Id] ASC,
+	[fk_OrÃ§amento_Id_OrÃ§amento] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Serviços]    Script Date: 05/11/2022 13:00:51 ******/
+/****** Object:  Table [dbo].[ServiÃ§os]    Script Date: 05/11/2022 13:00:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Serviços](
+CREATE TABLE [dbo].[ServiÃ§os](
 	[Id] [int] NOT NULL,
 	[Nome] [nvarchar](50) NOT NULL,
-	[Preço] [money] NOT NULL,
- CONSTRAINT [PK__Serviços__3214EC0748AFBB14] PRIMARY KEY CLUSTERED 
+	[PreÃ§o] [money] NOT NULL,
+ CONSTRAINT [PK__ServiÃ§os__3214EC0748AFBB14] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -484,16 +484,16 @@ ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]
 GO
-ALTER TABLE [dbo].[Avaliação]  WITH CHECK ADD  CONSTRAINT [FK_Avaliação_2] FOREIGN KEY([fk_Serviços_Id])
-REFERENCES [dbo].[Serviços] ([Id])
+ALTER TABLE [dbo].[AvaliaÃ§Ã£o]  WITH CHECK ADD  CONSTRAINT [FK_AvaliaÃ§Ã£o_2] FOREIGN KEY([fk_ServiÃ§os_Id])
+REFERENCES [dbo].[ServiÃ§os] ([Id])
 GO
-ALTER TABLE [dbo].[Avaliação] CHECK CONSTRAINT [FK_Avaliação_2]
+ALTER TABLE [dbo].[AvaliaÃ§Ã£o] CHECK CONSTRAINT [FK_AvaliaÃ§Ã£o_2]
 GO
-ALTER TABLE [dbo].[Avaliação]  WITH CHECK ADD  CONSTRAINT [FK_Avaliação_3] FOREIGN KEY([fk_Pessoa_Id])
+ALTER TABLE [dbo].[AvaliaÃ§Ã£o]  WITH CHECK ADD  CONSTRAINT [FK_AvaliaÃ§Ã£o_3] FOREIGN KEY([fk_Pessoa_Id])
 REFERENCES [dbo].[Pessoa] ([Id])
 ON DELETE CASCADE
 GO
-ALTER TABLE [dbo].[Avaliação] CHECK CONSTRAINT [FK_Avaliação_3]
+ALTER TABLE [dbo].[AvaliaÃ§Ã£o] CHECK CONSTRAINT [FK_AvaliaÃ§Ã£o_3]
 GO
 ALTER TABLE [dbo].[Carro]  WITH CHECK ADD  CONSTRAINT [FK_Carro_2] FOREIGN KEY([fk_Pessoa_Id])
 REFERENCES [dbo].[Pessoa] ([Id])
@@ -512,15 +512,15 @@ REFERENCES [dbo].[Pessoa] ([Id])
 GO
 ALTER TABLE [dbo].[CelularTelefone] CHECK CONSTRAINT [FK_CelularTelefone_Pessoa]
 GO
-ALTER TABLE [dbo].[Contém]  WITH CHECK ADD  CONSTRAINT [FK_Contém_1] FOREIGN KEY([fk_Serviços_Id])
-REFERENCES [dbo].[Serviços] ([Id])
+ALTER TABLE [dbo].[ContÃ©m]  WITH CHECK ADD  CONSTRAINT [FK_ContÃ©m_1] FOREIGN KEY([fk_ServiÃ§os_Id])
+REFERENCES [dbo].[ServiÃ§os] ([Id])
 GO
-ALTER TABLE [dbo].[Contém] CHECK CONSTRAINT [FK_Contém_1]
+ALTER TABLE [dbo].[ContÃ©m] CHECK CONSTRAINT [FK_ContÃ©m_1]
 GO
-ALTER TABLE [dbo].[Contém]  WITH CHECK ADD  CONSTRAINT [FK_Contém_2] FOREIGN KEY([fk_Peça_Id])
-REFERENCES [dbo].[Peça] ([Id])
+ALTER TABLE [dbo].[ContÃ©m]  WITH CHECK ADD  CONSTRAINT [FK_ContÃ©m_2] FOREIGN KEY([fk_PeÃ§a_Id])
+REFERENCES [dbo].[PeÃ§a] ([Id])
 GO
-ALTER TABLE [dbo].[Contém] CHECK CONSTRAINT [FK_Contém_2]
+ALTER TABLE [dbo].[ContÃ©m] CHECK CONSTRAINT [FK_ContÃ©m_2]
 GO
 ALTER TABLE [dbo].[Imagem]  WITH CHECK ADD  CONSTRAINT [Fk_Oficina_Id] FOREIGN KEY([Fk_Oficina_Id])
 REFERENCES [dbo].[Oficina] ([Id])
@@ -528,30 +528,30 @@ ON UPDATE CASCADE
 GO
 ALTER TABLE [dbo].[Imagem] CHECK CONSTRAINT [Fk_Oficina_Id]
 GO
-ALTER TABLE [dbo].[Oferece]  WITH CHECK ADD  CONSTRAINT [FK_Oferece_2] FOREIGN KEY([fk_Serviços_Id])
-REFERENCES [dbo].[Serviços] ([Id])
+ALTER TABLE [dbo].[Oferece]  WITH CHECK ADD  CONSTRAINT [FK_Oferece_2] FOREIGN KEY([fk_ServiÃ§os_Id])
+REFERENCES [dbo].[ServiÃ§os] ([Id])
 GO
 ALTER TABLE [dbo].[Oferece] CHECK CONSTRAINT [FK_Oferece_2]
 GO
-ALTER TABLE [dbo].[Orçamento]  WITH CHECK ADD  CONSTRAINT [FK_Orçamento_2] FOREIGN KEY([fk_Pessoa_Id])
+ALTER TABLE [dbo].[OrÃ§amento]  WITH CHECK ADD  CONSTRAINT [FK_OrÃ§amento_2] FOREIGN KEY([fk_Pessoa_Id])
 REFERENCES [dbo].[Pessoa] ([Id])
 ON DELETE CASCADE
 GO
-ALTER TABLE [dbo].[Orçamento] CHECK CONSTRAINT [FK_Orçamento_2]
+ALTER TABLE [dbo].[OrÃ§amento] CHECK CONSTRAINT [FK_OrÃ§amento_2]
 GO
-ALTER TABLE [dbo].[Orçamento]  WITH CHECK ADD  CONSTRAINT [FK_Orçamento_4] FOREIGN KEY([fk_Carro_Placa])
+ALTER TABLE [dbo].[OrÃ§amento]  WITH CHECK ADD  CONSTRAINT [FK_OrÃ§amento_4] FOREIGN KEY([fk_Carro_Placa])
 REFERENCES [dbo].[Carro] ([Placa])
 ON UPDATE CASCADE
 GO
-ALTER TABLE [dbo].[Orçamento] CHECK CONSTRAINT [FK_Orçamento_4]
+ALTER TABLE [dbo].[OrÃ§amento] CHECK CONSTRAINT [FK_OrÃ§amento_4]
 GO
-ALTER TABLE [dbo].[Possui]  WITH CHECK ADD  CONSTRAINT [FK_Possui_1] FOREIGN KEY([fk_Serviços_Id])
-REFERENCES [dbo].[Serviços] ([Id])
+ALTER TABLE [dbo].[Possui]  WITH CHECK ADD  CONSTRAINT [FK_Possui_1] FOREIGN KEY([fk_ServiÃ§os_Id])
+REFERENCES [dbo].[ServiÃ§os] ([Id])
 GO
 ALTER TABLE [dbo].[Possui] CHECK CONSTRAINT [FK_Possui_1]
 GO
-ALTER TABLE [dbo].[Possui]  WITH CHECK ADD  CONSTRAINT [FK_Possui_2] FOREIGN KEY([fk_Orçamento_Id_Orçamento])
-REFERENCES [dbo].[Orçamento] ([Id_Orçamento])
+ALTER TABLE [dbo].[Possui]  WITH CHECK ADD  CONSTRAINT [FK_Possui_2] FOREIGN KEY([fk_OrÃ§amento_Id_OrÃ§amento])
+REFERENCES [dbo].[OrÃ§amento] ([Id_OrÃ§amento])
 GO
 ALTER TABLE [dbo].[Possui] CHECK CONSTRAINT [FK_Possui_2]
 GO
