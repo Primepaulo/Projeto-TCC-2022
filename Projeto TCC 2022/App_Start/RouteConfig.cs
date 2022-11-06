@@ -32,6 +32,12 @@ namespace Projeto_TCC_2022
                 );
 
             routes.MapRoute(
+                name: "Oficina",
+                url: "Oficina/{action}/{id}",
+                new { controller = "Oficina", action = "Page", id = UrlParameter.Optional }
+               );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

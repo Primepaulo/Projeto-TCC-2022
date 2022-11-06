@@ -175,6 +175,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ImagemController.cs" />
+    <Compile Include="Controllers\OficinaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -275,6 +276,9 @@
     <Content Include="Views\Carros\EditarCarro.cshtml" />
     <Content Include="Views\Carros\DeletarCarro.cshtml" />
     <Content Include="Views\Imagem\AdicionarImagem.cshtml" />
+    <Content Include="Views\Imagem\MudarImagem.cshtml" />
+    <Content Include="Views\Oficina\Page.cshtml" />
+    <Content Include="Views\Oficina\EditarOficina.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

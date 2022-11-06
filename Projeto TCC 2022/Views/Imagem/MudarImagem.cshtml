@@ -1,10 +1,9 @@
-﻿@using (Html.BeginForm("AdicionarImagem", "Imagem", FormMethod.Post, new
+﻿@using (Html.BeginForm("MudarImagem", "Imagem", FormMethod.Post, new
 {
     enctype = "multipart/form-data"
 }))
 {
-    @Html.AntiForgeryToken()
-    <div class="mt-5">
+    <div>
         @Html.TextBox("img", "", new { type = "file" }) <br />
 
         <input type="submit" value="Upload" />

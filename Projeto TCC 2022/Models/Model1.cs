@@ -20,7 +20,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
             //Trocar também no IdentityModels.
         {
         }
@@ -36,7 +36,7 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<Peça> Peça { get; set; }
         public virtual DbSet<Pessoa> Pessoa { get; set; }
         public virtual DbSet<Serviços> Serviços { get; set; }
-        public virtual DbSet<Imagem> Images { get; set; }
+        public virtual DbSet<Imagem> Imagem { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -110,9 +110,9 @@ namespace Projeto_TCC_2022.Models
                 .Map(m => m.ToTable("Oferece").MapLeftKey("fk_Oficina_Id").MapRightKey("fk_Serviços_Id"));
 
             modelBuilder.Entity<Oficina>()
-                .HasMany(e => e.Images)
+                .HasOptional(e => e.Images)
                 .WithRequired(e => e.Oficina)
-                .HasForeignKey(e => e.Fk_Oficina_Id);
+                .WillCascadeOnDelete(false);
 
         }
 
@@ -131,18 +131,17 @@ namespace Projeto_TCC_2022.Models
                 return oficinas;
             }
         }
-
-        public static List<Carro> GetAllOficinas()
+        public static Oficina GetOficinaById (int Id)
         {
             using (var context = new Model1())
             {
-                var query = from Carro in context.Carro select Carro;
-                var oficinas = query.ToList();
-                return oficinas;
+                var query = from Oficina in context.Oficina.Include("Serviços.Peça")
+                            where Oficina.Id == Id
+                            select Oficina;
+                var oficina = query.SingleOrDefault();
+                return oficina;
             }
-
         }
-
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, 
         string Rua, int Número, string Complemento)
         {
@@ -176,6 +175,27 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
+
+        public static void UpdateOficina(Oficina oficina)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(oficina).State = EntityState.Modified;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+        }
+
+
+        //Serviços e Peça
+
+
 
 
         // ----------------------------------------------------------------------------------------------------
@@ -281,39 +301,6 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
-
-        //public static void UpdateCarro(string Placa, string Cor, string Modelo, decimal Motorização, string Marca, int uID)
-        //{
-        //    using (var context = new Model1())
-        //    {
-        //        /*var carro = context.Carro.FirstOrDefault(x => x.fk_Pessoa_Id == uID); //Válido pra coisas únicas, mas não pra carro. Se 1 pessoa
-        //                                                                              tiver mais de 1 carro quebra.*/
-        //        var carro = context.Carro.FirstOrDefault(x => x.fk_Pessoa_Id == uID && x.Placa == Placa);
-
-        //        if (carro != null)
-        //        {
-        //            carro.Cor = Cor;
-        //            carro.Modelo = Modelo;
-        //            carro.Motorização = Motorização;
-        //            carro.Marca = Marca;
-        //            try
-        //            {
-        //                context.SaveChanges();
-        //            }
-        //            catch (DbEntityValidationException ex)
-        //            {
-        //                foreach (var entityValidationErrors in ex.EntityValidationErrors)
-        //                {
-        //                    foreach (var validationError in entityValidationErrors.ValidationErrors)
-        //                    {
-        //                        Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         // ----------------------------------------------------------------------------------------------------
         // CELULAR
 
@@ -384,21 +371,68 @@ namespace Projeto_TCC_2022.Models
             }
         }
         //---------------------------------------------------------------------------------------------------
-
         // Imagens
+
+        public static Imagem GetImagem(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Imagem in context.Imagem
+                            where Imagem.Fk_Oficina_Id == Id
+                            select Imagem;
+
+                var imagem = query.FirstOrDefault();
+                return imagem;
+            }
+        }
         public static void SalvarImagem(string Url, int Fk_Oficina_Id)
         {
             using(var context = new Model1())
             {
-                context.Images.Add(new Imagem
+                context.Imagem.Add(new Imagem
                 {
                     Url = Url,
                     Fk_Oficina_Id = Fk_Oficina_Id
-
                 });
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
             }
         }
 
+        public static void UpdateImagem(Imagem imagem)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(imagem).State = EntityState.Modified;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }

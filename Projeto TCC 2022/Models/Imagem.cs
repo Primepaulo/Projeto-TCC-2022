@@ -6,15 +6,14 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
+    [Table("Imagem")]
     public partial class Imagem
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public int Id { get; set; }
-
         [Required]
-        [StringLength(100)]
+        [StringLength(200)]
         public string Url { get; set; }
 
+        [Key]
         public int Fk_Oficina_Id { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
