@@ -20,7 +20,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPC3" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=LAB3PAULO" /*is on Web.config file at line 12 in connectionString*/)
             //Trocar também no IdentityModels.
         {
         }
@@ -193,31 +193,36 @@ namespace Projeto_TCC_2022.Models
 
         //Serviços e Peça
 
-        public static List<Serviços> GetServiços(int Fk_Oficina_Id?)
-        {
-            //???
-            using (var context = new Model1())
-            {
-                var query = from Serviços in context.Serviços
-                            where Serviços.
-                            select Oficina;
-                var serviços = query.ToList();
-                return serviços;
-            }
-        }
+        //public static List<Serviços> GetServiços(int Fk_Oficina_Id?)
+        //{
+        //    //???
+        //    using (var context = new Model1())
+        //    {
+        //        var query = from Serviços in context.Serviços
+        //                    where Serviços.
+        //                    select Oficina;
+        //        var serviços = query.ToList();
+        //        return serviços;
+        //    }
+        //}
 
         public static void InsertServiços(int Id, string Nome, Decimal Preço)
         {
             using (var context = new Model1())
             {
-                context.Serviços.Add(new Serviço
+                context.Serviços.Add(new Serviços
                 {
                     Id = Id,
                     Nome = Nome,
-                    Preço = Preço
+                    Preço = Preço,
+                    Oficina = new List<Oficina>
+                    {
+                        new Oficina
+                    }
+                    
                 });
 
-                try
+               try
                 {
                     context.SaveChanges();
                 }
