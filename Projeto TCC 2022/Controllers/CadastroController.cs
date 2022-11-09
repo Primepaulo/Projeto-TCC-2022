@@ -38,7 +38,10 @@ namespace Projeto_TCC_2022.Controllers
             {
                 Response.Redirect("/Imagem/AdicionarImagem");
             }
-            Response.Redirect("/Cadastro/CadastroNúmero");
+            if (!Response.IsRequestBeingRedirected)
+            {
+                Response.Redirect("/Cadastro/CadastroNúmero");
+            }
         }
 
         public ActionResult CadastroNúmero()

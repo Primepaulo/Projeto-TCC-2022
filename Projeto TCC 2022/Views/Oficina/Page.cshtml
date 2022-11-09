@@ -1,4 +1,8 @@
-﻿<img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
+﻿
+@if (ViewBag.Imagem.Url != null)
+{
+<img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
+}
 <h1>@ViewBag.Oficina.Nome</h1>
 
 <h2>Serviços</h2> @* Seria uma lista de serviço com uma anchor para os detalhes e suas peças *@
