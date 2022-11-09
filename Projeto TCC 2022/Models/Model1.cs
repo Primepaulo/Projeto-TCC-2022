@@ -14,6 +14,7 @@ using System.Data.SqlTypes;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Drawing;
+using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -35,14 +36,11 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<Orçamento> Orçamento { get; set; }
         public virtual DbSet<Peça> Peça { get; set; }
         public virtual DbSet<Pessoa> Pessoa { get; set; }
-        public virtual DbSet<Serviços> Serviços { get; set; }
+        public virtual DbSet<Serviço> Serviços { get; set; }
         public virtual DbSet<Imagem> Imagem { get; set; }
-
+        public virtual DbSet<ItemOrçamento> ItemOrçamento { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Carro>()
-                .Property(e => e.Motorização);
-
             modelBuilder.Entity<Carro>()
                 .HasMany(e => e.Orçamento)
                 .WithRequired(e => e.Carro)
@@ -55,13 +53,41 @@ namespace Projeto_TCC_2022.Models
                 .HasForeignKey(e => e.Fk_User_Id)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Oficina>()
+                .HasOptional(e => e.Imagem)
+                .WithRequired(e => e.Oficina);
+
+            modelBuilder.Entity<Oficina>()
+                .HasMany(e => e.Orçamento)
+                .WithRequired(e => e.Oficina)
+                .HasForeignKey(e => e.fk_Oficina_Id)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Oficina>()
+                .HasMany(e => e.Peça)
+                .WithRequired(e => e.Oficina)
+                .HasForeignKey(e => e.Fk_Oficina_Id)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Orçamento>()
                 .Property(e => e.Valor)
                 .HasPrecision(19, 4);
 
+            modelBuilder.Entity<Orçamento>()
+                .HasMany(e => e.ItemOrçamento)
+                .WithRequired(e => e.Orçamento)
+                .HasForeignKey(e => e.Fk_Orçamento_Id)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Peça>()
                 .Property(e => e.Preço)
                 .HasPrecision(19, 4);
+
+            modelBuilder.Entity<Peça>()
+                .HasMany(e => e.ItemOrçamento)
+                .WithRequired(e => e.Peça)
+                .HasForeignKey(e => e.Fk_Item_Id)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.Avaliação)
@@ -84,34 +110,20 @@ namespace Projeto_TCC_2022.Models
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.fk_Pessoa_Id);
 
-            modelBuilder.Entity<Serviços>()
+            modelBuilder.Entity<Serviço>()
                 .Property(e => e.Preço)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<Serviços>()
+            modelBuilder.Entity<Serviço>()
                 .HasMany(e => e.Avaliação)
                 .WithRequired(e => e.Serviços)
                 .HasForeignKey(e => e.fk_Serviços_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Serviços>()
-                .HasMany(e => e.Peça)
-                .WithMany(e => e.Serviços)
-                .Map(m => m.ToTable("Contém").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Peça_Id"));
-
-            modelBuilder.Entity<Serviços>()
-                .HasMany(e => e.Orçamento)
-                .WithMany(e => e.Serviços)
-                .Map(m => m.ToTable("Possui").MapLeftKey("fk_Serviços_Id").MapRightKey("fk_Orçamento_Id_Orçamento"));
-
-            modelBuilder.Entity<Oficina>()
-                .HasMany(e => e.Serviços)
-                .WithMany(e => e.Oficina)
-                .Map(m => m.ToTable("Oferece").MapLeftKey("fk_Oficina_Id").MapRightKey("fk_Serviços_Id"));
-
-            modelBuilder.Entity<Oficina>()
-                .HasOptional(e => e.Images)
-                .WithRequired(e => e.Oficina)
+            modelBuilder.Entity<Serviço>()
+                .HasMany(e => e.ItemOrçamento)
+                .WithRequired(e => e.Serviço)
+                .HasForeignKey(e => e.Fk_Item_Id)
                 .WillCascadeOnDelete(false);
 
         }
@@ -124,7 +136,7 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 //Select Oficina WHERE Nome LIKE %x% e Eager Load de Serviços e Peça.
-                var query = from Oficina in context.Oficina.Include("Serviços.Peça")
+                var query = from Oficina in context.Oficina
                             where Oficina.Nome.Contains(x)
                             select Oficina;
                 var oficinas = query.ToList();
@@ -135,7 +147,7 @@ namespace Projeto_TCC_2022.Models
         {
             using (var context = new Model1())
             {
-                var query = from Oficina in context.Oficina.Include("Serviços.Peça")
+                var query = from Oficina in context.Oficina
                             where Oficina.Id == Id
                             select Oficina;
                 var oficina = query.SingleOrDefault();

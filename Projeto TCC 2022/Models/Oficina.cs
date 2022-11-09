@@ -12,9 +12,11 @@ namespace Projeto_TCC_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Oficina()
         {
-            Administrador = new HashSet<Administrador>();
+            //Administrador = new HashSet<Administrador>();
             CelularTelefone = new HashSet<CelularTelefone>();
-            Serviços = new HashSet<Serviços>();
+            Serviço = new HashSet<Serviço>();
+            Orçamento = new HashSet<Orçamento>();
+            Peça = new HashSet<Peça>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -52,10 +54,11 @@ namespace Projeto_TCC_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CelularTelefone> CelularTelefone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Administrador> Administrador { get; set; }
+        public virtual ICollection<Orçamento> Orçamento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Serviços> Serviços { get; set; }
+        public virtual ICollection<Serviço> Serviço { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual Imagem Images { get; set; }
+        public virtual ICollection<Peça> Peça { get; set; }
+        public virtual Imagem Imagem { get; set; }
     }
 }
