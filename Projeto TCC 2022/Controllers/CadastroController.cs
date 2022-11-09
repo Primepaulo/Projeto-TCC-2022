@@ -33,7 +33,7 @@ namespace Projeto_TCC_2022.Controllers
         {
             Model1.InsertPessoa(UserID, Request["Nome"], Request["Sobrenome"], Request["Estado"],
             Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]), Request["Complemento"],
-            Request["Email"], Request["CPF"], Request["CNPJ"], Convert.ToInt32(Request["Tipo"]));
+            Model1.GetEmail(UserID), Request["CPF"], Request["CNPJ"], Convert.ToInt32(Request["Tipo"]));
             if (Request["CNPJ"] != null)
             {
                 Response.Redirect("/Imagem/AdicionarImagem");
@@ -73,7 +73,7 @@ namespace Projeto_TCC_2022.Controllers
         [ValidateAntiForgeryToken]
         public void CadastrarOficina()
         {
-            Model1.InsertOficina(UserID, Request["Email"], Request["CNPJ"], Request["Nome"],
+            Model1.InsertOficina(UserID, Model1.GetEmail(UserID), Request["CNPJ"], Request["Nome"],
             Request["Estado"], Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]),
             Request["Complemento"]);
             Response.Redirect("/Cadastro/CadastroNúmero");

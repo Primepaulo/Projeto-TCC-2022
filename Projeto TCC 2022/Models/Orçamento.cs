@@ -30,6 +30,10 @@ namespace Projeto_TCC_2022.Models
         [StringLength(7)]
         public string fk_Carro_Placa { get; set; }
 
+        public DateTime Data_Orçamento { get; set; }
+
+        public DateTime? Data_Aprovação { get; set; }
+
         public virtual Carro Carro { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
