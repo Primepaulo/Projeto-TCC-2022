@@ -36,7 +36,7 @@ ALTER TABLE [dbo].[AspNetUserLogins] DROP CONSTRAINT [FK_dbo.AspNetUserLogins_db
 GO
 ALTER TABLE [dbo].[AspNetUserClaims] DROP CONSTRAINT [FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId]
 GO
-/****** Object:  Index [UQ__PESSOA__CPF]    Script Date: 09/11/2022 20:29:55 ******/
+/****** Object:  Index [UQ__PESSOA__CPF]    Script Date: 09/11/2022 20:29:5 ******/
 DROP INDEX [UQ__PESSOA__CPF] ON [dbo].[Pessoa]
 GO
 /****** Object:  Index [UQ__PESSOA__CNPJ]    Script Date: 09/11/2022 20:29:55 ******/
