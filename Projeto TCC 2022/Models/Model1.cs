@@ -63,6 +63,12 @@ namespace Projeto_TCC_2022.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Oficina>()
+               .HasMany(e => e.Serviço)
+               .WithRequired(e => e.Oficina)
+               .HasForeignKey(e => e.Fk_Oficina_Id)
+               .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Oficina>()
                 .HasMany(e => e.Peça)
                 .WithRequired(e => e.Oficina)
                 .HasForeignKey(e => e.Fk_Oficina_Id)

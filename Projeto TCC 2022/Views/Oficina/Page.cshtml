@@ -1,5 +1,5 @@
 ﻿
-@if (ViewBag.Imagem.Url != null)
+@if (ViewBag.Imagem != null)
 {
     <img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
 }
@@ -18,5 +18,5 @@
 @if (ViewBag.Oficina.Id == ViewBag.User)
 {
     <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar</a>
-    <a href="@Url.Action("AdicionarServiços", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Adicionar Serviços</a>
+    <a href="@Url.Action("AdicionarServiços", "Oficina")" class="mt-5">Adicionar Serviços</a>
 }

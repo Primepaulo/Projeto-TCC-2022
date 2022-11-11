@@ -15,7 +15,7 @@ namespace Projeto_TCC_2022.Controllers
         {
             Oficina oficina = Model1.GetOficinaById(Id);
             Imagem imagem = Model1.GetImagem(Id);
-            List<Serviço> serviços = Model1.GetServiços(UserID);
+            List<Serviço> serviços = Model1.GetServiços(Id);
             if (oficina == null)
             {
              return HttpNotFound();
@@ -48,7 +48,7 @@ namespace Projeto_TCC_2022.Controllers
             return View(oficina);
         }
 
-        public ActionResult AdicionarServiço(int Id)
+        public ActionResult AdicionarServiços()
         {
             return View();
         }

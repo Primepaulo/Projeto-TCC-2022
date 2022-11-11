@@ -279,7 +279,7 @@
     <Content Include="Views\Imagem\MudarImagem.cshtml" />
     <Content Include="Views\Oficina\Page.cshtml" />
     <Content Include="Views\Oficina\EditarOficina.cshtml" />
-    <Content Include="Views\Oficina\AdicionarServiço.cshtml" />
+    <Content Include="Views\Oficina\AdicionarServiços.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
