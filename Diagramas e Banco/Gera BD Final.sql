@@ -461,7 +461,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Peça](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [nvarchar](30) NOT NULL,
+	[Nome] [nvarchar](50) NOT NULL,
 	[Fk_Oficina_Id] [int] NOT NULL,
 	[Preço] [money] NOT NULL,
 	[Marca] [nvarchar](50) NULL,
@@ -504,8 +504,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Serviço](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Nome] [nvarchar](50) NOT NULL,
 	[Fk_Oficina_Id] [int] NOT NULL,
-	[Descrição] [nvarchar](max) NOT NULL,
+	[Descrição] [nvarchar](max) NULL,
 	[Preço] [money] NOT NULL,
  CONSTRAINT [PK_Serviço] PRIMARY KEY CLUSTERED 
 (

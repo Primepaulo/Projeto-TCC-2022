@@ -15,6 +15,7 @@ namespace Projeto_TCC_2022.Controllers
         {
             Oficina oficina = Model1.GetOficinaById(Id);
             Imagem imagem = Model1.GetImagem(Id);
+            List<Serviço> serviços = Model1.GetServiços(UserID);
             if (oficina == null)
             {
              return HttpNotFound();
@@ -22,6 +23,7 @@ namespace Projeto_TCC_2022.Controllers
             }
             ViewBag.Oficina = oficina;
             ViewBag.Imagem = imagem;
+            ViewBag.Serviços = serviços;
             ViewBag.User = UserID;
             return View();
         }
@@ -44,6 +46,22 @@ namespace Projeto_TCC_2022.Controllers
                 return RedirectToAction("Page/" + oficina.Id);
             }
             return View(oficina);
+        }
+
+        public ActionResult AdicionarServiço(int Id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void AdicionarServiço()
+        {
+            if (Model1.GetOficinaById(UserID) != null)
+            {
+                Model1.InsertServiços(UserID, Request["Nome"], Request["Descrição"], Convert.ToDecimal(Request["Preço"]));
+                Response.Redirect("Page/" + UserID);
+            }
         }
     }
 }

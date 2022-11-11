@@ -22,7 +22,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -134,7 +134,6 @@ namespace Projeto_TCC_2022.Models
         {
             using (var context = new Model1())
             {
-                //Select Oficina WHERE Nome LIKE %x% e Eager Load de Serviços e Peça.
                 var query = from Oficina in context.Oficina
                             where Oficina.Nome.Contains(x)
                             select Oficina;
@@ -218,13 +217,14 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void InsertServiços(int uID, string Descrição, decimal Preço)
+        public static void InsertServiços(int uID, string Nome, string Descrição, decimal Preço)
         {
             using (var context = new Model1())
             {
                 context.Serviços.Add(new Serviço
                 {
                     Fk_Oficina_Id = uID,
+                    Nome = Nome,
                     Descrição = Descrição,
                     Preço = Preço
                 });

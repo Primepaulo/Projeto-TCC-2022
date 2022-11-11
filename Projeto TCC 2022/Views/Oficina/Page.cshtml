@@ -1,13 +1,22 @@
 ﻿
 @if (ViewBag.Imagem.Url != null)
 {
-<img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
+    <img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
 }
 <h1>@ViewBag.Oficina.Nome</h1>
 
 <h2>Serviços</h2> @* Seria uma lista de serviço com uma anchor para os detalhes e suas peças *@
 
+@if (ViewBag.Serviços != null)
+{
+    foreach (var item in ViewBag.Serviços)
+    {
+        <p>item.Nome</p>
+    }
+}
+
 @if (ViewBag.Oficina.Id == ViewBag.User)
- {
+{
     <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar</a>
- }
+    <a href="@Url.Action("AdicionarServiços", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Adicionar Serviços</a>
+}
