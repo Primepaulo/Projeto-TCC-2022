@@ -53,6 +53,14 @@ routes.MapRoute(
             );
 ```
 
+### As diferentes sobrecargas de Html.ActionLink:
+
+Após observar o código, percebi diversas sobrecargas desse método. A mais correta de se utilizar para nosso projeto é a seguinte:
+
+```
+@Html.ActionLink("Texto", "Ação", "Controller", Parâmetros da Rota (pode ser NULL), new { @class = "CSS" })
+```
+
 ### Regras de Padronização:
 
 1. Utilizar camel casing com primeira letra maiúscula:
