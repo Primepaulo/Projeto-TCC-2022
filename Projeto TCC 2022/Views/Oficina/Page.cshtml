@@ -7,6 +7,7 @@
 
 <h2>Serviços</h2> @* Seria uma lista de serviço com uma anchor para os detalhes e suas peças *@
 
+<<<<<<< HEAD
 @if (ViewBag.Oficina.Id == ViewBag.userID)
 {
     <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar</a>
@@ -19,4 +20,18 @@
         <p>@item.CelularTelefone1</p>
     }
     
+=======
+@if (ViewBag.Serviços != null)
+{
+    foreach (var item in ViewBag.Serviços)
+    {
+        <p>item.Nome</p>
+    }
+}
+
+@if (ViewBag.Oficina.Id == ViewBag.User)
+{
+    <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar</a>
+    <a href="@Url.Action("AdicionarServiços", "Oficina")" class="mt-5">Adicionar Serviços</a>
+>>>>>>> 4006e34e766636596725f2ff025ad970424c363d
 }

@@ -21,6 +21,9 @@ namespace Projeto_TCC_2022.Models
         public int Fk_Oficina_Id { get; set; }
 
         [Required]
+        [StringLength(50)]
+        public string Nome { get; set; }
+
         public string Descrição { get; set; }
 
         [Column(TypeName = "money")]
