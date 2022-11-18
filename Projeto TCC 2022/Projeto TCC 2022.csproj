@@ -177,6 +177,7 @@
     <Compile Include="Controllers\ImagemController.cs" />
     <Compile Include="Controllers\OficinaController.cs" />
     <Compile Include="Controllers\OrçamentoController.cs" />
+    <Compile Include="Controllers\ServiçosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -281,7 +282,8 @@
     <Content Include="Views\Imagem\MudarImagem.cshtml" />
     <Content Include="Views\Oficina\Page.cshtml" />
     <Content Include="Views\Oficina\EditarOficina.cshtml" />
-    <Content Include="Views\Oficina\AdicionarServiços.cshtml" />
+    <Content Include="Views\Serviços\AdicionarServiços.cshtml" />
+    <Content Include="Views\Serviços\VisualizarServiços.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

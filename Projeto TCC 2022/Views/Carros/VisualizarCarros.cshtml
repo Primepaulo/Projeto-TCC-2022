@@ -21,8 +21,8 @@
             <td>@item.Motorização.Replace(",", ".")</td>
             <td>@item.Marca</td>
             <td>
-                @Html.ActionLink("Editar", "EditarCarro", new { Placa = item.Placa }) |
-                @Html.ActionLink("Excluir", "DeletarCarro", new { Placa = item.Placa })
+                @Html.ActionLink("Editar", "EditarServiço", new { Id = item.Id }) |
+                @Html.ActionLink("Excluir", "DeletarServiço0", new { Id = item.Id })
             </td>
         </tr>
 

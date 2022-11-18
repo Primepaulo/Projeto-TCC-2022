@@ -1,0 +1,25 @@
+﻿
+
+<p><a class="btn btn-info btn-lg mt-4" href="/Serviços/AdicionarServiços">Adicionar Serviços</a></p>
+<br />
+
+<table class="table table-bordered table-hover table-responsive">
+    <tr>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Preço</th>
+    </tr>
+
+    @foreach (var item in ViewBag.Lista)
+    {
+        <tr>
+            <td>@item.Nome</td>
+            <td>@item.Descrição</td>
+            <td>@item.Preço.Replace(",", ".")</td>
+            <td>
+                @Html.ActionLink("Editar", "EditarCarro", new { Id = item.Id }) |
+                @Html.ActionLink("Excluir", "DeletarCarro", new { Id = item.Id })
+            </td>
+        </tr>
+    }
+</table>

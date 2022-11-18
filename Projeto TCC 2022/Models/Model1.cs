@@ -215,6 +215,17 @@ namespace Projeto_TCC_2022.Models
                 return serviços;
             }
         }
+        public static Serviço GetServiço(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Serviço in context.Serviços
+                            where Serviço.Id == Id
+                            select Serviço;
+                var serviços = query.SingleOrDefault();
+                return serviços;
+            }
+        }
 
         public static void InsertServiços(int uID, string Nome, string Descrição, decimal Preço)
         {

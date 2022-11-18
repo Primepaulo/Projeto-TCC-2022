@@ -7,7 +7,7 @@
 
 <h2>AdicionarServiço</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("AdicionarServiços", "Serviços", FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
     
