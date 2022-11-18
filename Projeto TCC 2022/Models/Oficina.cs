@@ -13,7 +13,6 @@ namespace Projeto_TCC_2022.Models
         public Oficina()
         {
             //Administrador = new HashSet<Administrador>();
-            CelularTelefone = new HashSet<CelularTelefone>();
             Serviço = new HashSet<Serviço>();
             Orçamento = new HashSet<Orçamento>();
             Peça = new HashSet<Peça>();
@@ -51,8 +50,6 @@ namespace Projeto_TCC_2022.Models
         [StringLength(20)]
         public string Complemento { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CelularTelefone> CelularTelefone { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orçamento> Orçamento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

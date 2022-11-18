@@ -17,8 +17,5 @@ namespace Projeto_TCC_2022.Models
 
         public int Fk_User_Id { get; set; }
 
-        public virtual Oficina Oficina { get; set; }
-
-        public virtual Pessoa Pessoa { get; set; }
     }
 }

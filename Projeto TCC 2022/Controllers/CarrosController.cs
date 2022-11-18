@@ -10,15 +10,8 @@ using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Controllers;
 using Projeto_TCC_2022.Models;
 
-namespace Aula3108.Controllers
+namespace Projeto_TCC_2022.Controllers
 {
-    public abstract class DefaultController : Controller
-    {
-        public int UserID
-        {
-            get { return User.Identity.GetUserId<int>(); }
-        }
-    }
     public class CarrosController : DefaultController
     {
         public ActionResult VisualizarCarros()

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,15 +15,14 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult Page(int Id)
         {
             Oficina oficina = Model1.GetOficinaById(Id);
-            Imagem imagem = Model1.GetImagem(Id);
             if (oficina == null)
             {
              return HttpNotFound();
           
             }
             ViewBag.Oficina = oficina;
-            ViewBag.Imagem = imagem;
-            ViewBag.User = UserID;
+            ViewBag.Imagem = Model1.GetImagem(Id);
+            ViewBag.CelularTelefone = Model1.GetCelularTelefones(Id);
             return View();
         }
 

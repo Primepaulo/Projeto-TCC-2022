@@ -11,7 +11,7 @@ using Projeto_TCC_2022.Models;
 namespace Projeto_TCC_2022.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : DefaultController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

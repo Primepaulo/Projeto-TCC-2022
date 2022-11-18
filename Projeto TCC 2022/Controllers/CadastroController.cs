@@ -9,13 +9,6 @@ using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public abstract class DefaultController : Controller
-    {
-        public int UserID
-        {
-            get { return User.Identity.GetUserId<int>(); }
-        }
-    }
     public class CadastroController : DefaultController
     {
         public ActionResult Cadastro()

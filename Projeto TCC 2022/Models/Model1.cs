@@ -16,9 +16,13 @@ using System.IO;
 using System.Drawing;
 using Projeto_TCC_2022.Models;
 using System.Runtime.Remoting.Contexts;
+using System.Security.Permissions;
+using System.Web;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Projeto_TCC_2022.Models
 {
+    
     public partial class Model1 : DbContext
     {
         public Model1()
@@ -38,18 +42,13 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<Serviço> Serviços { get; set; }
         public virtual DbSet<Imagem> Imagem { get; set; }
         public virtual DbSet<ItemOrçamento> ItemOrçamento { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Carro>()
                 .HasMany(e => e.Orçamento)
                 .WithRequired(e => e.Carro)
                 .HasForeignKey(e => e.fk_Carro_Placa)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Oficina>()
-                .HasMany(e => e.CelularTelefone)
-                .WithRequired(e => e.Oficina)
-                .HasForeignKey(e => e.Fk_User_Id)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Oficina>()
@@ -82,12 +81,6 @@ namespace Projeto_TCC_2022.Models
                 .Property(e => e.Preço)
                 .HasPrecision(19, 4);
 
-            modelBuilder.Entity<Peça>()
-                .HasMany(e => e.ItemOrçamento)
-                .WithRequired(e => e.Peça)
-                .HasForeignKey(e => e.Fk_Item_Id)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.Avaliação)
                 .WithRequired(e => e.Pessoa)
@@ -97,12 +90,6 @@ namespace Projeto_TCC_2022.Models
                 .HasMany(e => e.Carro)
                 .WithRequired(e => e.Pessoa)
                 .HasForeignKey(e => e.fk_Pessoa_Id);
-
-            modelBuilder.Entity<Pessoa>()
-                .HasMany(e => e.CelularTelefone)
-                .WithRequired(e => e.Pessoa)
-                .HasForeignKey(e => e.Fk_User_Id)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Pessoa>()
                 .HasMany(e => e.Orçamento)
@@ -122,7 +109,13 @@ namespace Projeto_TCC_2022.Models
             modelBuilder.Entity<Serviço>()
                 .HasMany(e => e.ItemOrçamento)
                 .WithRequired(e => e.Serviço)
-                .HasForeignKey(e => e.Fk_Item_Id)
+                .HasForeignKey(e => e.Fk_Serviço_Id)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Peça>()
+                .HasMany(e => e.ItemOrçamento)
+                .WithRequired(e => e.Peça)
+                .HasForeignKey(e => e.Fk_Peça_Id)
                 .WillCascadeOnDelete(false);
 
         }
@@ -384,21 +377,6 @@ namespace Projeto_TCC_2022.Models
         // ----------------------------------------------------------------------------------------------------
         // Orçamento
 
-
-        //public static Orçamento GetOrçamento(int uID)
-        //{
-        //    using (var context = new Model1())
-        //    {
-        //        var query = from Orçamento in context.Orçamento
-        //                    join Pessoa in context.Pessoa on Orçamento.fk_Pessoa_Id equals Pessoa.Id
-        //                    join Oficina in context.Oficina on Orçamento.fk_Oficina_Id equals Oficina.Id
-        //                    where Orçamento.fk_Pessoa_Id == uID || Orçamento.fk_Oficina_Id == uID
-        //                    select Orçamento;
-        //        var orçamento = query.SingleOrDefault();
-        //        return orçamento;
-        //    }
-        //}
-
         public static List<Orçamento> GetOrçamentos(int uID)
         {
             using (var context = new Model1())
@@ -470,6 +448,51 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        // ----------------------------------------------------------------------------------------------------
+        // ItemOrçamento
+
+        public static List<ItemOrçamento> GetItems(int Orçamento_Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from ItemOrçamento in context.ItemOrçamento
+                            where ItemOrçamento.Fk_Orçamento_Id == Orçamento_Id
+                            select ItemOrçamento;
+                var item = query.ToList();
+                return item;
+            }
+        }
+
+        public static void AddItem(int Orçamento_Id, int Serviço_Id, int Peça_Id, double? quantidade, string Descrição)
+        {
+            using (var context = new Model1())
+            {
+                context.ItemOrçamento.Add(new ItemOrçamento
+                {
+                    Fk_Orçamento_Id = Orçamento_Id,
+                    Fk_Serviço_Id = Serviço_Id,
+                    Fk_Peça_Id = Peça_Id,
+                    Quantidade = quantidade,
+                    Descrição = Descrição
+
+                });
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
 
         // ----------------------------------------------------------------------------------------------------
         // CARROS
@@ -576,7 +599,17 @@ namespace Projeto_TCC_2022.Models
             }
             // ----------------------------------------------------------------------------------------------------
             // CELULAR
-
+            public static List<CelularTelefone> GetCelularTelefones (int Id)
+            {
+                using (var context = new Model1())
+                {
+                    var query = from CelularTelefone in context.CelularTelefone
+                                where CelularTelefone.Fk_User_Id == Id
+                                select CelularTelefone;
+                    var celularTelefones = query.ToList();
+                    return celularTelefones;
+                }
+            }
             public static void InsertCelular(string CT, int uID)
             {
                 using (var context = new Model1())
@@ -606,6 +639,19 @@ namespace Projeto_TCC_2022.Models
 
             // ----------------------------------------------------------------------------------------------------
             // PESSOA
+
+            public static Pessoa GetPessoa(int uID)
+            {
+                using (var context = new Model1())
+                {
+                    var query = from pessoa in context.Pessoa
+                                where pessoa.Id == uID
+                                select pessoa;
+                    var Pessoa = query.SingleOrDefault();
+                    return Pessoa;
+                }
+            }
+
             public static string GetEmail(int uID)
             {
                 using (var context = new ApplicationDbContext())
