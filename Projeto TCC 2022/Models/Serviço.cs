@@ -1,6 +1,7 @@
 namespace Projeto_TCC_2022.Models
 {
     using Projeto_TCC_2022.Models;
+    using Projeto_TCC_2022.Models.A;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -20,6 +21,8 @@ namespace Projeto_TCC_2022.Models
 
         public int Fk_Oficina_Id { get; set; }
 
+        public int Fk_Categoria_Id { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Nome { get; set; }
@@ -36,5 +39,7 @@ namespace Projeto_TCC_2022.Models
         public virtual ICollection<ItemOrçamento> ItemOrçamento { get; set; }
 
         public virtual Oficina Oficina { get; set; }
+
+        public virtual Categoria Categoria { get; set; }
     }
 }

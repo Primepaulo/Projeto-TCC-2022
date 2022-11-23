@@ -19,6 +19,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Security.Permissions;
 using System.Web;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Projeto_TCC_2022.Models.A;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -42,6 +43,7 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<Serviço> Serviços { get; set; }
         public virtual DbSet<Imagem> Imagem { get; set; }
         public virtual DbSet<ItemOrçamento> ItemOrçamento { get; set; }
+        public virtual DbSet<Categoria> Categoria { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -124,8 +126,24 @@ namespace Projeto_TCC_2022.Models
                 .HasForeignKey(e => e.Fk_Peça_Id)
                 .WillCascadeOnDelete(false);
 
-        }
+            modelBuilder.Entity<Categoria>()
+                .HasMany(e => e.Serviço)
+                .WithRequired(e => e.Categoria)
+                .HasForeignKey(e => e.Fk_Categoria_Id)
+                .WillCascadeOnDelete(false);
 
+        }
+        public static Administrador GetAdmin(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Administrador in context.Administrador
+                            where Administrador.Fk_User_Id == Id
+                            select Administrador;
+                var admin = query.SingleOrDefault();
+                return admin;
+            }
+        }
         // ----------------------------------------------------------------------------------------------------
         // OFICINA
 

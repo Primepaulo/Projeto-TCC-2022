@@ -38,6 +38,17 @@ namespace Projeto_TCC_2022.Controllers
                 else return false;
             }
         }
+        public bool Admin
+        {
+            get
+            {
+                if (Model1.GetAdmin(UserID) != null)
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
     }
     public abstract class DefaultController : DataController
     {

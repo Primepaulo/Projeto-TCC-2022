@@ -185,6 +185,7 @@
     <Compile Include="Models\Administrador.cs" />
     <Compile Include="Models\Avaliação.cs" />
     <Compile Include="Models\Carro.cs" />
+    <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
