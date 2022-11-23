@@ -48,10 +48,11 @@
 
              <form method="get" class="d-flex justify-content-center" role="search" action="@Url.Action("Search", "Home")">
                  @*Teste*@
-                 <select asp-for="filter">
-                     <option value="">All</option>
+                 <select for="filter">
+                     @foreach (var item in ViewBag.Categorias) 
+                     {<option value=""> item.Nome</option> }
                  </select>
-                 <input asp-for="navSearch" name="navSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                 <input for="navSearch" name="navSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                  <button class="btn btn-outline-dark" name="navSubmit" type="submit">Buscar</button>
              </form>
 

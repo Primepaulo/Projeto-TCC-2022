@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Models;
+using Projeto_TCC_2022.Models.A;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,16 @@ namespace Projeto_TCC_2022.Controllers
                 else return false;
             }
         }
+        public List<Categoria> Categorias
+        {
+            get
+            {
+                var categorias = Model1.GetCategorias();
+                return categorias;
+            }
+        }
     }
+
     public abstract class DefaultController : DataController
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -57,6 +67,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.éPessoa = Pessoa;
             ViewBag.éOficina = Oficina;
             ViewBag.userID = UserID;
+            ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
         }
 

@@ -55,7 +55,7 @@ namespace Projeto_TCC_2022.Controllers
                 List<Avaliação> Avaliações = new List<Avaliação>();
                 foreach (var oficina in ViewBag.Oficinas)
                 {
-                    Avaliações.Add(Model1.GetAvaliações(oficina.Id));
+                    //Avaliações.Add(Model1.GetAvaliações(oficina.Id));
                 }
 
                 ViewBag.Imagens = Imagens;
