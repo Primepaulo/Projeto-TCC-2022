@@ -10,56 +10,64 @@
 
 </head>
 <body>
-     <div class="navbar navbar-expand-md navbar-dark bg-dark fixed-top mb-5">
-         <div class="container-fluid">
-             <!--Botão de Toggle-->
-             <button type="button"
-                     class="navbar-toggler"
-                     data-bs-toggle="collapse"
-                     data-bs-target="#mainCollapse"
-                     aria-controls="mainCollapse"
-                     aria-expanded="false"
-                     aria-label="Toggle navigation">
+    <div class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <!--Botão de Toggle-->
+            <button type="button"
+                    class="navbar-toggler"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainCollapse"
+                    aria-controls="mainCollapse"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
 
-                 <span class="navbar-toggler-icon"></span>
-             </button>
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-             @Html.ActionLink("Nome do aplicativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Nome do aplicativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
-             <div class="collapse navbar-collapse" id="mainCollapse">
-                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                     <li class="nav-item nav-link">@Html.ActionLink("Página Inicial", "Index", "Home", null, new { @class = "nav-link" })</li>
-                     <li class="nav-item nav-link">@Html.ActionLink("Sobre", "About", "Home", null, new { @class = "nav-link" })</li>
-                     @if (ViewBag.éPessoa == true)
-                      {
+            <div class="collapse navbar-collapse" id="mainCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item nav-link">@Html.ActionLink("Página Inicial", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item nav-link">@Html.ActionLink("Sobre", "About", "Home", null, new { @class = "nav-link" })</li>
+                    @if (ViewBag.éPessoa == true)
+                    {
                         <li class="nav-item nav-link">@Html.ActionLink("Carros", "../Carros/VisualizarCarros", "Carros", null, new { @class = "nav-link" })</li>
-                      }
-                     @if (ViewBag.éPessoa == false && ViewBag.éOficina == false)
-                      {
-                     <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "../Cadastro/Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
-                      }
-                     @if (ViewBag.éOficina == true)
-                      {
-                         <li class="nav-item">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID}, new {@class = "nav-link"})</li>
-                      }
+                    }
+                    @if (ViewBag.éPessoa == false && ViewBag.éOficina == false)
+                    {
+                        <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "../Cadastro/Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
+                    }
+                    @if (ViewBag.éOficina == true)
+                    {
+                        <li class="nav-item">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
+                    }
 
-                 </ul>
-             </div>
+                </ul>
+            </div>
 
-             <form method="get" class="d-flex justify-content-center" role="search" action="@Url.Action("Search", "Home")">
-                 @*Teste*@
-                 <select for="filter">
-                     @foreach (var item in ViewBag.Categorias) 
-                     {<option value=""> item.Nome</option> }
-                 </select>
-                 <input for="navSearch" name="navSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                 <button class="btn btn-outline-dark" name="navSubmit" type="submit">Buscar</button>
-             </form>
+            <form method="get" class="d-flex justify-content-center" role="search" action="@Url.Action("DataRequestSessions", "Home")">
+                <select for="filter" name="filter" onchange="exibirCategorias()" id="filtro">
+                    <option value="OficinaNome">Oficina</option>
+                    <option value="ServiçoCategoria">Serviço</option>
+                    <option value="OficinaBairro">Bairro</option>
+                </select>
+                <input for="navSearch" name="navSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" />
+                <select for="categoria" name="categoria" class="d-none" id="categoria">
+                    @foreach (var item in ViewBag.Categorias)
+                    {
+                        <option value="@item.Nome">@item.Nome</option>
+                    }
+                </select>
 
-             @Html.Partial("_LoginPartial")
-         </div>
+                <button type="submit" name="navSubmit" class="btn btn-outline-success"><i class="bi bi-search"></i></button>
+
+            </form>
+
+        @Html.Partial("_LoginPartial")
     </div>
-    <div class="container body-content mt-5">
+    </div>
+    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
@@ -70,5 +78,18 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script>
+        function exibirCategorias() {
+
+            if ($("#filtro").val() == "ServiçoCategoria") {
+                $("#categoria").removeClass("d-none");
+            }
+            else if ($("#filtro").val() != "ServiçoCategoria") {
+                if (!$("#categoria").hasClass("d-none")) {
+                    $("#categoria").addClass("d-none");
+                }
+            }
+        }
+    </script>
 </body>
 </html>

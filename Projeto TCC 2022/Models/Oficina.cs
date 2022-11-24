@@ -50,6 +50,9 @@ namespace Projeto_TCC_2022.Models
         [StringLength(20)]
         public string Complemento { get; set; }
 
+        [StringLength(50)]
+        public string Bairro { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orçamento> Orçamento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

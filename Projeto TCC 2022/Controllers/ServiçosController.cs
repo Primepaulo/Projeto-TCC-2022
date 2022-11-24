@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -18,7 +19,23 @@ namespace Projeto_TCC_2022.Controllers
                 return HttpNotFound();
 
             }
-            ViewBag.Lista = Model1.GetServiços(Id);
+
+            var lista = Model1.GetServiços(Id);
+            ViewBag.Lista = lista;
+
+            List<Categoria> categorias = new List<Categoria>();
+
+            if (ViewBag.Lista != null)
+            {
+                foreach (var item in ViewBag.Lista)
+                {
+                    var categoria = Model1.GetCategoriaById(item.Fk_Categoria_Id);
+                    categorias.Add(categoria);
+                }
+
+                ViewBag.Categorias = categorias;
+            }
+            
             return View();
         }
 
@@ -31,8 +48,11 @@ namespace Projeto_TCC_2022.Controllers
         [ValidateAntiForgeryToken]
         public void AdicionarServiço()
         {
-            Model1.InsertServiços(UserID, Request["Nome"], Request["Descrição"], Convert.ToDecimal(Request["Preço"]));
-            Response.Redirect("/Serviços/");
+            string categoria = Request.Form["categoria"];
+            int categoriaId = Model1.GetCategoriaByName(categoria).Id;
+
+            Model1.InsertServiços(UserID, Request["Nome"], categoriaId, Request["Descrição"], Convert.ToDecimal(Request["Preço"]));
+            RedirectToAction("VisualizarServiços/" + UserID);
         }
 
         public ActionResult EditarServiço(int Id)
@@ -45,7 +65,7 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, Preço, Fk_Oficina_Id")] Serviço serviço)
+        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, Categoria, Preço, Fk_Oficina_Id")] Serviço serviço)
         {
             //TBA
             if (ModelState.IsValid)

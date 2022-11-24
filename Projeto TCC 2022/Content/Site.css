@@ -2,6 +2,11 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top:70px;
+}
+
+.upload > input {
+    display: none;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 

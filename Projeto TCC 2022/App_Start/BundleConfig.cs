@@ -24,7 +24,8 @@ namespace Projeto_TCC_2022
 
             bundles.Add(new Bundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/Site.css"));
+                      "~/Content/Site.css",
+                      "~/Content/bootstrap-icons.css"));
         }
     }
 }

@@ -1,7 +1,6 @@
 namespace Projeto_TCC_2022.Models
 {
     using Projeto_TCC_2022.Models;
-    using Projeto_TCC_2022.Models.A;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

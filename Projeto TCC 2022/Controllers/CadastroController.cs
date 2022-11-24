@@ -39,6 +39,7 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult CadastroNúmero()
         {
+            ViewBag.Novo = Model1.GetCelularTelefones(UserID);
             return View();
         }
 
@@ -49,12 +50,10 @@ namespace Projeto_TCC_2022.Controllers
             Debug.WriteLine(Request["CelularTelefone1"]);
             Model1.InsertCelular(Request["CelularTelefone1"], UserID);
 
-            /*Pensar em algo tipo
-            if (página anterior == Pessoa)*/
+            if (ViewBag.éPessoa == true)
               Response.Redirect("/Carros/CadastroCarros");
-            /*
-            else if (página anterior == Oficina)
-              Response Redirect("Algum outro treco");*/
+            else if (ViewBag.éOficina == true)
+              Response.Redirect("/Serviços/");
         }
 
         public ActionResult CadastroOficina()
@@ -67,7 +66,7 @@ namespace Projeto_TCC_2022.Controllers
         public void CadastrarOficina()
         {
             Model1.InsertOficina(UserID, Model1.GetEmail(UserID), Request["CNPJ"], Request["Nome"],
-            Request["Estado"], Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]),
+            Request["Estado"], Request["Bairro"], Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]),
             Request["Complemento"]);
             Response.Redirect("/Cadastro/CadastroNúmero");
         }

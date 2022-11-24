@@ -19,7 +19,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Security.Permissions;
 using System.Web;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Projeto_TCC_2022.Models.A;
+using System.Web.DynamicData;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -144,6 +144,71 @@ namespace Projeto_TCC_2022.Models
                 return admin;
             }
         }
+
+        public static List<Categoria> GetCategorias()
+        {
+            using (var context = new Model1())
+            {
+                var query = from Categoria in context.Categoria
+                            select Categoria;
+                var categorias = query.ToList();
+                return categorias;
+            }
+        }
+
+        public static Categoria GetCategoriaByName(string x)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Categoria in context.Categoria
+                            where Categoria.Nome == x
+                            select Categoria;
+                var categoria = query.SingleOrDefault();
+                return categoria;
+            }
+        }
+        public static Categoria GetCategoriaById(int x)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Categoria in context.Categoria
+                            where Categoria.Id == x
+                            select Categoria;
+                var categoria = query.SingleOrDefault();
+                return categoria;
+            }
+        }
+
+        //Filters
+
+        public static List<Serviço> GetServiçosByNomeFilterByCategoria(string categoriaNome, string nome)
+        {
+            using (var context = new Model1())
+            {
+                var categoriaId = GetCategoriaByName(categoriaNome).Id;
+                Debug.WriteLine(categoriaId);
+
+                var query = from Serviço in context.Serviços
+                            where Serviço.Fk_Categoria_Id == categoriaId  && 
+                            Serviço.Nome.Contains(nome)
+                            select Serviço;
+                var serviços = query.ToList();
+                return serviços;
+            }
+        }
+
+        public static List<Oficina> GetOficinaByBairro(string x)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                            where Oficina.Bairro.Contains(x)
+                            select Oficina;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
+
         // ----------------------------------------------------------------------------------------------------
         // OFICINA
 
@@ -169,7 +234,7 @@ namespace Projeto_TCC_2022.Models
                 return oficina;
             }
         }
-        public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade,
+        public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, string Bairro,
         string Rua, int Número, string Complemento)
         {
             using (var context = new Model1())
@@ -182,6 +247,7 @@ namespace Projeto_TCC_2022.Models
                     Nome = Nome,
                     Estado = Estado,
                     Cidade = Cidade,
+                    Bairro = Bairro,
                     Rua = Rua,
                     Número = Número,
                     Complemento = Complemento
@@ -245,7 +311,7 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void InsertServiços(int uID, string Nome, string Descrição, decimal Preço)
+        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal Preço)
         {
             using (var context = new Model1())
             {
@@ -253,6 +319,7 @@ namespace Projeto_TCC_2022.Models
                 {
                     Fk_Oficina_Id = uID,
                     Nome = Nome,
+                    Fk_Categoria_Id = Categoria,
                     Descrição = Descrição,
                     Preço = Preço
                 });

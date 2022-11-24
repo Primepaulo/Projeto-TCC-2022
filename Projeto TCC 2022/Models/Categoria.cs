@@ -1,4 +1,4 @@
-namespace Projeto_TCC_2022.Models.A
+namespace Projeto_TCC_2022.Models
 {
     using System;
     using System.Collections.Generic;

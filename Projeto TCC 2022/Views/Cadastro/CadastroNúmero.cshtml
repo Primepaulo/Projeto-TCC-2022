@@ -32,7 +32,10 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @if (ViewBag.Novo != null)
+     {
+        @Html.ActionLink("Retornar para a página inicial", "Index", "Home")
+     }
 </div>
 
 @section Scripts {

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Models;
-using Projeto_TCC_2022.Models.A;
+using Projeto_TCC_2022.Models.STRUCT;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -66,10 +67,10 @@ namespace Projeto_TCC_2022.Controllers
         {
             ViewBag.éPessoa = Pessoa;
             ViewBag.éOficina = Oficina;
+            ViewBag.éAdmin = Admin;
             ViewBag.userID = UserID;
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
         }
-
     }
 }
