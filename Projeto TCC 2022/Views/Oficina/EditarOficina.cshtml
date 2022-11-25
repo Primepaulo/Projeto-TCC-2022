@@ -80,5 +80,5 @@
 }
 
 <div>
-    @Html.ActionLink("Retornar", "Page/" + ViewBag.userID)
+    @Html.ActionLink("Retornar", "Page/", "Oficina", new { id = (int)ViewBag.userID }, new { @class = "" })
 </div>

@@ -1,6 +1,7 @@
 ﻿using Projeto_TCC_2022.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
@@ -52,7 +53,9 @@ namespace Projeto_TCC_2022.Controllers
             {
                 foreach (var item in messages)
                 {
-                    ViewBag.Oficinas.Add(Model1.GetOficinaById(item.Fk_Oficina_Id));
+                    List<Oficina> oficinas = new List<Oficina>();
+                    oficinas.Add(Model1.GetOficinaById(item.Fk_Oficina_Id));
+                    ViewBag.Oficinas = oficinas;
                 }
             }
 
@@ -65,7 +68,10 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.Oficinas = oficinas;
             foreach (var oficina in oficinas)
             {
-                ViewBag.Imagens.Add(Model1.GetImagem(oficina.Id));
+                List<Imagem> imagens = new List<Imagem>();
+                imagens.Add(Model1.GetImagem(oficina.Id));
+                ViewBag.Imagens = imagens;
+
             }
             return View();
         }
