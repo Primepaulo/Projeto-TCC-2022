@@ -27,10 +27,6 @@ namespace Projeto_TCC_2022.Controllers
             Model1.InsertPessoa(UserID, Nome, Sobrenome, Estado,
             Cidade, Rua, Número, Complemento,
             Model1.GetEmail(UserID), Request["CPF"], Request["CNPJ"], Tipo);
-            if (Request["CNPJ"] != null)
-            {
-                return RedirectToAction("AdicionarImagem", "Imagem");
-            }
             if (!Response.IsRequestBeingRedirected)
             {
                 return RedirectToAction("CadastroNúmero", "Cadastro");
@@ -71,7 +67,7 @@ namespace Projeto_TCC_2022.Controllers
             Model1.InsertOficina(UserID, Model1.GetEmail(UserID), CNPJ, Nome,
             Estado, Bairro, Cidade, Rua, Número,
             Complemento, Descrição, false, AceitaImportado);
-            return RedirectToAction("/Cadastro/CadastroNúmero");
+            return RedirectToAction("AdicionarImagem", "Imagem");
         }
     }
 }

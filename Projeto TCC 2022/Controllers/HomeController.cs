@@ -45,7 +45,6 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult Search()
         {
             var searchData = Session["searchData"] as SearchData;
-            Debug.WriteLine(searchData);
 
             if (HttpContext.Session["searchData"] != null)
             {
