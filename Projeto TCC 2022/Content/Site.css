@@ -34,3 +34,7 @@ textarea {
 textarea {
     resize: none;
 }
+
+ul {
+    list-style-position: inside;
+}

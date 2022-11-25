@@ -31,7 +31,9 @@ namespace Projeto_TCC_2022.Controllers
             {
                 foreach (var item in messages)
                 {
-                    ViewBag.Oficinas.Add(Model1.GetOficinaById(item.Fk_Oficina_Id));
+                    List<Oficina> oficinas = new List<Oficina>();
+                    oficinas.Add(Model1.GetOficinaById(item.Fk_Oficina_Id));
+                    ViewBag.Oficinas = oficinas;
                 }
             }
 
@@ -85,6 +87,22 @@ namespace Projeto_TCC_2022.Controllers
 
             return View();
         }
+        public ActionResult VisualizarCategorias()
+        {
+            return View();
+        }
 
+        public ActionResult AdicionarCategorias()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AdicionarCategorias(string Nome)
+        {
+            Model1.InsertCategorias(Nome);
+            return RedirectToAction("VisualizarCategorias");
+        }
     }
 }
