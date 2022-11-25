@@ -46,12 +46,12 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void AdicionarServiço()
+        public void AdicionarServiço(string Nome, string Descrição, decimal Preço)
         {
             string categoria = Request.Form["categoria"];
             int categoriaId = Model1.GetCategoriaByName(categoria).Id;
 
-            Model1.InsertServiços(UserID, Request["Nome"], categoriaId, Request["Descrição"], Convert.ToDecimal(Request["Preço"]));
+            Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, Preço);
             RedirectToAction("VisualizarServiços/" + UserID);
         }
 

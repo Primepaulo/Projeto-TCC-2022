@@ -45,5 +45,18 @@ namespace Projeto_TCC_2022.Controllers
             }
             return View(oficina);
         }
+
+        public ActionResult Sugerir()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SendMessage(string Texto)
+        {
+            Model1.SendMessage(UserID, Texto, false);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

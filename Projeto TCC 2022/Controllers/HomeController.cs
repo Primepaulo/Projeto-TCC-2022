@@ -10,7 +10,6 @@ using System.Web.Routing;
 using System.Web.WebPages;
 using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Models;
-using Projeto_TCC_2022.Models.STRUCT;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -18,6 +17,10 @@ namespace Projeto_TCC_2022.Controllers
     {
         public ActionResult Index()
         {
+            if (ViewBag.éAdmin == true)
+            {
+                return RedirectToAction("Index", "Administrador");
+            }
             return View();
         }
 
@@ -33,6 +36,7 @@ namespace Projeto_TCC_2022.Controllers
             searchData.searchTerm = Request.QueryString["navSearch"];
             searchData.filtro = Request.QueryString["filter"];
             searchData.categoria = Request.QueryString["categoria"];
+            searchData.importado = Convert.ToBoolean(Request.QueryString["importado"]);
             Session["searchData"] = searchData;
             return RedirectToAction("Search");
         }
@@ -51,12 +55,20 @@ namespace Projeto_TCC_2022.Controllers
                     {
                         if (searchData.filtro == "OficinaNome")
                         {
-                            ViewBag.Oficinas = Model1.GetOficina(searchData.searchTerm);
+                            if (searchData.importado == true)
+                            {
+                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
+                            }
+
+                            else
+                            {
+                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDesc(searchData.searchTerm);
+                            }
                         }
 
                         else if (searchData.filtro == "ServiçoCategoria")
                         {
-                            var Serviços = Model1.GetServiçosByNomeFilterByCategoria(searchData.categoria, searchData.searchTerm);
+                            var Serviços = Model1.GetServiçosFilterByCategoria(searchData.categoria, searchData.searchTerm);
                             ViewBag.Serviços = Serviços;
 
                             List<Oficina> oficinas = new List<Oficina>();
@@ -75,7 +87,15 @@ namespace Projeto_TCC_2022.Controllers
 
                         else if (searchData.filtro == "OficinaBairro")
                         {
-                            ViewBag.Oficinas = Model1.GetOficinaByBairro(searchData.searchTerm);
+                            if (searchData.importado == true)
+                            {
+                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
+                            }
+
+                            else
+                            {
+                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDesc(searchData.searchTerm);
+                            }
                         }
                     }
 

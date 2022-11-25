@@ -20,6 +20,7 @@ using System.Security.Permissions;
 using System.Web;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Web.DynamicData;
+using System.Web.Services.Description;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -44,6 +45,7 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<Imagem> Imagem { get; set; }
         public virtual DbSet<ItemOrçamento> ItemOrçamento { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
+        public virtual DbSet<Messages> Messages { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -68,6 +70,12 @@ namespace Projeto_TCC_2022.Models
                .WithRequired(e => e.Oficina)
                .HasForeignKey(e => e.Fk_Oficina_Id)
                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Oficina>()
+                .HasMany(e => e.Messages)
+                .WithRequired(e => e.Oficina)
+                .HasForeignKey(e => e.Fk_Oficina_Id)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Oficina>()
                 .HasMany(e => e.Peça)
@@ -133,6 +141,8 @@ namespace Projeto_TCC_2022.Models
                 .WillCascadeOnDelete(false);
 
         }
+
+        //Generic Controller
         public static Administrador GetAdmin(int Id)
         {
             using (var context = new Model1())
@@ -179,9 +189,37 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        // ----------------------------------------------------------------------------------------------------
         //Filters
+        public static List<Oficina> GetOficinaByNameOrDesc(string input)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                            where Oficina.Bairro.Contains(input) ||
+                            Oficina.Descrição.Contains(input)
+                            select Oficina;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
 
-        public static List<Serviço> GetServiçosByNomeFilterByCategoria(string categoriaNome, string nome)
+        public static List<Oficina> GetOficinaByNameOrDescImp(bool imp, string input)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                            where Oficina.AceitaImportado == imp &&
+                            (Oficina.Bairro.Contains(input) ||
+                            Oficina.Descrição.Contains(input))
+                            select Oficina;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
+
+
+        public static List<Serviço> GetServiçosFilterByCategoria(string categoriaNome, string input)
         {
             using (var context = new Model1())
             {
@@ -190,7 +228,7 @@ namespace Projeto_TCC_2022.Models
 
                 var query = from Serviço in context.Serviços
                             where Serviço.Fk_Categoria_Id == categoriaId  && 
-                            Serviço.Nome.Contains(nome)
+                            (Serviço.Nome.Contains(input) || Serviço.Descrição.Contains(input))
                             select Serviço;
                 var serviços = query.ToList();
                 return serviços;
@@ -208,6 +246,155 @@ namespace Projeto_TCC_2022.Models
                 return oficinas;
             }
         }
+
+        // ----------------------------------------------------------------------------------------------------
+        // Administrador
+
+        public static List<Oficina> GetNonApprovedOficinas()
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                            where Oficina.Aprovada == false
+                            select Oficina;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
+
+        public static void ApproveOficina(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                               where Oficina.Id == Id
+                               select Oficina;
+
+                var oficina = query.SingleOrDefault();
+
+                oficina.Aprovada = true;
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        public static List<Messages> GetNonReadMessages()
+        {
+            using (var context = new Model1())
+            {
+                var query = from Messages in context.Messages
+                             where Messages.Lido == false
+                             select Messages;
+                var messages = query.ToList();
+                return messages;
+            }
+        }
+
+        public static List<Messages> GetReadMessages()
+        {
+            using (var context = new Model1())
+            {
+                var query = from Messages in context.Messages
+                            where Messages.Lido == true
+                            select Messages;
+                var messages = query.ToList();
+                return messages;
+            }
+        }
+
+        public static Messages GetMessageById(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Messages in context.Messages
+                            where Messages.Id == Id
+                            select Messages;
+                var message = query.SingleOrDefault();
+                return message;
+            }
+        }
+
+        public static void MarkAsRead(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var message = GetMessageById(Id);
+                message.Lido = true;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        public static void SendMessage(int Fk_Oficina_Id, string Texto, bool Lido)
+        {
+            using (var context = new Model1())
+            {
+                context.Messages.Add(new Messages
+                {
+                    Fk_Oficina_Id = Fk_Oficina_Id,
+                    Texto = Texto,
+                    Lido = Lido
+                });
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public static void InsertCategorias(string Nome)
+        {
+            using (var context = new Model1())
+            {
+                context.Categoria.Add(new Categoria
+                {
+                    Nome = Nome
+                });
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
 
         // ----------------------------------------------------------------------------------------------------
         // OFICINA
@@ -235,7 +422,7 @@ namespace Projeto_TCC_2022.Models
             }
         }
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, string Bairro,
-        string Rua, int Número, string Complemento)
+        string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado)
         {
             using (var context = new Model1())
             {
@@ -250,7 +437,10 @@ namespace Projeto_TCC_2022.Models
                     Bairro = Bairro,
                     Rua = Rua,
                     Número = Número,
-                    Complemento = Complemento
+                    Complemento = Complemento,
+                    Descrição = Descrição,
+                    Aprovada = Aprovada,
+                    AceitaImportado = AceitaImportado
                 });
                 try
                 {

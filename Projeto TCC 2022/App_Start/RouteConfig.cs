@@ -14,6 +14,12 @@ namespace Projeto_TCC_2022
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Administrador",
+                url: "Admin/{action}/{id}",
+                new { controller = "Admin", action = "Index", id = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
                 name: "Serviços",
                 url: "Serviços/{action}/{id}",
                 new { controller = "Serviços", action = "VisualizarServiços", id = UrlParameter.Optional }

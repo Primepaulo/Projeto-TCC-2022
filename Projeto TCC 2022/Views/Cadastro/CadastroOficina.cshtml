@@ -81,6 +81,22 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.Descrição, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Descrição, new { @class = "form-control", @cols = "10", @rows = "8"})
+            @Html.ValidationMessageFor(model => model.Descrição, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="AceitaImportado" class="control-label col-md-2">Aceita Importado?</label>
+        <div class="col-md-10">
+            @Html.CheckBoxFor(model => model.AceitaImportado)
+            @Html.ValidationMessageFor(model => model.AceitaImportado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Create" class="btn btn-default" />
         </div>

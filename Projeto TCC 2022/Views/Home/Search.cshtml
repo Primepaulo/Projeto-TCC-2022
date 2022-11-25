@@ -7,14 +7,17 @@
     {
         for (int i = 0; i < ViewBag.Oficinas.Count; i++)
         {
-            <div>
-            <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.Oficinas[i].Id })" class="mt-5">@ViewBag.Oficinas[i].Nome</a> @* Criar anchor pra página da Oficina, que nem editar carro *@
-           @if (ViewBag.Imagens[i] != null)
-            {
-                //falta formatar a imagem
-                <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" />
-            }
+            if (ViewBag.Oficinas[i].Aprovada == true) 
+            { 
+                <div>
+                <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.Oficinas[i].Id })" class="mt-5">@ViewBag.Oficinas[i].Nome</a>
+                @if (ViewBag.Imagens[i] != null)
+                 {
+                    //falta formatar a imagem
+                    <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" />
+                 }
             </div>
+            }
         }
 
     }

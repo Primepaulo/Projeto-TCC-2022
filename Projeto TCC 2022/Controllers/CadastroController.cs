@@ -22,19 +22,21 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void CadastrarPessoa()
+        public ActionResult CadastrarPessoa(string Nome, string Sobrenome, string Estado, string Cidade, string Rua, int Número, string Complemento, int Tipo)
         {
-            Model1.InsertPessoa(UserID, Request["Nome"], Request["Sobrenome"], Request["Estado"],
-            Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]), Request["Complemento"],
-            Model1.GetEmail(UserID), Request["CPF"], Request["CNPJ"], Convert.ToInt32(Request["Tipo"]));
+            Model1.InsertPessoa(UserID, Nome, Sobrenome, Estado,
+            Cidade, Rua, Número, Complemento,
+            Model1.GetEmail(UserID), Request["CPF"], Request["CNPJ"], Tipo);
             if (Request["CNPJ"] != null)
             {
-                Response.Redirect("/Imagem/AdicionarImagem");
+                return RedirectToAction("AdicionarImagem", "Imagem");
             }
             if (!Response.IsRequestBeingRedirected)
             {
-                Response.Redirect("/Cadastro/CadastroNúmero");
+                return RedirectToAction("CadastroNúmero", "Cadastro");
             }
+            else
+                return View();
         }
 
         public ActionResult CadastroNúmero()
@@ -45,15 +47,16 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void CadastrarNúmero()
+        public ActionResult CadastrarNúmero(string CelularTelefone1)
         {
-            Debug.WriteLine(Request["CelularTelefone1"]);
-            Model1.InsertCelular(Request["CelularTelefone1"], UserID);
+            Model1.InsertCelular(CelularTelefone1, UserID);
 
             if (ViewBag.éPessoa == true)
-              Response.Redirect("/Carros/CadastroCarros");
+                return RedirectToAction("/Carros/CadastroCarros");
             else if (ViewBag.éOficina == true)
-              Response.Redirect("/Serviços/");
+                return RedirectToAction("/Serviços/");
+            else
+                return View();
         }
 
         public ActionResult CadastroOficina()
@@ -63,12 +66,12 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void CadastrarOficina()
+        public ActionResult CadastrarOficina(string CNPJ, string Nome, string Estado, string Cidade, string Bairro, string Rua, int Número, string Complemento, string Descrição, bool AceitaImportado)
         {
-            Model1.InsertOficina(UserID, Model1.GetEmail(UserID), Request["CNPJ"], Request["Nome"],
-            Request["Estado"], Request["Bairro"], Request["Cidade"], Request["Rua"], Convert.ToInt32(Request["Número"]),
-            Request["Complemento"]);
-            Response.Redirect("/Cadastro/CadastroNúmero");
+            Model1.InsertOficina(UserID, Model1.GetEmail(UserID), CNPJ, Nome,
+            Estado, Bairro, Cidade, Rua, Número,
+            Complemento, Descrição, false, AceitaImportado);
+            return RedirectToAction("/Cadastro/CadastroNúmero");
         }
     }
 }

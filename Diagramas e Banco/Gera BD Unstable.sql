@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [TBN(IN305)]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Database [TBN(IN305)]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE DATABASE [TBN(IN305)]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -80,7 +80,7 @@ ALTER DATABASE [TBN(IN305)] SET QUERY_STORE = OFF
 GO
 USE [TBN(IN305)]
 GO
-/****** Object:  Table [dbo].[__MigrationHistory]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[__MigrationHistory]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -97,7 +97,7 @@ CREATE TABLE [dbo].[__MigrationHistory](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Administrador]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Administrador]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -105,13 +105,14 @@ GO
 CREATE TABLE [dbo].[Administrador](
 	[Id_Administrativo] [int] IDENTITY(1,1) NOT NULL,
 	[Fk_User_Id] [int] NOT NULL,
+	[Nome] [nvarchar](50) NOT NULL,
  CONSTRAINT [PK_Administrador] PRIMARY KEY CLUSTERED 
 (
 	[Id_Administrativo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AspNetRoles]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[AspNetRoles]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -125,7 +126,7 @@ CREATE TABLE [dbo].[AspNetRoles](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AspNetUserClaims]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[AspNetUserClaims]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -141,7 +142,7 @@ CREATE TABLE [dbo].[AspNetUserClaims](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AspNetUserLogins]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[AspNetUserLogins]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -158,7 +159,7 @@ CREATE TABLE [dbo].[AspNetUserLogins](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AspNetUserRoles]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[AspNetUserRoles]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -173,7 +174,7 @@ CREATE TABLE [dbo].[AspNetUserRoles](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AspNetUsers]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[AspNetUsers]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -197,7 +198,7 @@ CREATE TABLE [dbo].[AspNetUsers](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Avaliação]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Avaliação]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -214,7 +215,7 @@ CREATE TABLE [dbo].[Avaliação](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Carro]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Carro]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -232,7 +233,7 @@ CREATE TABLE [dbo].[Carro](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Categoria]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Categoria]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -246,7 +247,7 @@ CREATE TABLE [dbo].[Categoria](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CelularTelefone]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[CelularTelefone]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -261,7 +262,7 @@ CREATE TABLE [dbo].[CelularTelefone](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Imagem]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Imagem]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -275,7 +276,7 @@ CREATE TABLE [dbo].[Imagem](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ItemOrçamento]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[ItemOrçamento]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -294,7 +295,23 @@ CREATE TABLE [dbo].[ItemOrçamento](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Oficina]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Messages]    Script Date: 24/11/2022 22:01:50 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Messages](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Fk_Oficina_Id] [int] NOT NULL,
+	[Texto] [nvarchar](max) NOT NULL,
+	[Lido] [bit] NOT NULL,
+ CONSTRAINT [PK_Messages] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Oficina]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -310,13 +327,16 @@ CREATE TABLE [dbo].[Oficina](
 	[Rua] [nvarchar](50) NOT NULL,
 	[Número] [int] NOT NULL,
 	[Complemento] [nvarchar](20) NULL,
+	[Descrição] [nvarchar](max) NULL,
+	[Aprovada] [bit] NOT NULL,
+	[AceitaImportado] [bit] NOT NULL,
  CONSTRAINT [PK_Oficina_1] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Orçamento]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Orçamento]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -336,7 +356,7 @@ CREATE TABLE [dbo].[Orçamento](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Peça]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Peça]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -355,7 +375,7 @@ CREATE TABLE [dbo].[Peça](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Pessoa]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Pessoa]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -379,7 +399,7 @@ CREATE TABLE [dbo].[Pessoa](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Serviço]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Table [dbo].[Serviço]    Script Date: 24/11/2022 22:01:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -399,31 +419,31 @@ CREATE TABLE [dbo].[Serviço](
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [RoleNameIndex]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [RoleNameIndex]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE UNIQUE NONCLUSTERED INDEX [RoleNameIndex] ON [dbo].[AspNetRoles]
 (
 	[Name] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_UserId]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [IX_UserId]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserClaims]
 (
 	[UserId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_UserId]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [IX_UserId]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserLogins]
 (
 	[UserId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_RoleId]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [IX_RoleId]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE NONCLUSTERED INDEX [IX_RoleId] ON [dbo].[AspNetUserRoles]
 (
 	[RoleId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_UserId]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [IX_UserId]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserRoles]
 (
 	[UserId] ASC
@@ -431,7 +451,7 @@ CREATE NONCLUSTERED INDEX [IX_UserId] ON [dbo].[AspNetUserRoles]
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UserNameIndex]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [UserNameIndex]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [dbo].[AspNetUsers]
 (
 	[UserName] ASC
@@ -439,7 +459,7 @@ CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [dbo].[AspNetUsers]
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__PESSOA__CNPJ]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [UQ__PESSOA__CNPJ]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE NONCLUSTERED INDEX [UQ__PESSOA__CNPJ] ON [dbo].[Pessoa]
 (
 	[CNPJ] ASC
@@ -449,7 +469,7 @@ WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__PESSOA__CPF]    Script Date: 23/11/2022 21:52:53 ******/
+/****** Object:  Index [UQ__PESSOA__CPF]    Script Date: 24/11/2022 22:01:50 ******/
 CREATE UNIQUE NONCLUSTERED INDEX [UQ__PESSOA__CPF] ON [dbo].[Pessoa]
 (
 	[CPF] ASC
@@ -529,6 +549,11 @@ ALTER TABLE [dbo].[ItemOrçamento]  WITH CHECK ADD  CONSTRAINT [FK_ItemOrçament
 REFERENCES [dbo].[Serviço] ([Id])
 GO
 ALTER TABLE [dbo].[ItemOrçamento] CHECK CONSTRAINT [FK_ItemOrçamento_Serviço]
+GO
+ALTER TABLE [dbo].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Oficina] FOREIGN KEY([Fk_Oficina_Id])
+REFERENCES [dbo].[Oficina] ([Id])
+GO
+ALTER TABLE [dbo].[Messages] CHECK CONSTRAINT [FK_Messages_Oficina]
 GO
 ALTER TABLE [dbo].[Orçamento]  WITH CHECK ADD  CONSTRAINT [FK_Orçamento_Carro] FOREIGN KEY([fk_Carro_Placa])
 REFERENCES [dbo].[Carro] ([Placa])

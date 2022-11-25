@@ -1,0 +1,17 @@
+﻿
+@if (ViewBag.Admin != null)
+{
+
+<h1 class="text-center mt-5">Bem Vindo, @ViewBag.Admin.Nome</h1>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col text-center">
+            <a href="@Url.Action("UnreadMessages")" class="btn btn-success">Mensagens</a>
+        </div>
+        <div class="col text-center">
+            <a href="@Url.Action("ListaOficinas")" class="btn btn-secondary">Oficinas</a>
+        </div>
+    </div>
+</div>
+}

@@ -30,3 +30,7 @@ textarea {
 }
 
 /*Search*/
+
+textarea {
+    resize: none;
+}

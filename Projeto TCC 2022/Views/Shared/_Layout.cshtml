@@ -34,13 +34,14 @@
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Carros", "../Carros/VisualizarCarros", "Carros", null, new { @class = "nav-link" })</li>
                     }
-                    @if (ViewBag.éPessoa == false && ViewBag.éOficina == false)
+                    @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "../Cadastro/Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
                     }
                     @if (ViewBag.éOficina == true)
                     {
                         <li class="nav-item">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Sugerir Categoria", "Sugerir", "Oficina", null, new { @class = "nav-link" })</li>
                     }
 
                 </ul>
@@ -52,12 +53,19 @@
                     <option value="ServiçoCategoria">Serviço</option>
                     <option value="OficinaBairro">Bairro</option>
                 </select>
-                <input for="navSearch" name="navSearch" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" />
+                <input for="navSearch" name="navSearch" class="form-control me-2 ms-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" />
                 <select for="categoria" name="categoria" class="d-none" id="categoria">
                     @foreach (var item in ViewBag.Categorias)
                     {
                         <option value="@item.Nome">@item.Nome</option>
                     }
+                </select>
+
+                <select for="importado" name="importado" id="importado">
+
+                    <option value="false">Carro Nacional</option>
+                    <option value="true">Carro Importado</option>
+
                 </select>
 
                 <button type="submit" name="navSubmit" class="btn btn-outline-success"><i class="bi bi-search"></i></button>
@@ -82,13 +90,16 @@
         function exibirCategorias() {
 
             if ($("#filtro").val() == "ServiçoCategoria") {
+                $("#importado").addClass("d-none");
                 $("#categoria").removeClass("d-none");
             }
             else if ($("#filtro").val() != "ServiçoCategoria") {
                 if (!$("#categoria").hasClass("d-none")) {
                     $("#categoria").addClass("d-none");
+                    $("#importado").removeClass("d-none");
                 }
             }
+
         }
     </script>
 </body>

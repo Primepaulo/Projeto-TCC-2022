@@ -12,7 +12,7 @@ namespace Projeto_TCC_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Oficina()
         {
-            //Administrador = new HashSet<Administrador>();
+            Messages = new HashSet<Messages>();
             Serviço = new HashSet<Serviço>();
             Orçamento = new HashSet<Orçamento>();
             Peça = new HashSet<Peça>();
@@ -53,12 +53,20 @@ namespace Projeto_TCC_2022.Models
         [StringLength(50)]
         public string Bairro { get; set; }
 
+        public string Descrição { get; set; }
+
+        public bool Aprovada { get; set; }
+
+        public bool AceitaImportado { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orçamento> Orçamento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Serviço> Serviço { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Peça> Peça { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Messages> Messages { get; set; }
         public virtual Imagem Imagem { get; set; }
     }
 }

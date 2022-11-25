@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Models;
-using Projeto_TCC_2022.Models.STRUCT;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

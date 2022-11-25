@@ -12,5 +12,6 @@ namespace Projeto_TCC_2022.Models
         [Key]
         public int Id_Administrativo { get; set; }
         public int Fk_User_Id { get; set; }
+        public string Nome { get; set; }
     }
 }

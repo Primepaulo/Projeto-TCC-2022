@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Management;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Controllers;
@@ -26,10 +27,10 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void CadastrarCarros()
+        public ActionResult CadastrarCarros(string Placa, string Cor, string Modelo, string Motorização, string Marca)
         {
-            Model1.InsertCarro(Request["Placa"], Request["Cor"], Request["Modelo"], Request["Motorização"], Request["Marca"], UserID);
-            Response.Redirect("/Carros/");
+            Model1.InsertCarro(Placa, Cor, Modelo, Motorização, Marca, UserID);
+            return RedirectToAction("VisualizarCarros");
         }
 
         public ActionResult EditarCarro(string Placa)

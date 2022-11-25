@@ -1,0 +1,67 @@
+﻿<div class="container">
+
+    <div class="row">
+        <div class="col">
+            @if (ViewBag.Imagem != null)
+            {
+                //falta formatar a imagem
+                <img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
+            }
+        </div>
+
+        <div class="col">
+            @ViewBag.Oficina.Nome
+        </div>
+
+        <div class="col">
+            @ViewBag.Oficina.CNPJ
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            @ViewBag.Oficina.Estado
+        </div>
+        <div class="col">
+            @ViewBag.Oficina.Cidade
+        </div>
+        <div class="col">
+            @ViewBag.Oficina.Bairro
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            @ViewBag.Oficina.Rua
+        </div>
+        <div class="col">
+            @ViewBag.Oficina.Número
+        </div>
+        <div class="col">
+            @ViewBag.Oficina.Complemento
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            @ViewBag.Oficina.Email
+        </div>
+        <div class="col">
+            @if (ViewBag.CelularTelefone != null)
+            {
+                foreach (var item in ViewBag.CelularTelefone)
+                {
+                    @item.CelularTelefone1
+                }
+            }
+        </div>
+        <div class="col">
+            @ViewBag.Oficina.Descrição
+        </div>
+    </div>
+
+    <a href="@Url.Action("Aprovar")" class="btn btn-success">Oficinas</a>
+    <a href="@Url.Action("Rejeitar")" class="btn btn-danger">Oficinas</a>
+
+
+</div>

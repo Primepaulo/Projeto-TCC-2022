@@ -1,0 +1,28 @@
+﻿<h2 class="mt-5">Aprovar Oficinas:</h2>
+
+@if (ViewBag.Oficinas != null)
+{
+    <div class="container">
+        @for (int i = 0; i < ViewBag.Messages.Count; i++)
+        {
+            <div class="row">
+                @if (ViewBag.Imagens[i] != null)
+                 {
+                    //falta formatar a imagem
+                    <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" />
+                 }
+
+                <div class="col">@ViewBag.Oficinas[i].Nome</div>
+                <div class="col">
+                    <a href="@Url.Action("AprovarOficinas", "Aministrador", new { Id = ViewBag.Oficinas[i].Id })">Ver Mais</a>
+                </div>
+
+            </div>
+        }
+    </div>
+}
+
+else
+{
+    <h2 class="text-center">Nenhuma Oficina para aprovar.</h2>
+}
