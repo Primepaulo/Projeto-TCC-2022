@@ -13,8 +13,22 @@ using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public class CarrosController : DefaultController
+    public class CarrosController : DataController
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.éPessoa = Pessoa;
+            ViewBag.éOficina = Oficina;
+            ViewBag.éAdmin = Admin;
+            ViewBag.userID = UserID;
+            ViewBag.Categorias = Categorias;
+            base.OnActionExecuting(filterContext);
+
+            if (Pessoa == false)
+            {
+                filterContext.HttpContext.Response.Redirect("/Home/Index");
+            }
+        }
         public ActionResult VisualizarCarros()
         {
             ViewBag.Lista = Model1.GetCarros(UserID);

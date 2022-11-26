@@ -1,67 +1,82 @@
-﻿<div class="container">
+﻿@model Projeto_TCC_2022.Models.Oficina
 
-    <div class="row">
+
+<h2 class="mt-4">Oficina @Model.Id</h2>
+
+<h4 class="mt-4">Dados:</h4>
+
+<div class="container mt-4">
+
+    <div class="row text-center">
         <div class="col">
             @if (ViewBag.Imagem != null)
             {
-                //falta formatar a imagem
-                <img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
+                <img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive" width="150" height="50" />
+            }
+            else
+            {
+                <div class="col">
+                    <img src="../../Content/(400x400).png" alt="Imagem da Oficina" class="img-thumbnail img-responsive" width="150" height="50" />
+                </div>
             }
         </div>
 
         <div class="col">
-            @ViewBag.Oficina.Nome
+            <p class="h5">Nome:</p> @Model.Nome
         </div>
 
         <div class="col">
-            @ViewBag.Oficina.CNPJ
+            <p class="h5">CNPJ:</p> @Model.CNPJ
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-5 text-center">
         <div class="col">
-            @ViewBag.Oficina.Estado
+            <p class="h5">Estado:</p> @Model.Estado
         </div>
         <div class="col">
-            @ViewBag.Oficina.Cidade
+            <p class="h5"> Cidade:</p> @Model.Cidade
         </div>
         <div class="col">
-            @ViewBag.Oficina.Bairro
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-            @ViewBag.Oficina.Rua
-        </div>
-        <div class="col">
-            @ViewBag.Oficina.Número
-        </div>
-        <div class="col">
-            @ViewBag.Oficina.Complemento
+            <p class="h5">Bairro:</p> @Model.Bairro
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-5 text-center">
         <div class="col">
-            @ViewBag.Oficina.Email
+            <p class="h5">Rua:</p> @Model.Rua
         </div>
         <div class="col">
+            <p class="h5">Número:</p> @Model.Número
+        </div>
+        <div class="col">
+            <p class="h5">Complemento:</p> @Model.Complemento
+        </div>
+    </div>
+
+    <div class="row mt-5 text-center">
+        <div class="col">
+            <p class="h5">Email: @Model.Email</p>
+        </div>
+        <div class="col">
+            <p class="h5">Números:</p>
             @if (ViewBag.CelularTelefone != null)
             {
                 foreach (var item in ViewBag.CelularTelefone)
                 {
-                    @item.CelularTelefone1
+                    <p>@item.CelularTelefone1</p>
                 }
             }
         </div>
         <div class="col">
-            @ViewBag.Oficina.Descrição
+            <p class="h5">Descrição: @Model.Descrição</p>
         </div>
     </div>
 
-    <a href="@Url.Action("Aprovar")" class="btn btn-success">Oficinas</a>
-    <a href="@Url.Action("Rejeitar")" class="btn btn-danger">Oficinas</a>
+    <div>
+        <a href="@Url.Action("Aprovar", "Administrador", Model)" class="btn btn-success">Aprovar</a>
+        <a href="@Url.Action("Rejeitar")" class="btn btn-danger">Recusar</a>
+    </div>
 
 
 </div>

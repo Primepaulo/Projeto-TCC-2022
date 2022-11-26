@@ -176,6 +176,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ImagemController.cs" />
+    <Compile Include="Controllers\NumeroController.cs" />
     <Compile Include="Controllers\OficinaController.cs" />
     <Compile Include="Controllers\OrçamentoController.cs" />
     <Compile Include="Controllers\ServiçosController.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\%28400x400%29.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -278,7 +280,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Cadastro\CadastroPessoa.cshtml" />
-    <Content Include="Views\Cadastro\CadastroNúmero.cshtml" />
+    <Content Include="Views\Numero\CadastroNúmero.cshtml" />
     <Content Include="Views\Carros\CadastroCarros.cshtml" />
     <Content Include="Views\Carros\VisualizarCarros.cshtml" />
     <Content Include="Views\Cadastro\CadastroOficina.cshtml" />

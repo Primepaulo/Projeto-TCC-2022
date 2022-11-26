@@ -38,3 +38,24 @@ textarea {
 ul {
     list-style-position: inside;
 }
+
+a.deco-none {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+a.deco-none:link {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+a.deco-none:hover {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.centerOficinaImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

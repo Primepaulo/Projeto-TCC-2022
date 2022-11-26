@@ -13,8 +13,7 @@
                 <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.Oficinas[i].Id })" class="mt-5">@ViewBag.Oficinas[i].Nome</a>
                 @if (ViewBag.Imagens[i] != null)
                  {
-                    //falta formatar a imagem
-                    <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" />
+                    <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive" width="150" height="50" />
                  }
             </div>
             }

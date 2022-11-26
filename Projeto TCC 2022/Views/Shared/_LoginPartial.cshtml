@@ -5,12 +5,28 @@
     {
     @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Olá " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+<div class="collapse navbar-collapse ms-2 text-center" id="navbarNavDarkDropdown">
+    <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person" style="font-size: 1.2rem;"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item nav-link">
+                        <a href="@Url.Action("Index", "Manage", null)" class="nav-link">Mudar Senha <i class="bi bi-key-fill"></i></a>
+                    </li>
+                    @if (ViewBag.éOficina == true)
+                    {
+                        <li class="nav-item nav-link"> <a href="@Url.Action("Page", "Oficina", new {Id = ViewBag.UserID})" class="nav-link">Oficina <i class="bi bi-wrench"></i></a></li>
+                    }
+                    <li class="nav-item nav-link"><a href="javascript:document.getElementById('logoutForm').submit()" class="deco-none nav-link">Fazer logoff <i class="bi bi-door-open"></i></a></li>
+                </ul>
+            </div>
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Fazer logoff</a></li>
     </ul>
+</div>
+
     }
 }
 else

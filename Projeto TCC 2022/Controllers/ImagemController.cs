@@ -10,8 +10,22 @@ using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public class ImagemController : DefaultController
+    public class ImagemController : DataController
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.éPessoa = Pessoa;
+            ViewBag.éOficina = Oficina;
+            ViewBag.éAdmin = Admin;
+            ViewBag.userID = UserID;
+            ViewBag.Categorias = Categorias;
+            base.OnActionExecuting(filterContext);
+
+            if (Oficina == false)
+            {
+                filterContext.HttpContext.Response.Redirect("/Home/Index");
+            }
+        }
         public ActionResult AdicionarImagem()
         {
             return View();
@@ -53,8 +67,7 @@ namespace Projeto_TCC_2022.Controllers
                 {
                     Debug.WriteLine(ex.Message);
                 }
-                return RedirectToAction("VisualizarCarros");
-                //Era pra ser página da oficina [TBA]
+                return RedirectToAction("Page", "Oficina", UserID);
             }
                 return View();
         }
@@ -74,6 +87,7 @@ namespace Projeto_TCC_2022.Controllers
                     string rPath = Path.Combine("../../UploadedFiles", tempo + _FileName);
                     img.SaveAs(_path);
                     Model1.SalvarImagem(rPath, UserID);
+                    RedirectToAction("VisualizarServiços", "Serviços");
                 }
             }
             catch (Exception ex)

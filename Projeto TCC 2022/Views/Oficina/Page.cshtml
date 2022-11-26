@@ -1,11 +1,14 @@
 ﻿
-@if (ViewBag.Imagem != null)
-{
-    <img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" />
-}
-<h1>@ViewBag.Oficina.Nome</h1>
+<div class="container">
+    @if (ViewBag.Imagem != null)
+    {
+        <img src="@ViewBag.Imagem.Url" alt="Imagem da Oficina" class="centerOficinaImage img-thumbnail img-responsive" width="150" height="50" />
+    }
+</div>
 
-<h2>Serviços</h2> @* Seria uma lista de serviço com uma anchor para os detalhes e suas peças *@
+<h1 class="text-center">@ViewBag.Oficina.Nome</h1>
+
+<h2>Serviços:</h2> @* Seria uma lista de serviço com uma anchor para os detalhes e suas peças *@
 
 @if (ViewBag.Serviços != null)
 {
@@ -15,15 +18,7 @@
     }
 }
 
-@if (ViewBag.Oficina.Id == ViewBag.userID)
-{
-    <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar</a>
-}
-
-@if (ViewBag.Oficina.Id == ViewBag.userID)
-{
-    <a href="@Url.Action("VisualizarServiços", "Serviços", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar</a>
-}
+<h2 class="mt-4">Fale Conosco:</h2>
 
 @if (ViewBag.CelularTelefone != null)
 {
@@ -33,3 +28,20 @@
     }
     
 }
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            @if (ViewBag.Oficina.Id == ViewBag.userID)
+            {
+                <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar Dados da Oficina</a>
+            }
+        </div>
+        <div class="col">
+            @if (ViewBag.Oficina.Id == ViewBag.userID)
+            {
+                <a href="@Url.Action("VisualizarServiços", "Serviços", new { Id = ViewBag.Oficina.Id })" class="mt-5">Serviços</a>
+            }
+        </div>
+    </div>
+</div>

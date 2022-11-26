@@ -13,6 +13,7 @@
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.Email)
     @Html.HiddenFor(model => model.CNPJ)
+    @Html.HiddenFor(model => model.Aprovada)
 
     <div class="form-group">
         @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -35,6 +36,14 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.Cidade, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Cidade, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Bairro, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Bairro, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -67,6 +76,14 @@
         <div class="col-md-10">
             @Html.TextAreaFor(model => model.Descrição, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Descrição, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="AceitaImportado" class="control-label col-md-2">Aceita Importado?</label>
+        <div class="col-md-10">
+            @Html.CheckBoxFor(model => model.AceitaImportado)
+            @Html.ValidationMessageFor(model => model.AceitaImportado, "", new { @class = "text-danger" })
         </div>
     </div>
 

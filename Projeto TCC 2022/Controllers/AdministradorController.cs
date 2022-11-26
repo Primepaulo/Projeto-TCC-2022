@@ -9,15 +9,25 @@ using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public class AdministradorController : DefaultController
+    public class AdministradorController : DataController
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.éPessoa = Pessoa;
+            ViewBag.éOficina = Oficina;
+            ViewBag.éAdmin = Admin;
+            ViewBag.userID = UserID;
+            ViewBag.Categorias = Categorias;
+            base.OnActionExecuting(filterContext);
+
+            if (Admin == false)
+            {
+
+                filterContext.HttpContext.Response.Redirect("/Home/Index");
+            }
+        }
         public ActionResult Index()
         {
-            if (ViewBag.éAdmin != true)
-            {
-                RedirectToAction("Index", "Home");
-            }
-
             ViewBag.Admin = Model1.GetAdmin(UserID);
 
             return View();
@@ -53,12 +63,14 @@ namespace Projeto_TCC_2022.Controllers
 
             if (messages != null)
             {
+                List<Oficina> oficinas = new List<Oficina>();
+
                 foreach (var item in messages)
                 {
-                    List<Oficina> oficinas = new List<Oficina>();
                     oficinas.Add(Model1.GetOficinaById(item.Fk_Oficina_Id));
-                    ViewBag.Oficinas = oficinas;
                 }
+
+                ViewBag.Oficinas = oficinas;
             }
 
             return View();
@@ -68,25 +80,33 @@ namespace Projeto_TCC_2022.Controllers
         {
             var oficinas = Model1.GetNonApprovedOficinas();
             ViewBag.Oficinas = oficinas;
+
+            List<Imagem> imagens = new List<Imagem>();
             foreach (var oficina in oficinas)
             {
-                List<Imagem> imagens = new List<Imagem>();
                 imagens.Add(Model1.GetImagem(oficina.Id));
-                ViewBag.Imagens = imagens;
-
             }
+            ViewBag.Imagens = imagens;
+
             return View();
         }
 
-        public ActionResult AprovarOficina(int Id)
+        public ActionResult AprovarOficinas(int Id)
         {
-            Oficina oficina = Model1.GetOficinaById(Id);
-            ViewBag.Oficina = oficina;
+            Oficina model = Model1.GetOficinaById(Id);
             ViewBag.Imagem = Model1.GetImagem(Id);
             ViewBag.CelularTelefone = Model1.GetCelularTelefones(Id);
 
-            return View();
+            return View(model);
         }
+
+        public ActionResult Aprovar(Oficina oficina)
+        {
+            Model1.ApproveOficina(oficina);
+            return RedirectToAction("ListaOficinas");
+
+        }
+
         public ActionResult VisualizarCategorias()
         {
             return View();

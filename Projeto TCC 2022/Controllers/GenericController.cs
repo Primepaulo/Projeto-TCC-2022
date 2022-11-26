@@ -50,6 +50,25 @@ namespace Projeto_TCC_2022.Controllers
                 else return false;
             }
         }
+
+        public bool? Aprovada
+        {
+            get
+            {
+                if (Oficina == true)
+                {
+                    if (Model1.GetOficinaById(UserID).Aprovada == true)
+                    {
+                        return true;
+                    }
+
+                    else return false;
+                }
+
+                else { return null; }
+            }
+        }
+
         public List<Categoria> Categorias
         {
             get
@@ -67,6 +86,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.éPessoa = Pessoa;
             ViewBag.éOficina = Oficina;
             ViewBag.éAdmin = Admin;
+            ViewBag.éAprovada = Aprovada;
             ViewBag.userID = UserID;
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);

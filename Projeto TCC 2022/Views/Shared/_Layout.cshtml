@@ -24,12 +24,11 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            @Html.ActionLink("Nome do aplicativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">SOBOM <i class="bi bi-wrench-adjustable-circle-fill"></i></a>
 
             <div class="collapse navbar-collapse" id="mainCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item nav-link">@Html.ActionLink("Página Inicial", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item nav-link">@Html.ActionLink("Sobre", "About", "Home", null, new { @class = "nav-link" })</li>
                     @if (ViewBag.éPessoa == true)
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Carros", "../Carros/VisualizarCarros", "Carros", null, new { @class = "nav-link" })</li>
@@ -40,35 +39,48 @@
                     }
                     @if (ViewBag.éOficina == true)
                     {
-                        <li class="nav-item">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
-                        <li class="nav-item">@Html.ActionLink("Sugerir Categoria", "Sugerir", "Oficina", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
+                    }
+                    @if (ViewBag.éOficina == true && ViewBag.éAprovada == true)
+                    {
+                        <li class="nav-item nav-link">@Html.ActionLink("Sugerir Categoria", "Sugerir", "Oficina", null, new { @class = "nav-link" })</li>
                     }
 
                 </ul>
             </div>
 
             <form method="get" class="d-flex justify-content-center" role="search" action="@Url.Action("DataRequestSessions", "Home")">
-                <select for="filter" name="filter" onchange="exibirCategorias()" id="filtro">
+                <select for="filter" name="filter" onchange="exibirCategorias()" id="filtro" class="form-select text-center">
                     <option value="OficinaNome">Oficina</option>
                     <option value="ServiçoCategoria">Serviço</option>
                     <option value="OficinaBairro">Bairro</option>
                 </select>
-                <input for="navSearch" name="navSearch" class="form-control me-2 ms-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" />
-                <select for="categoria" name="categoria" class="d-none" id="categoria">
+                <input for="navSearch" name="navSearch" class="form-control me-2 ms-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" size="40" />
+                <select for="categoria" name="categoria" class="d-none form-select" id="categoria">
                     @foreach (var item in ViewBag.Categorias)
                     {
                         <option value="@item.Nome">@item.Nome</option>
                     }
                 </select>
 
-                <select for="importado" name="importado" id="importado">
 
-                    <option value="false">Carro Nacional</option>
-                    <option value="true">Carro Importado</option>
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                                Filtrar
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
 
-                </select>
+                                <input type="checkbox" name="importado" id="importado" value="true">
+                                <label for="importado">Carro Importado</label><br>
 
-                <button type="submit" name="navSubmit" class="btn btn-outline-success"><i class="bi bi-search"></i></button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <button type="submit" name="navSubmit" class="btn btn-outline-success ms-3"><i class="bi bi-search"></i></button>
 
             </form>
 
@@ -92,11 +104,13 @@
             if ($("#filtro").val() == "ServiçoCategoria") {
                 $("#importado").addClass("d-none");
                 $("#categoria").removeClass("d-none");
+                $("#navbarDarkDropdownMenuLink").addClass("d-none");
             }
             else if ($("#filtro").val() != "ServiçoCategoria") {
                 if (!$("#categoria").hasClass("d-none")) {
                     $("#categoria").addClass("d-none");
                     $("#importado").removeClass("d-none");
+                    $("#navbarDarkDropdownMenuLink").removeClass("d-none");
                 }
             }
 

@@ -28,7 +28,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -191,18 +191,6 @@ namespace Projeto_TCC_2022.Models
 
         // ----------------------------------------------------------------------------------------------------
         //Filters
-        public static List<Oficina> GetOficinaByNameOrDesc(string input)
-        {
-            using (var context = new Model1())
-            {
-                var query = from Oficina in context.Oficina
-                            where Oficina.Bairro.Contains(input) ||
-                            Oficina.Descrição.Contains(input)
-                            select Oficina;
-                var oficinas = query.ToList();
-                return oficinas;
-            }
-        }
 
         public static List<Oficina> GetOficinaByNameOrDescImp(bool imp, string input)
         {
@@ -210,8 +198,21 @@ namespace Projeto_TCC_2022.Models
             {
                 var query = from Oficina in context.Oficina
                             where Oficina.AceitaImportado == imp &&
-                            (Oficina.Bairro.Contains(input) ||
+                            (Oficina.Nome.Contains(input) ||
                             Oficina.Descrição.Contains(input))
+                            select Oficina;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
+
+        public static List<Oficina> GetOficinaByNameOrDesc(string input)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                            where Oficina.Nome.Contains(input) ||
+                            Oficina.Descrição.Contains(input)
                             select Oficina;
                 var oficinas = query.ToList();
                 return oficinas;
@@ -247,6 +248,19 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static List<Oficina> GetOficinaByBairroImp(bool imp, string x)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                            where Oficina.AceitaImportado == imp && 
+                            Oficina.Bairro.Contains(x)
+                            select Oficina;
+                var oficinas = query.ToList();
+                return oficinas;
+            }
+        }
+
         // ----------------------------------------------------------------------------------------------------
         // Administrador
 
@@ -262,17 +276,13 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void ApproveOficina(int Id)
+        public static void ApproveOficina(Oficina oficina)
         {
             using (var context = new Model1())
             {
-                var query = from Oficina in context.Oficina
-                               where Oficina.Id == Id
-                               select Oficina;
-
-                var oficina = query.SingleOrDefault();
-
                 oficina.Aprovada = true;
+
+                context.Entry(oficina).State = EntityState.Modified;
 
                 try
                 {
@@ -327,6 +337,8 @@ namespace Projeto_TCC_2022.Models
             {
                 var message = GetMessageById(Id);
                 message.Lido = true;
+
+                context.Entry(message).State = EntityState.Modified;
 
                 try
                 {
@@ -413,14 +425,13 @@ namespace Projeto_TCC_2022.Models
         }
         public static Oficina GetOficinaById(int Id)
         {
-            using (var context = new Model1())
-            {
+                var context = new Model1();
                 var query = from Oficina in context.Oficina
                             where Oficina.Id == Id
                             select Oficina;
                 var oficina = query.SingleOrDefault();
                 return oficina;
-            }
+            
         }
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, string Bairro,
         string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado)

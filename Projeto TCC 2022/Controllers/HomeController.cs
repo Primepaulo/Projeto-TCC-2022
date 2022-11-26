@@ -37,10 +37,10 @@ namespace Projeto_TCC_2022.Controllers
             searchData.filtro = Request.QueryString["filter"];
             searchData.categoria = Request.QueryString["categoria"];
             searchData.importado = Convert.ToBoolean(Request.QueryString["importado"]);
+            
             Session["searchData"] = searchData;
             return RedirectToAction("Search");
         }
-
 
         public ActionResult Search()
         {
@@ -57,12 +57,15 @@ namespace Projeto_TCC_2022.Controllers
                             if (searchData.importado == true)
                             {
                                 ViewBag.Oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
+                                Debug.WriteLine("Filtro 1 Importado");
                             }
 
                             else
                             {
                                 ViewBag.Oficinas = Model1.GetOficinaByNameOrDesc(searchData.searchTerm);
+                                Debug.WriteLine("Filtro 1 Normal");
                             }
+
                         }
 
                         else if (searchData.filtro == "ServiçoCategoria")
@@ -81,6 +84,7 @@ namespace Projeto_TCC_2022.Controllers
                                 }
 
                                 ViewBag.Oficinas = oficinas;
+                                Debug.WriteLine("Filtro 2");
                             }
                         }
 
@@ -89,15 +93,17 @@ namespace Projeto_TCC_2022.Controllers
                             if (searchData.importado == true)
                             {
                                 ViewBag.Oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
+                                Debug.WriteLine("Filtro 3 Importado");
                             }
 
                             else
                             {
-                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDesc(searchData.searchTerm);
+                                ViewBag.Oficinas = Model1.GetOficinaByBairro(searchData.searchTerm);
+                                Debug.WriteLine("Filtro 3 Normal");
+
                             }
                         }
                     }
-
                     List<Imagem> Imagens = new List<Imagem>();
 
                     if (ViewBag.Oficinas != null)

@@ -9,8 +9,23 @@ using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public class CadastroController : DefaultController
+    public class CadastroController : DataController
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.éPessoa = Pessoa;
+            ViewBag.éOficina = Oficina;
+            ViewBag.éAdmin = Admin;
+            ViewBag.userID = UserID;
+            ViewBag.Categorias = Categorias;
+            base.OnActionExecuting(filterContext);
+
+            if (Pessoa == true || Oficina == true || Admin == true)
+            {
+                filterContext.HttpContext.Response.Redirect("/Home/Index");
+            }
+        }
+
         public ActionResult Cadastro()
         {
             return View();
@@ -31,26 +46,6 @@ namespace Projeto_TCC_2022.Controllers
             {
                 return RedirectToAction("CadastroNúmero", "Cadastro");
             }
-            else
-                return View();
-        }
-
-        public ActionResult CadastroNúmero()
-        {
-            ViewBag.Novo = Model1.GetCelularTelefones(UserID);
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CadastrarNúmero(string CelularTelefone1)
-        {
-            Model1.InsertCelular(CelularTelefone1, UserID);
-
-            if (ViewBag.éPessoa == true)
-                return RedirectToAction("/Carros/CadastroCarros");
-            else if (ViewBag.éOficina == true)
-                return RedirectToAction("/Serviços/");
             else
                 return View();
         }

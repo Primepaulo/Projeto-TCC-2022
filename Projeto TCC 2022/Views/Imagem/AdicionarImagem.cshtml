@@ -7,20 +7,18 @@
     }))
     {
         @Html.AntiForgeryToken()
-     <div class="mt-5 upload text-center">
+        <div class="mt-5 upload text-center">
 
-        <label for="img">
-            <i class="bi bi-file-earmark-arrow-up" style="font-size: 50px"></i>
-        </label>
+            <label for="img">
+                <i class="bi bi-file-earmark-arrow-up" style="font-size: 50px"></i>
+            </label>
 
-        <div>
-            <label for="img" class="h3">Adicionar Imagem</label>
+            <div>
+                <label for="img" class="h3">Adicionar Imagem</label>
+            </div>
+
+            <input id="img" name="img" type="file">
         </div>
-
-        <input id="img" name="img" type="file">
-
         <input type="submit" value="Upload" />
-
-    </div>
-}
+    }
 </div>

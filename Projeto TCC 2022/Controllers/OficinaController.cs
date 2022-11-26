@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Web;
+using System.Web.Management;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -17,7 +18,7 @@ namespace Projeto_TCC_2022.Controllers
             Oficina oficina = Model1.GetOficinaById(Id);
             if (oficina == null)
             {
-             return HttpNotFound();
+             return RedirectToAction("Index", "Home");
           
             }
             ViewBag.Oficina = oficina;
@@ -28,35 +29,61 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult EditarOficina(int Id)
         {
-            Oficina oficina = Model1.GetOficinaById(Id);
-            Imagem imagem = Model1.GetImagem(Id);
-            ViewBag.Imagem = imagem;
-            return View(oficina);
+            if (UserID == Id)
+            {
+                Oficina oficina = Model1.GetOficinaById(Id);
+                Imagem imagem = Model1.GetImagem(Id);
+                ViewBag.Imagem = imagem;
+                return View(oficina);
+            }
+
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarOficina([Bind(Include = "Id,Email,CNPJ,Nome,Estado,Cidade,Rua,Número,Complemento")] Oficina oficina)
+        public ActionResult EditarOficina([Bind(Include = "Id,Email,CNPJ,Nome,Estado,Cidade,Rua,Número,Complemento,Bairro,Descrição,Aprovada,AceitaImportado")] Oficina oficina)
         {
-            if (ModelState.IsValid)
+            if (UserID == oficina.Id && Oficina == true)
             {
-                Model1.UpdateOficina(oficina);
-                return RedirectToAction("Page/" + oficina.Id);
+                if (ModelState.IsValid)
+                {
+                    Model1.UpdateOficina(oficina);
+                    return RedirectToAction("Page/" + oficina.Id);
+                }
             }
             return View(oficina);
         }
 
         public ActionResult Sugerir()
         {
-            return View();
+            if (Oficina == true && Aprovada == true)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SendMessage(string Texto)
         {
-            Model1.SendMessage(UserID, Texto, false);
-            return RedirectToAction("Index", "Home");
+            if (Oficina == true && Aprovada == true)
+            {
+                Model1.SendMessage(UserID, Texto, false);
+                return RedirectToAction("Sugerir");
+            }
+
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }
