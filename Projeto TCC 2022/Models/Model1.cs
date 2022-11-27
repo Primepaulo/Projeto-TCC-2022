@@ -603,7 +603,19 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void InsertPeças(int uID, string Marca, string Código, string Descrição, decimal Preço)
+        public static Peça GetPeça(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Peça in context.Peça
+                            where Peça.Id == Id
+                            select Peça;
+                var peça = query.SingleOrDefault();
+                return peça;
+            }
+        }
+
+        public static void InsertPeça(int uID, string Marca, string Código, string Descrição, decimal Preço)
         {
             using (var context = new Model1())
             {

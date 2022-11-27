@@ -18,13 +18,14 @@
     <div class="form-group">
         @Html.LabelFor(model => model.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.CNPJ, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.CNPJ, new { htmlAttributes = new { @class = "form-control", @id = "CNPJ", maxlength = 18 } })
             @Html.ValidationMessageFor(model => model.CNPJ, "", new { @class = "text-danger" })
         </div>
     </div>
 
+    @*Razão Social*@
     <div class="form-group">
-        @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label for="Nome" class="control-label col-md-2">Nome da Oficina</label>
         <div class="col-md-10">
             @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
@@ -83,7 +84,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Descrição, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Descrição, new { @class = "form-control", @cols = "10", @rows = "8"})
+            @Html.TextAreaFor(model => model.Descrição, new { @class = "form-control", @rows = "4"})
             @Html.ValidationMessageFor(model => model.Descrição, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -103,6 +104,29 @@
     </div>
 </div>
 }
+
+@section scripts 
+    {<script>
+
+    $(document).ready(function() {
+        let inputCNPJ = $("#CNPJ")
+        inputCNPJ.on("keypress", function () {
+            let inputLength = inputCNPJ.val().length;
+            if (inputLength === 2 || inputLength === 6) {
+                inputCNPJ.val(inputCNPJ.val() + ".");
+            }
+            else if (inputLength === 10) {
+                inputCNPJ.val(inputCNPJ.val() + "/");
+            }
+            else if (inputLength === 16) {
+                inputCNPJ.val(inputCNPJ.val() + "-");
+            }
+        })
+    });
+</script>
+}
+
+
 
 <div>
     @Html.ActionLink("Back to List", "Index")

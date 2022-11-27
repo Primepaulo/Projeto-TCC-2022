@@ -39,11 +39,25 @@ namespace Projeto_TCC_2022.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarPessoa(string Nome, string Sobrenome, string Estado, string Cidade, string Rua, int Número, string Complemento, int Tipo)
         {
+            string CPF, CNPJ;
+            if (Request["CPF"] != null)
+            {
+                CPF = Request["CPF"].Replace(".", "").Replace("-", "");
+            }
+            else{ CPF = null; }
+
+            if (Request["CNPJ"] != null) 
+            {
+                CNPJ = Request["CNPJ"].Replace(".", "").Replace("-", "").Replace("/", "");
+            }
+            else{ CNPJ = null; }
+
             Model1.InsertPessoa(UserID, Nome, Sobrenome, Estado,
             Cidade, Rua, Número, Complemento,
-            Model1.GetEmail(UserID), Request["CPF"], Request["CNPJ"], Tipo);
+            Model1.GetEmail(UserID), CPF, CNPJ, Tipo);
             if (!Response.IsRequestBeingRedirected)
             {
+                Response.Clear();
                 return RedirectToAction("CadastroNúmero", "Cadastro");
             }
             else
@@ -59,9 +73,12 @@ namespace Projeto_TCC_2022.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarOficina(string CNPJ, string Nome, string Estado, string Cidade, string Bairro, string Rua, int Número, string Complemento, string Descrição, bool AceitaImportado)
         {
-            Model1.InsertOficina(UserID, Model1.GetEmail(UserID), CNPJ, Nome,
-            Estado, Bairro, Cidade, Rua, Número,
+            var novoCNPJ = CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
+
+            Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, Nome,
+            Estado, Cidade, Bairro, Rua, Número,
             Complemento, Descrição, false, AceitaImportado);
+            Response.Clear();
             return RedirectToAction("AdicionarImagem", "Imagem");
         }
     }

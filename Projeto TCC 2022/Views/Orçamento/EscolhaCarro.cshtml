@@ -1,0 +1,27 @@
+﻿<div class="container mt-5 text-center">
+    <h2>Primeiramente, vamos escolher o carro que deseja utilizar para o Orçamento</h2>
+</div>
+
+<div class="container mt-5 text-center">
+    @using (Html.BeginForm("EscolherCarro", "Orçamento", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <select for="carro" name="carro" class="form-select" id="carro">
+            @if (ViewBag.Carros != null)
+            {
+                foreach (var item in ViewBag.Carros)
+                {
+                <option value="@item.Placa">@item.Marca, @item.Modelo</option>
+                }
+            }
+        </select>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" name="choose" class="btn">Prosseguir<i class="bi bi-arrow-right-circle-fill ms-2"></i></button>
+            </div>
+        </div>
+    }
+</div>

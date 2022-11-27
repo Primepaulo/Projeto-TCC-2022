@@ -24,6 +24,8 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.Oficina = oficina;
             ViewBag.Imagem = Model1.GetImagem(Id);
             ViewBag.CelularTelefone = Model1.GetCelularTelefones(Id);
+            ViewBag.Email = Model1.GetEmail(Id);
+            ViewBag.Serviços = Model1.GetServiços(Id);
             return View();
         }
 

@@ -14,13 +14,19 @@
             <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item nav-link">
-                        <a href="@Url.Action("Index", "Manage", null)" class="nav-link">Mudar Senha <i class="bi bi-key-fill"></i></a>
+                        <a href="@Url.Action("Index", "Manage", null)" class="nav-link"><i class="bi bi-key-fill me-2"></i>Mudar Senha</a>
                     </li>
                     @if (ViewBag.éOficina == true)
                     {
-                        <li class="nav-item nav-link"> <a href="@Url.Action("Page", "Oficina", new {Id = ViewBag.UserID})" class="nav-link">Oficina <i class="bi bi-wrench"></i></a></li>
+                        <li class="nav-item nav-link"> <a href="@Url.Action("Page", "Oficina", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-wrench me-2"></i>Oficina</a></li>
+                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarServiços", "Serviços", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-wrench me-2"></i>Serviços</a></li>
+                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarPeças", "Peças", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-gear me-2"></i>Peças</a></li>
                     }
-                    <li class="nav-item nav-link"><a href="javascript:document.getElementById('logoutForm').submit()" class="deco-none nav-link">Fazer logoff <i class="bi bi-door-open"></i></a></li>
+                    @if (ViewBag.éPessoa == true)
+                    {
+                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarCarros", "Carros", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-car-front-fill me-2"></i>Carros</a></li>
+                    }
+                    <li class="nav-item nav-link"><a href="javascript:document.getElementById('logoutForm').submit()" class="deco-none nav-link"><i class="bi bi-door-open me-2"></i>Fazer logoff</a></li>
                 </ul>
             </div>
         </li>

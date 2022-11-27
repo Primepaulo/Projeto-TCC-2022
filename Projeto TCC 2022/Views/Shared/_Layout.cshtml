@@ -31,11 +31,11 @@
                     <li class="nav-item nav-link">@Html.ActionLink("Página Inicial", "Index", "Home", null, new { @class = "nav-link" })</li>
                     @if (ViewBag.éPessoa == true)
                     {
-                        <li class="nav-item nav-link">@Html.ActionLink("Carros", "../Carros/VisualizarCarros", "Carros", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item nav-link">@Html.ActionLink("Carros", "VisualizarCarros", "Carros", null, new { @class = "nav-link" })</li>
                     }
                     @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
                     {
-                        <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "../Cadastro/Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
                     }
                     @if (ViewBag.éOficina == true)
                     {

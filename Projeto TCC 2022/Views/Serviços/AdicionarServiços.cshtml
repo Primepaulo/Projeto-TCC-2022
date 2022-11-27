@@ -65,6 +65,6 @@ using (Html.BeginForm("AdicionarServiço", "Serviços", FormMethod.Post))
 </div>
 }
 <div>
-    @Html.ActionLink("Retornar pra página de Oficinas", "Page", "Oficina", new {id = (int)ViewBag.userID}, null)
+    @Html.ActionLink("Retornar", "VisualizarServiços", "Serviços", new {id = (int)ViewBag.userID}, null)
 </div>
 }

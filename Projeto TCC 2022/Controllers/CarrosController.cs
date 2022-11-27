@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Management;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Controllers;
 using Projeto_TCC_2022.Models;
@@ -31,20 +32,37 @@ namespace Projeto_TCC_2022.Controllers
         }
         public ActionResult VisualizarCarros()
         {
-            ViewBag.Lista = Model1.GetCarros(UserID);
+            Pessoa pessoa = Model1.GetPessoa(UserID);
+            if (pessoa == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Lista = Model1.GetCarros(pessoa.Id);
+
             return View();
         }
         public ActionResult CadastroCarros()
         {
-            return View();
+            if (Pessoa == true)
+            {
+                return View();
+            }
+
+            return RedirectToAction("Home", "Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarCarros(string Placa, string Cor, string Modelo, string Motorização, string Marca)
         {
-            Model1.InsertCarro(Placa, Cor, Modelo, Motorização, Marca, UserID);
-            return RedirectToAction("VisualizarCarros");
+            if (Pessoa == true)
+            {
+                Model1.InsertCarro(Placa, Cor, Modelo, Motorização, Marca, UserID);
+                return RedirectToAction("VisualizarCarros");
+            }
+
+            return RedirectToAction("Home", "Index");
         }
 
         public ActionResult EditarCarro(string Placa)
@@ -58,19 +76,30 @@ namespace Projeto_TCC_2022.Controllers
             {
                 return HttpNotFound();
             }
-            return View(carro);
+
+            if (carro.fk_Pessoa_Id == UserID)
+            {
+                return View(carro);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditarCarro([Bind(Include = "Placa,Cor,Modelo,Motorização,Marca, fk_Pessoa_Id")] Carro carro)
         {
-            if (ModelState.IsValid)
+            if (carro.fk_Pessoa_Id == UserID)
             {
-                Model1.UpdateCarro(carro);
-                return RedirectToAction("VisualizarCarros");
+                if (ModelState.IsValid)
+                {
+                    Model1.UpdateCarro(carro);
+                    return RedirectToAction("VisualizarCarros");
+                }
+                return View(carro);
             }
-            return View(carro);
+
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult DeletarCarro(string Placa)
@@ -84,15 +113,26 @@ namespace Projeto_TCC_2022.Controllers
             {
                 return HttpNotFound();
             }
-            return View(carro);
+            if (carro.fk_Pessoa_Id == UserID)
+            {
+                return View(carro);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost, ActionName("DeletarCarro")]
         [ValidateAntiForgeryToken]
         public ActionResult Deletar(string Placa)
         {
-            Model1.DeleteCarro(Placa);
-            return RedirectToAction("VisualizarCarros");
+            Carro carro = Model1.GetCarro(Placa);
+            if (carro.fk_Pessoa_Id == UserID)
+            {
+                Model1.DeleteCarro(Placa);
+                return RedirectToAction("VisualizarCarros");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
     }

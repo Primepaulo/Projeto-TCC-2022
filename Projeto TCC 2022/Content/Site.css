@@ -18,9 +18,12 @@
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
-select,
-textarea {
+select {
     max-width: 280px;
+}
+
+textarea {
+    max-width: 480px;
 }
 
 .navbar-inverse .navbar-toggle:hover,
@@ -58,4 +61,16 @@ a.deco-none:hover {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
 }
