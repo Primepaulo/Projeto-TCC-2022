@@ -513,6 +513,20 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static List<Serviço> GetServiçosByOficinaFilterByCategoria(int categoriaId, int oficinaId)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Serviço in context.Serviços
+                            where Serviço.Fk_Categoria_Id == categoriaId &&
+                            Serviço.Fk_Oficina_Id == oficinaId
+                            select Serviço;
+                var serviços = query.ToList();
+                return serviços;
+            }
+        }
+
+
         public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal Preço)
         {
             using (var context = new Model1())

@@ -191,6 +191,7 @@
     <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
+    <Compile Include="Models\Classes\ServiçoCategoria.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -211,6 +212,16 @@
     <Content Include="Content\bootstrap-icons.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\selectize.bootstrap5.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -221,8 +232,10 @@
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\selectize.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -285,8 +298,12 @@
     <Content Include="Views\Peças\EditarPeça.cshtml" />
     <Content Include="Views\Peças\DeletarPeça.cshtml" />
     <Content Include="Views\Peças\VisualizarPeças.cshtml" />
-    <Content Include="Views\Orçamento\AgendarServiço.cshtml" />
+    <Content Include="Views\Orçamento\AgendarServiço_old.cshtml" />
     <Content Include="Views\Orçamento\EscolhaCarro.cshtml" />
+    <Content Include="Views\Orçamento\AgendarServiço.cshtml" />
+    <Content Include="Views\Orçamento\ListItemPartial.cshtml" />
+    <Content Include="Views\Orçamento\TotalPartial.cshtml" />
+    <Content Include="Views\Orçamento\OptionsServiço.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -328,6 +345,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties libman_1json__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -84,8 +84,8 @@
 
             </form>
 
-        @Html.Partial("_LoginPartial")
-    </div>
+            @Html.Partial("_LoginPartial")
+        </div>
     </div>
     <div class="container body-content">
         @RenderBody()
@@ -97,6 +97,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
     @RenderSection("scripts", required: false)
     <script>
         function exibirCategorias() {
@@ -113,7 +114,6 @@
                     $("#navbarDarkDropdownMenuLink").removeClass("d-none");
                 }
             }
-
         }
     </script>
 </body>

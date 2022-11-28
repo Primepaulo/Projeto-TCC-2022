@@ -17,6 +17,8 @@ namespace Projeto_TCC_2022.Controllers
     {
         public ActionResult Index()
         {
+            Response.Clear();
+            Session.Clear();
             if (ViewBag.éAdmin == true)
             {
                 return RedirectToAction("Index", "Administrador");

@@ -7,21 +7,38 @@
     {
         @Html.AntiForgeryToken()
 
-        <select for="carro" name="carro" class="form-select" id="carro">
+        <select for="carro" name="carro" class="form-select" id="carro" placeholder="Escolha um carro">
             @if (ViewBag.Carros != null)
             {
                 foreach (var item in ViewBag.Carros)
                 {
-                <option value="@item.Placa">@item.Marca, @item.Modelo</option>
+                <option value="@item.Placa">@item.Marca @item.Modelo</option>
                 }
             }
         </select>
 
 
-        <div class="form-group">
+        <div class="form-group text-center">
             <div class="col-md-offset-2 col-md-10">
                 <button type="submit" name="choose" class="btn">Prosseguir<i class="bi bi-arrow-right-circle-fill ms-2"></i></button>
             </div>
         </div>
     }
 </div>
+
+@section scripts
+{
+    
+<script>
+
+    $(document).ready(function () {
+        $('#carro').selectize({
+            sortField: 'text'
+
+        });
+    });
+
+</script>    
+    
+    
+}

@@ -1,26 +1,111 @@
-﻿
-<div>
+﻿<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <select id="Categorias" placeholder="Escolha uma Categoria">
+                <option value="">Escolha uma Categoria</option>
+                @foreach (var item in ViewBag.CategoriasOficina)
+                {
+                    <option value="@item.Id">@item.Nome</option>
+                }
+            </select>
+        </div>
 
 
+        <div class="col" id="DivServiço">
+            <select id="Serviços" placeholder="Escolha um Serviço">
+                <option value="">Escolha um Serviço</option>
+            </select>
+        </div>
+
+
+        <div class="col">
+            <button onclick="AddItem()">Adicionar Serviço</button>
+        </div>
+
+
+        <div class="container mt-5" id="corpo"></div>
+        <div class="container mt-5" id="total"></div>
+    </div>
 </div>
 
 
-<script>
-
-    //$(document).ready(funtion()
-    //{
-    //    $("#adicionar").click(function () {
-
-    //        $(".item").append(
-
-    //            '<select></select'
-
-    //        );
 
 
+@section scripts{
 
+    <script>
 
-    //    });
-    //});
+    function AddItem() {
 
-</script>
+        var serviçoId = $("#Serviços").val();
+
+        $.ajax
+        ({
+                type: 'GET',
+                url: "/Orçamento/ListItemPartial/?Id=" + serviçoId,
+                dataType: 'html',
+                cache: false,
+                success: function (data) {
+                    $('#corpo').append(data);
+                }
+        });
+
+        $.ajax
+        ({
+                type: 'GET',
+                url: "/Orçamento/TotalPartial/",
+                dataType: 'html',
+                cache: false,
+                success: function (data) {
+                    $('#total').html(data);
+                }
+        })
+    }
+
+    function eventHandler(InputCategoria) {
+        /*InputServiço[0].selectize.enable();*/
+        var CategoriaController = InputCategoria[0].selectize;
+        var categoriaId = CategoriaController.getValue();
+        console.log("Executado");
+
+        var url = "/Orçamento/OptionsServiço/?categoriaId=" + categoriaId + "&oficinaId=" + @ViewBag.OrçamentoOficina.Id;
+
+        $.ajax
+        ({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            cache: false,
+            success: function (data) {
+                $('#DivServiço').html(data);
+            },
+            error: function () {
+                console.log("Erro");
+            }
+        }).done(function () {
+            var InputServiço = $('#Serviços').selectize({
+                sortField: 'text'
+            });
+            console.log("Partial JS rodado");
+        });
+    };
+
+$(document).ready(function () {
+
+    var InputServiço = $('#Serviços').selectize({
+        sortField: 'text'
+    });
+
+    var ServiçoController = InputServiço[0].selectize;
+
+    ServiçoController.disable();
+
+    var InputCategoria = $('#Categorias').selectize({
+        sortField: 'text',
+        onChange: function () {
+            eventHandler(InputCategoria);
+        }
+    });
+});
+    </script>
+}

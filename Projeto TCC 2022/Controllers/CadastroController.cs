@@ -58,7 +58,7 @@ namespace Projeto_TCC_2022.Controllers
             if (!Response.IsRequestBeingRedirected)
             {
                 Response.Clear();
-                return RedirectToAction("CadastroNúmero", "Cadastro");
+                return RedirectToAction("CadastroNúmero", "Numero");
             }
             else
                 return View();

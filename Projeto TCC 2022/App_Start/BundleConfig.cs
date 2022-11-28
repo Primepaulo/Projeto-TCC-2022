@@ -19,13 +19,19 @@ namespace Projeto_TCC_2022
             bundles.Add(new Bundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new Bundle("~/bundles/jqueryui").Include("~/Scripts/jquery-ui.js", "~/Scripts/selectize.js"));
+
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.js"));
 
             bundles.Add(new Bundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css",
-                      "~/Content/bootstrap-icons.css"));
+                      "~/Content/bootstrap-icons.css",
+                      "~/Content/jquery-ui.css",
+                      "~/Content/jquery-ui.structure.css",
+                      "~/Content/jquery-ui.theme.css",
+                      "~/Content/selectize.bootstrap5.css"));
         }
     }
 }
