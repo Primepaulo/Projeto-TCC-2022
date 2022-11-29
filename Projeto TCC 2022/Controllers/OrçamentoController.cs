@@ -271,6 +271,11 @@ namespace Projeto_TCC_2022.Controllers
                 {
                     Model1.AprovarFinalizarOrçamento(Id, Operação);
                 }
+
+                if (Operação == 3)
+                {
+                    Model1.AprovarFinalizarOrçamento(Id, Operação);
+                }
             }
 
             return RedirectToAction("StatusOrçamentoOficina/" + Id);
