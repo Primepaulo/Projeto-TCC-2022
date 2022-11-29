@@ -71,5 +71,26 @@ Após observar o código, percebi diversas sobrecargas desse método. A mais cor
 
 3. Seria interessante que houvessem comentários para os queries e funções mais complexas, para aumentar a legibilidade.
 
+### Ajax:
+
+1. Chamar Ajax com a sintaxe:
+
+```
+$.ajax
+({
+    type: 'GET' ou 'POST',
+    url: url,
+    dataType: 'html' ou 'Objeto' (se POST),
+    cache: false,
+    success: function (data) {
+        $('#Id').html(data);
+        OU QUALQUER OUTRA FUNÇÃO.
+    },
+    error: function () {
+        console.log("Erro");
+    }
+})
+```
+
 ## Sobre Docker:
 **TBA**
