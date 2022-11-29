@@ -192,6 +192,7 @@
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
     <Compile Include="Models\Classes\ServiçoCategoria.cs" />
+    <Compile Include="Models\Classes\ServiçoTotal.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -221,6 +222,7 @@
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\jquery.timepicker.css" />
     <Content Include="Content\selectize.bootstrap5.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -233,6 +235,7 @@
     <Content Include="Scripts\jquery-3.6.0.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.timepicker.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\selectize.js" />
@@ -298,12 +301,14 @@
     <Content Include="Views\Peças\EditarPeça.cshtml" />
     <Content Include="Views\Peças\DeletarPeça.cshtml" />
     <Content Include="Views\Peças\VisualizarPeças.cshtml" />
-    <Content Include="Views\Orçamento\AgendarServiço_old.cshtml" />
     <Content Include="Views\Orçamento\EscolhaCarro.cshtml" />
     <Content Include="Views\Orçamento\AgendarServiço.cshtml" />
-    <Content Include="Views\Orçamento\ListItemPartial.cshtml" />
+    <Content Include="Views\Orçamento\ServiçoItemOrçamentoPartial.cshtml" />
     <Content Include="Views\Orçamento\TotalPartial.cshtml" />
-    <Content Include="Views\Orçamento\OptionsServiço.cshtml" />
+    <Content Include="Views\Orçamento\ServiçosDisponiveisPartial.cshtml" />
+    <Content Include="Views\Orçamento\StatusOrçamentoPessoa.cshtml" />
+    <Content Include="Views\Orçamento\StatusOrçamentoPessoaPartial.cshtml" />
+    <Content Include="Views\Orçamento\VisualizarOrçamentos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -71,13 +71,14 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CadastrarOficina(string CNPJ, string Nome, string Estado, string Cidade, string Bairro, string Rua, int Número, string Complemento, string Descrição, bool AceitaImportado)
+        public ActionResult CadastrarOficina(string CNPJ, string Nome, string Estado, string Cidade, string Bairro, string Rua, int Número, string Complemento, string Descrição, bool AceitaImportado, string inicio, string fim)
         {
             var novoCNPJ = CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
+            string HorarioFuncionamento = inicio + "/" + fim;
 
             Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, Nome,
             Estado, Cidade, Bairro, Rua, Número,
-            Complemento, Descrição, false, AceitaImportado);
+            Complemento, Descrição, false, AceitaImportado, HorarioFuncionamento);
             Response.Clear();
             return RedirectToAction("AdicionarImagem", "Imagem");
         }

@@ -379,7 +379,6 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-
         public static void InsertCategorias(string Nome)
         {
             using (var context = new Model1())
@@ -406,9 +405,6 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-
-
-
         // ----------------------------------------------------------------------------------------------------
         // OFICINA
 
@@ -433,8 +429,9 @@ namespace Projeto_TCC_2022.Models
                 return oficina;
             
         }
+
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, string Bairro,
-        string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado)
+        string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado, string HorarioFuncionamento)
         {
             using (var context = new Model1())
             {
@@ -452,7 +449,8 @@ namespace Projeto_TCC_2022.Models
                     Complemento = Complemento,
                     Descrição = Descrição,
                     Aprovada = Aprovada,
-                    AceitaImportado = AceitaImportado
+                    AceitaImportado = AceitaImportado,
+                    HorarioFuncionamento = HorarioFuncionamento
                 });
                 try
                 {
@@ -629,12 +627,13 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void InsertPeça(int uID, string Marca, string Código, string Descrição, decimal Preço)
+        public static void InsertPeça(string Nome, int uID, string Marca, string Código, string Descrição, decimal Preço)
         {
             using (var context = new Model1())
             {
                 context.Peça.Add(new Peça
                 {
+                    Nome = Nome,
                     Fk_Oficina_Id = uID,
                     Marca = Marca,
                     Código = Código,
@@ -716,17 +715,28 @@ namespace Projeto_TCC_2022.Models
                             join Oficina in context.Oficina on Orçamento.fk_Oficina_Id equals Oficina.Id
                             where Orçamento.fk_Pessoa_Id == uID || Orçamento.fk_Oficina_Id == uID
                             select Orçamento;
-                var orçamento = query.ToList();
-                return orçamento;
+                var orçamentos = query.ToList();
+                return orçamentos;
             }
         }
-
-        public static void CreateOrçamento(int uID, string Placa, int OficinaId, DateTime DateOrçamento, decimal Valor)
+        public static Orçamento GetOrçamento(int Id)
         {
             using (var context = new Model1())
             {
-                context.Orçamento.Add(new Orçamento
-                {
+                var query = from Orçamento in context.Orçamento
+                            where Orçamento.Id == Id
+                            select Orçamento;
+                var orçamentos = query.SingleOrDefault();
+                return orçamentos;
+            }
+        }
+
+
+        public static Orçamento CreateOrçamento(int uID, string Placa, int OficinaId, DateTime DateOrçamento, decimal Valor)
+        {
+            using (var context = new Model1())
+            {
+                Orçamento orçamento = new Orçamento {
                     fk_Pessoa_Id = uID,
                     fk_Carro_Placa = Placa,
                     fk_Oficina_Id = OficinaId,
@@ -734,9 +744,10 @@ namespace Projeto_TCC_2022.Models
                     Data_Aprovação = null,
                     Status = 0,
                     Valor = Valor
+                };
 
-                }); 
-
+                context.Orçamento.Add(orçamento);
+               
                 try
                 {
                     context.SaveChanges();
@@ -751,6 +762,8 @@ namespace Projeto_TCC_2022.Models
                         }
                     }
                 }
+
+                return orçamento;
             }
         }
 
@@ -793,7 +806,20 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AddItem(int Orçamento_Id, int Serviço_Id, int Peça_Id, double? quantidade, string Descrição)
+        public static ItemOrçamento GetItemOrçamentoServiço (int OrçamentoId, int ServiçoId)
+        {
+            using (var context = new Model1())
+            {
+                var query = from ItemOrçamento in context.ItemOrçamento
+                            where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId &&
+                            ItemOrçamento.Fk_Serviço_Id == ServiçoId
+                            select ItemOrçamento;
+                var item = query.SingleOrDefault();
+                return item;
+            }
+        }
+
+        public static void AddItemOrçamento(int Orçamento_Id, int? Serviço_Id, int? Peça_Id, double quantidade)
         {
             using (var context = new Model1())
             {
@@ -802,9 +828,7 @@ namespace Projeto_TCC_2022.Models
                     Fk_Orçamento_Id = Orçamento_Id,
                     Fk_Serviço_Id = Serviço_Id,
                     Fk_Peça_Id = Peça_Id,
-                    Quantidade = quantidade,
-                    Descrição = Descrição
-
+                    Quantidade = quantidade
                 });
 
                 try
@@ -821,6 +845,24 @@ namespace Projeto_TCC_2022.Models
                         }
                     }
                 }
+            }
+        }
+
+        public static void AddQuantidade (ItemOrçamento itemOrçamento)
+        {
+            using (var context = new Model1())
+            {
+
+                context.Entry(itemOrçamento).State = EntityState.Modified;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+
             }
         }
 

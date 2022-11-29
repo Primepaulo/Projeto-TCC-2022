@@ -59,7 +59,7 @@ namespace Projeto_TCC_2022.Controllers
         {
             if (Oficina == true)
             {
-                Model1.InsertPeça(UserID, Marca, Código, Descrição, Preço);
+                Model1.InsertPeça(Nome, UserID, Marca, Código, Descrição, Preço);
                 return RedirectToAction("VisualizarPeças/" + UserID);
             }
             return RedirectToAction("Home", "Index");

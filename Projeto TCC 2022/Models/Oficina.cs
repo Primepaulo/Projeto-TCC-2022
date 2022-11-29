@@ -59,6 +59,9 @@ namespace Projeto_TCC_2022.Models
 
         public bool AceitaImportado { get; set; }
 
+        [StringLength(11)]
+        public string HorarioFuncionamento { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orçamento> Orçamento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

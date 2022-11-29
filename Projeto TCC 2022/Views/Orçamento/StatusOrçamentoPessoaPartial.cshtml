@@ -1,0 +1,23 @@
+﻿<div class="row text-center mt-3">
+    <div class="col">@ViewBag.Oficina.Nome</div>
+    <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
+</div>
+<div class="row text-center mb-4">
+    @if (ViewBag.Orçamento.Status == 0)
+    {
+        <h3>Em Análise</h3>
+    }
+    @if (ViewBag.Orçamento.Status == 1)
+    {
+        <h3>Confirmado! Dirija-se à Oficina durante o horário de funcionamento</h3>
+        <p>@ViewBag.Horarios[0] até @ViewBag.Horarios[1]</p>
+    }
+    @if (ViewBag.Orçamento.Status == 2)
+    {
+        <h3>Serviço em andamento...</h3>
+    }
+    @if (ViewBag.Orçamento.Status == 3)
+    {
+        <h3>Serviço Finalizado!</h3>
+    }
+</div>

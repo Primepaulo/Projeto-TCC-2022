@@ -19,7 +19,10 @@ namespace Projeto_TCC_2022
             bundles.Add(new Bundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new Bundle("~/bundles/jqueryui").Include("~/Scripts/jquery-ui.js", "~/Scripts/selectize.js"));
+            bundles.Add(new Bundle("~/bundles/jqueryui").Include(
+                "~/Scripts/jquery-ui.js", 
+                "~/Scripts/selectize.js",
+                "~/Scripts/jquery.timepicker.min.js"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.js"));
@@ -31,6 +34,7 @@ namespace Projeto_TCC_2022
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery-ui.structure.css",
                       "~/Content/jquery-ui.theme.css",
+                      "~/Content/jquery.timepicker.css",
                       "~/Content/selectize.bootstrap5.css"));
         }
     }
