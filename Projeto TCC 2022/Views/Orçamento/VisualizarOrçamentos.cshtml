@@ -1,19 +1,42 @@
-﻿<div class="container mt-5">
-    @for (int i = 0; i < ViewBag.Orçamentos.Count; i++)
-     {
-        <div class="row mb-3">
-            <div class="col">
-                @ViewBag.Orçamentos[i].Valor.ToString("F")
-            </div>
-            <div class="col">
-                @ViewBag.Oficinas[i].Nome
-            </div>
-            <div class="col">
-                @ViewBag.Carros[i].Placa
-            </div>
-             <div class="col">
-                @Html.ActionLink("Ver Detalhes", "StatusOrçamentoPessoa", "Orçamento", new {Id = ViewBag.Orçamentos[i].Id}, null)
-             </div>
-        </div>
-     }
+﻿<div class="container mt-5" id="Orçamento">
+
 </div>
+
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+
+
+            if ("@ViewBag.éPessoa" == "True") {
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: "/Orçamento/VisualizarOrçamentoPessoaPartial",
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Orçamento').append(data);
+                    }
+                });
+            }
+
+            else if ("@ViewBag.éOficina" == "True") {
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: "/Orçamento/VisualizarOrçamentoOficinaPartial",
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Orçamento').append(data);
+                    }
+                });
+            }
+
+        });
+    </script>
+}

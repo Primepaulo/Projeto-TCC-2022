@@ -15,6 +15,11 @@ namespace Projeto_TCC_2022.Controllers
     {
         public ActionResult VisualizarOrçamentos()
         {
+            
+            return View();
+        }
+        public PartialViewResult VisualizarOrçamentoPessoaPartial()
+        {
             List<Orçamento> orçamentos = Model1.GetOrçamentos(UserID);
             ViewBag.Orçamentos = orçamentos;
             List<Oficina> oficinas = new List<Oficina>();
@@ -27,9 +32,27 @@ namespace Projeto_TCC_2022.Controllers
             }
             ViewBag.Oficinas = oficinas;
             ViewBag.Carros = carros;
-            
-            return View();
+            return PartialView();
         }
+
+        public PartialViewResult VisualizarOrçamentoOficinaPartial()
+        {
+            List<Orçamento> orçamentos = Model1.GetOrçamentos(UserID);
+            ViewBag.Orçamentos = orçamentos;
+            List<Pessoa> pessoas = new List<Pessoa>();
+            List<Carro> carros = new List<Carro>();
+
+            foreach (var orçamento in orçamentos)
+            {
+                pessoas.Add(Model1.GetPessoa(orçamento.fk_Pessoa_Id));
+                carros.Add(Model1.GetCarro(orçamento.fk_Carro_Placa));
+            }
+            ViewBag.Pessoas = pessoas;
+            ViewBag.Carros = carros;
+            return PartialView();
+        }
+
+
         public ActionResult EscolhaCarro(int Id)
         {
             Response.Clear();
@@ -216,6 +239,43 @@ namespace Projeto_TCC_2022.Controllers
 
             return PartialView();
         }
+
+        public ActionResult StatusOrçamentoOficina(int Id)
+        {
+            Orçamento orçamento = Model1.GetOrçamento(Id);
+            if (ViewBag.éOficina == true && orçamento.fk_Oficina_Id == UserID)
+            {
+                Response.Clear();
+                Session.Clear();
+
+                ViewBag.Orçamento = orçamento;
+                ViewBag.Carro = Model1.GetCarro(orçamento.fk_Carro_Placa);
+                ViewBag.Pessoa = Model1.GetPessoa(orçamento.fk_Pessoa_Id);
+
+                return View();
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmarDeletarOrçamento(int Id, int Operação)
+        {
+            Orçamento orçamento = Model1.GetOrçamento(Id);
+            if (ViewBag.éOficina == true && orçamento.fk_Oficina_Id == UserID)
+            {
+                if (Operação == 1)
+                {
+                    Model1.AprovarFinalizarOrçamento(Id, Operação);
+                }
+                else if (Operação == 2)
+                {
+                    Model1.AprovarFinalizarOrçamento(Id, Operação);
+                }
+            }
+
+            return RedirectToAction("StatusOrçamentoOficina/" + Id);
+        }
+
 
 
     }

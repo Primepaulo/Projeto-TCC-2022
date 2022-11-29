@@ -1,0 +1,20 @@
+﻿
+@for (int i = 0; i < ViewBag.Orçamentos.Count; i++)
+{
+    <div class="row mb-3">
+        <div class="col">
+            @ViewBag.Orçamentos[i].Valor.ToString("F")
+        </div>
+        <div class="col">
+            @ViewBag.Pessoas[i].Nome
+        </div>
+        <div class="col">
+            @ViewBag.Carros[i].Placa
+        </div>
+        <div class="col">
+            @Html.ActionLink("Ver Detalhes", "StatusOrçamentoOficina", "Orçamento", new { Id = ViewBag.Orçamentos[i].Id }, null)
+        </div>
+    </div>
+}
+
+

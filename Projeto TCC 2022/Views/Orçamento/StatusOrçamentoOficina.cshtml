@@ -1,0 +1,26 @@
+﻿
+@using (Html.BeginForm("ConfirmarDeletarOrçamento", "Orçamento", FormMethod.Post))
+{
+    <div class="container mt-5">
+        <div class="row text-center mt-3">
+            <div class="col">@ViewBag.Pessoa.Nome</div>
+            <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
+            <div class="col">@ViewBag.Carro.Marca @ViewBag.Carro.Modelo</div>
+        </div>
+    </div>
+
+    <input type="hidden" name="Id" value="@ViewBag.Orçamento.Id" />
+
+    <div class="text-center mt-4">
+        @if (ViewBag.Orçamento.Status == 0)
+        {
+            <button class="btn btn-success" type="submit" name="Operação" value="1">Aprovar Orçamento</button>
+        }
+
+        @if (ViewBag.Orçamento.Status == 1)
+        {
+            <button class="btn btn-secondary" type="submit" name="Operação" value="2">Finalizar Orçamento</button>
+        }
+    </div>
+
+}

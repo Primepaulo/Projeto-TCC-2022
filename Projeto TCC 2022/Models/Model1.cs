@@ -767,15 +767,17 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AprovarOrçamento(Orçamento orçamento)
+        public static void AprovarFinalizarOrçamento(int Id, int Operação)
         {
             using (var context = new Model1())
             {
+                Orçamento orçamento = Model1.GetOrçamento(Id);
+                orçamento.Status = Operação;
+                orçamento.Data_Aprovação = DateTime.Now;
+
                 context.Entry(orçamento).State = EntityState.Modified;
                 try
                 {
-                    //Deve se mudar o Status para o certo (aka 1 para aprovado e 2 para finalizado)
-                    //Deve se mudar a data de aprovação para a atual.
                     context.SaveChanges();
                 }
                 catch (DbEntityValidationException ex)

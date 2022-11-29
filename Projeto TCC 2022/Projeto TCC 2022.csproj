@@ -309,6 +309,9 @@
     <Content Include="Views\Orçamento\StatusOrçamentoPessoa.cshtml" />
     <Content Include="Views\Orçamento\StatusOrçamentoPessoaPartial.cshtml" />
     <Content Include="Views\Orçamento\VisualizarOrçamentos.cshtml" />
+    <Content Include="Views\Orçamento\VisualizarOrçamentoPessoaPartial.cshtml" />
+    <Content Include="Views\Orçamento\VisualizarOrçamentoOficinaPartial.cshtml" />
+    <Content Include="Views\Orçamento\StatusOrçamentoOficina.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
