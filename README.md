@@ -12,7 +12,7 @@ Após isso é só deletar o banco antigo e executar novamente.
 
 2. Popular o Banco:
 
-Para popular o banco num ambiente de teste, utilize o arquivo ```Teste.sql```
+~~Para popular o banco num ambiente de teste, utilize o arquivo ```Teste.sql```~~ Removido
 
 3. Lembre-se de adicionar seu banco ao arquivo: **Web.config** 
 
