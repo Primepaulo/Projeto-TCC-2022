@@ -192,6 +192,7 @@
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
     <Compile Include="Models\Classes\ServiçoCategoria.cs" />
+    <Compile Include="Models\Classes\ServiçoPeçaTotal.cs" />
     <Compile Include="Models\Classes\ServiçoTotal.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
@@ -303,7 +304,7 @@
     <Content Include="Views\Peças\VisualizarPeças.cshtml" />
     <Content Include="Views\Orçamento\EscolhaCarro.cshtml" />
     <Content Include="Views\Orçamento\AgendarServiço.cshtml" />
-    <Content Include="Views\Orçamento\ServiçoItemOrçamentoPartial.cshtml" />
+    <Content Include="Views\Orçamento\ItemOrçamentoPartial.cshtml" />
     <Content Include="Views\Orçamento\TotalPartial.cshtml" />
     <Content Include="Views\Orçamento\ServiçosDisponiveisPartial.cshtml" />
     <Content Include="Views\Orçamento\StatusOrçamentoPessoa.cshtml" />
@@ -312,6 +313,7 @@
     <Content Include="Views\Orçamento\VisualizarOrçamentoPessoaPartial.cshtml" />
     <Content Include="Views\Orçamento\VisualizarOrçamentoOficinaPartial.cshtml" />
     <Content Include="Views\Orçamento\StatusOrçamentoOficina.cshtml" />
+    <Content Include="Views\Orçamento\AdicionarPeçaServiço.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

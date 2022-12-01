@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Management;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -53,21 +55,22 @@ namespace Projeto_TCC_2022.Controllers
         }
 
 
-        public ActionResult EscolhaCarro(int Id)
+        public ActionResult EscolhaCarro(int Id, bool Value)
         {
             Response.Clear();
             Session.Clear();
             Session["OficinaId"] = Id;
             ViewBag.Carros = Model1.GetCarros(UserID);
+            TempData["Value"] = Value;
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EscolherCarro()
+        public ActionResult EscolherCarro(bool Value)
         {
             string Placa = Request.Form["carro"];
-            bool Value = Convert.ToBoolean(Request.QueryString["Value"]);
             int Id = Convert.ToInt32(Session["OficinaId"]);
 
             Carro carro = Model1.GetCarro(Placa);
@@ -83,6 +86,21 @@ namespace Projeto_TCC_2022.Controllers
             }
             else
                 return RedirectToAction("Erro"); //TBA
+        }
+
+        public ActionResult AgendarAnálise(int Id)
+        {
+            if (Session["carro"] != null && Pessoa == true && Session["OficinaId"] != null)
+            {
+                Carro carro = (Carro)Session["carro"];
+                DateTime data = DateTime.Now;
+                Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, Id, data, null, 2);
+
+                return RedirectToAction("StatusOrçamentoPessoa", "Orçamento", new { orçamento.Id });
+            }
+
+            else
+                return RedirectToAction("Erro");
         }
 
         public ActionResult AgendarServiço(int Id)
@@ -122,18 +140,29 @@ namespace Projeto_TCC_2022.Controllers
             return PartialView();
         }
 
-
-        public PartialViewResult ServiçoItemOrçamentoPartial(int Id)
+        public PartialViewResult ItemOrçamentoPartial(int Id, int? Tipo)
         {
-            ServiçoCategoria serviçoCategoria = new ServiçoCategoria();
-            Serviço serviço = Model1.GetServiço(Id);
-            Categoria categoria = Model1.GetCategoriaById(serviço.Fk_Categoria_Id);
+            if (Tipo == 1 || Tipo == null)
+            {
+                ServiçoCategoria serviçoCategoria = new ServiçoCategoria();
+                Serviço serviço = Model1.GetServiço(Id);
+                Categoria categoria = Model1.GetCategoriaById(serviço.Fk_Categoria_Id);
 
-            serviçoCategoria.Serviço = serviço;
-            serviçoCategoria.Categoria = categoria;
+                serviçoCategoria.Serviço = serviço;
+                serviçoCategoria.Categoria = categoria;
 
-            ViewBag.ServiçoCategoria = serviçoCategoria;
-            Session["ServiçoOrçamento"] = serviço.Preço;
+                ViewBag.ServiçoCategoria = serviçoCategoria;
+                Session["ServiçoOrçamento"] = serviço.Preço;
+                ViewBag.Tipo = 1;
+            }
+
+            else if (Tipo == 2)
+            {
+                var peça = Model1.GetPeça(Id);
+                ViewBag.Peça = peça;
+                Session["ServiçoOrçamento"] = peça.Preço;
+                ViewBag.Tipo = 2;
+            }
 
             return PartialView();
         }
@@ -158,11 +187,20 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpGet]
-        public ActionResult LimparOrçamento()
+        public ActionResult LimparOrçamento(int? Type)
         {
-            Session["ServiçoOrçamento"] = null;
-            Session["Soma"] = null;
-            ViewBag.Total = null;
+            if (Type == null)
+            {
+                Session["ServiçoOrçamento"] = null;
+                Session["Soma"] = null;
+                ViewBag.Total = null;
+            }
+            else
+            {
+                decimal Valor = (decimal)Session["ValorOriginal"];
+                Session["Soma"] = Valor;
+                ViewBag.Total = Valor;
+            }
             return null;
         }
 
@@ -185,7 +223,7 @@ namespace Projeto_TCC_2022.Controllers
                     int oficinaId = (int)Session["OficinaId"];
                     DateTime data = DateTime.Now;
 
-                    Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, valor);
+                    Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, valor, 1);
 
                     foreach (string item in serviçoTotal.serviços)
                     {
@@ -221,9 +259,15 @@ namespace Projeto_TCC_2022.Controllers
         {
             Response.Clear();
             Session.Clear();
-            ViewBag.OrçamentoId = Id;
 
-            return View();
+            Orçamento orçamento = Model1.GetOrçamento(Id);
+            if (Pessoa == true && orçamento.fk_Pessoa_Id == UserID)
+            {
+                ViewBag.OrçamentoId = Id;
+                return View();
+            }
+
+            return RedirectToAction("Erro");
         }
 
         public PartialViewResult StatusOrçamentoPessoaPartial(int Id)
@@ -261,27 +305,120 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult ConfirmarDeletarOrçamento(int Id, int Operação)
         {
             Orçamento orçamento = Model1.GetOrçamento(Id);
-            if (ViewBag.éOficina == true && orçamento.fk_Oficina_Id == UserID)
+            if (ViewBag.éOficina == true && orçamento.fk_Oficina_Id == UserID && Operação == 1)
             {
-                if (Operação == 1)
+                return RedirectToAction("AdicionarPeçaServiço/" + orçamento.Id);
+
+            }
+
+            return View();
+        }
+
+        public ActionResult AdicionarPeçaServiço (int Id)
+        {
+            Session["ServiçoOrçamento"] = null;
+            Session["Soma"] = null;
+            ViewBag.Total = null;
+            Orçamento orçamento = Model1.GetOrçamento(Id);
+
+            if (Oficina == true && orçamento.fk_Oficina_Id == UserID)
+            {
+                Oficina oficina = Model1.GetOficinaById(UserID);
+                List<Serviço> serviços = Model1.GetServiços(UserID);
+                List<Peça> peças = Model1.GetPeças(UserID);
+                List<Categoria> categorias = new List<Categoria>();
+
+                foreach (Serviço serviço in serviços)
                 {
-                    Model1.AprovarFinalizarOrçamento(Id, Operação);
-                }
-                else if (Operação == 2)
-                {
-                    Model1.AprovarFinalizarOrçamento(Id, Operação);
+                    Categoria categoria = Model1.GetCategoriaById(serviço.Fk_Categoria_Id);
+                    if (!categorias.Contains(categoria))
+                    {
+                        categorias.Add(categoria);
+                    }
                 }
 
-                if (Operação == 3)
+                if (orçamento.Tipo == 1)
                 {
-                    Model1.AprovarFinalizarOrçamento(Id, Operação);
+                    Session["Soma"] = orçamento.Valor;
+                    ViewBag.Total = Session["Soma"];
+
+                    Session["ValorOriginal"] = Session["Soma"];
+                }
+
+                ViewBag.CategoriasOficina = categorias;
+                ViewBag.OrçamentoOficina = oficina;
+                ViewBag.PeçaOficina = peças;
+                ViewBag.Orçamento = orçamento;
+
+                return View();
+            }
+
+            return RedirectToAction("Erro"); //TBA
+        }
+
+        [HttpPost]
+        public ActionResult Update(ServiçoPeçaTotal serviçoPeçaTotal)
+        {
+            decimal final = 0;
+            Orçamento orçamento = Model1.GetOrçamento(serviçoPeçaTotal.Id);
+
+            if (orçamento.Tipo == 2)
+            {
+                foreach (string item in serviçoPeçaTotal.serviços)
+                {
+                    Serviço serviço = Model1.GetServiço(Convert.ToInt32(item));
+                    final += serviço.Preço;
+
+                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(orçamento.Id, serviço.Id);
+
+                    if (itemOrçamento == null)
+                    {
+                        Model1.AddItemOrçamento(orçamento.Id, serviço.Id, null, 1);
+                    }
+                    else
+                    {
+                        itemOrçamento.Quantidade += 1;
+                        Model1.AddQuantidade(itemOrçamento);
+                    }
+
                 }
             }
 
-            return RedirectToAction("StatusOrçamentoOficina/" + Id);
+            foreach (string item in serviçoPeçaTotal.peças)
+            {
+                Peça peça = Model1.GetPeça(Convert.ToInt32(item));
+                ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(orçamento.Id, peça.Id);
+                if (itemOrçamento == null)
+                {
+                    Model1.AddItemOrçamento(orçamento.Id, null, peça.Id, 1);
+                }
+                else
+                {
+                    itemOrçamento.Quantidade += 1;
+                    Model1.AddQuantidade(itemOrçamento);
+                }
+                final += peça.Preço;
+            }
+
+            if (serviçoPeçaTotal.Total != null)
+            {
+                decimal valor = Decimal.Parse(serviçoPeçaTotal.Total);
+                decimal original = (decimal)Session["ValorOriginal"];
+
+
+                if (final + original == valor)
+                {
+                    orçamento.Data_Aprovação = DateTime.Now;
+                    orçamento.Valor = valor;
+
+                    Model1.AprovarFinalizarOrçamento(orçamento.Id, 1);
+                    return JavaScript($"window.location='/Orçamento/StatusOrçamentoOficina/'" + orçamento.Id);
+                }
+            }
+
+            return View();
+
         }
-
-
 
     }
 }

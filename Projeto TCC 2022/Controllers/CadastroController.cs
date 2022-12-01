@@ -78,7 +78,7 @@ namespace Projeto_TCC_2022.Controllers
 
             Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, Nome,
             Estado, Cidade, Bairro, Rua, Número,
-            Complemento, Descrição, false, AceitaImportado, HorarioFuncionamento);
+            Complemento, Descrição, false, AceitaImportado, false, HorarioFuncionamento);
             Response.Clear();
             return RedirectToAction("AdicionarImagem", "Imagem");
         }

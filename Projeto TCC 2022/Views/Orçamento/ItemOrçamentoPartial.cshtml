@@ -1,0 +1,31 @@
+﻿@if (ViewBag.Tipo == 1)
+{
+    <div class="row itemOrçamento">
+        <div class="col">
+            <p>@ViewBag.ServiçoCategoria.Categoria.Nome</p>
+        </div>
+        <div class="col">
+            <p>@ViewBag.ServiçoCategoria.Serviço.Nome</p>
+            <input class="d-none itemOrçamentoId" value="@ViewBag.ServiçoCategoria.Serviço.Id" />
+        </div>
+        <div class="col">
+            <p class="preço">@ViewBag.ServiçoCategoria.Serviço.Preço.ToString("F")</p>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Tipo == 2)
+{
+    <div class="row itemOrçamento">
+        <div class="col">
+            <p>@ViewBag.Peça.Nome</p>
+        </div>
+        <div class="col">
+            <p>@ViewBag.Peça.Código</p>
+            <input class="d-none itemOrçamentoPeçaId" value="@ViewBag.Peça.Id" />
+        </div>
+        <div class="col">
+            <p class="preço">@ViewBag.Peça.Preço.ToString("F")</p>
+        </div>
+    </div>
+}

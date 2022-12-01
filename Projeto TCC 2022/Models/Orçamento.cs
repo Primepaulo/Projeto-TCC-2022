@@ -15,7 +15,7 @@ namespace Projeto_TCC_2022.Models
         }
 
         [Column(TypeName = "money")]
-        public decimal Valor { get; set; }
+        public decimal? Valor { get; set; }
 
         public int Status { get; set; }
 
@@ -33,6 +33,8 @@ namespace Projeto_TCC_2022.Models
         public DateTime Data_Orçamento { get; set; }
 
         public DateTime? Data_Aprovação { get; set; }
+
+        public int Tipo { get; set; }
 
         public virtual Carro Carro { get; set; }
 

@@ -107,6 +107,13 @@ namespace Projeto_TCC_2022.Controllers
 
         }
 
+        public ActionResult Rejeitar(Oficina oficina)
+        {
+            Model1.RecusarOficina(oficina);
+            return RedirectToAction("ListaOficinas");
+
+        }
+
         public ActionResult VisualizarCategorias()
         {
             return View();

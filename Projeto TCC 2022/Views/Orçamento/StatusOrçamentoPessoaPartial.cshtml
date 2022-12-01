@@ -1,6 +1,9 @@
 ﻿<div class="row text-center mt-3">
     <div class="col">@ViewBag.Oficina.Nome</div>
+    @if (ViewBag.Orçamento.Valor != null)
+    {
     <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
+    }
 </div>
 <div class="row text-center mb-4">
     @if (ViewBag.Orçamento.Status == 0)

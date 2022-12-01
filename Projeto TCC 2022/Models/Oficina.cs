@@ -59,6 +59,8 @@ namespace Projeto_TCC_2022.Models
 
         public bool AceitaImportado { get; set; }
 
+        public bool Finalizada { get; set; }
+
         [StringLength(11)]
         public string HorarioFuncionamento { get; set; }
 

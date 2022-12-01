@@ -3,7 +3,10 @@
 {
     <div class="row mb-3">
         <div class="col">
+            @if (ViewBag.Orçamentos[i].Valor != null)
+            {
             @ViewBag.Orçamentos[i].Valor.ToString("F")
+            }
         </div>
         <div class="col">
             @ViewBag.Oficinas[i].Nome

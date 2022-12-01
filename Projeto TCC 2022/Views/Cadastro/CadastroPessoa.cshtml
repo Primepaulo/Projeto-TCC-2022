@@ -77,7 +77,7 @@
         <div class="form-group d-none" id="textCPF">
             @Html.LabelFor(model => model.CPF, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control", name = "CPF", @id = "CPF", maxlength = 14 } })
+                @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control", name = "CPF", @id = "CPF", maxlength = 14, @autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -85,7 +85,7 @@
         <div class="form-group d-none" id="textCNPJ">
             @Html.LabelFor(model => model.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CNPJ, new { htmlAttributes = new { @class = "form-control", name = "CNPJ", @id = "CNPJ", maxlength = 18 } })
+                @Html.EditorFor(model => model.CNPJ, new { htmlAttributes = new { @class = "form-control", name = "CNPJ", @id = "CNPJ", maxlength = 18, @autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.CNPJ, "", new { @class = "text-danger" })
             </div>
         </div>

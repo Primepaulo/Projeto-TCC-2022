@@ -4,7 +4,10 @@
     <div class="container mt-5">
         <div class="row text-center mt-3">
             <div class="col">@ViewBag.Pessoa.Nome</div>
-            <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
+            @if (ViewBag.Orçamento.Tipo == 1)
+            {
+                <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
+            }
             <div class="col">@ViewBag.Carro.Marca @ViewBag.Carro.Modelo</div>
         </div>
     </div>
@@ -14,14 +17,29 @@
     <div class="text-center mt-4">
         @if (ViewBag.Orçamento.Status == 0)
         {
-            <div class="row">
-                <div class="col">
-                    <button class="btn btn-success" type="submit" name="Operação" value="1">Aprovar Orçamento</button>
+            if (ViewBag.Orçamento.Tipo == 1)
+            {
+                <div class="row">
+                    <div class="col">
+
+                        <button class="btn btn-success" type="submit" name="Operação" value="1">Aceitar Orçamento</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-success" type="submit" name="Operação" value="3">Recusar Orçamento</button>
+                    </div>
                 </div>
-                <div class="col">
-                    <button class="btn btn-success" type="submit" name="Operação" value="3">Recusar Orçamento</button>
+            }
+            if (ViewBag.Orçamento.Tipo == 2)
+            {
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-success" type="submit" name="Operação" value="1">Aceitar Análise</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-success" type="submit" name="Operação" value="3">Recusar Análise</button>
+                    </div>
                 </div>
-            </div>
+            }
         }
 
         @if (ViewBag.Orçamento.Status == 1)

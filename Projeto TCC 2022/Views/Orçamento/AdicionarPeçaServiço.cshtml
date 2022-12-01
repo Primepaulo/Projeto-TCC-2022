@@ -1,0 +1,223 @@
+﻿
+<div class="container mt-5">
+    @if (ViewBag.Orçamento.Tipo == 2)
+    {
+    <div class="row">
+        <div class="col">
+            <select id="Categorias" placeholder="Escolha uma Categoria">
+                <option value="">Escolha uma Categoria</option>
+                @foreach (var item in ViewBag.CategoriasOficina)
+                {
+                    <option value="@item.Id">@item.Nome</option>
+                }
+            </select>
+        </div>
+
+
+        <div class="col" id="DivServiço">
+            <select id="Serviços" placeholder="Escolha um Serviço">
+                <option value="">Escolha um Serviço</option>
+            </select>
+        </div>
+
+
+        <div class="col">
+            <button onclick="AddItem(1)">Adicionar Serviço</button>
+        </div>
+    </div>
+    }
+
+
+    <div class="row mt-5">
+        <div class="col" id="DivPeça">
+            <select id="Peças" placeholder="Escolha uma Peça">
+                <option value="">Escolha uma Peça</option>
+                @if (ViewBag.PeçaOficina != null)
+                {
+                    foreach (var item in ViewBag.PeçaOficina)
+                    {
+                        <option value="@item.Id">@item.Nome - @item.Preço.ToString("F")</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col">
+            <button onclick="AddItem(2)">Adicionar Peça</button>
+        </div>
+
+    </div>
+
+
+
+        <div class="container mt-5" id="corpo"></div>
+        <div class="container mt-5" id="total"></div>
+        <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
+        <div id="erro"></div>
+        <div class="text-center"><button onclick="Submit()" class="btn btn-default">Confirmar</button></div>
+</div>
+
+
+
+
+
+@section scripts{
+
+    <script>
+
+        var Type = @ViewBag.Orçamento.Tipo
+
+        function AddItem(Id) {
+
+            if (Id == 1) {
+                var serviçoId = $("#Serviços").val();
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: "/Orçamento/ItemOrçamentoPartial/?Id=" + serviçoId + "&Tipo=" + Id,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#corpo').append(data);
+                        $.ajax
+                        ({
+                            type: 'GET',
+                            url: "/Orçamento/TotalPartial/",
+                            dataType: 'html',
+                            cache: false,
+                            success: function (data) {
+                                $('#total').html(data);
+                            }
+                        })
+
+                    }
+                });
+            }
+
+           if (Id == 2) {
+                var PeçaId = $("#Peças").val();
+
+                $.ajax
+                    ({
+                        type: 'GET',
+                        url: "/Orçamento/ItemOrçamentoPartial/?Id=" + PeçaId + "&Tipo=" + Id,
+                        dataType: 'html',
+                        cache: false,
+                        success: function (data) {
+                            $('#corpo').append(data);
+                            $.ajax
+                                ({
+                                    type: 'GET',
+                                    url: "/Orçamento/TotalPartial/",
+                                    dataType: 'html',
+                                    cache: false,
+                                    success: function (data) {
+                                        $('#total').html(data);
+                                    }
+                                })
+
+                        }
+                    });
+            }
+
+        }
+
+        function eventHandler(InputCategoria) {
+            var CategoriaController = InputCategoria[0].selectize;
+            var categoriaId = CategoriaController.getValue();
+            console.log("Executado");
+
+            var url = "/Orçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @ViewBag.OrçamentoOficina.Id;
+
+            $.ajax
+            ({
+                type: 'GET',
+                url: url,
+                dataType: 'html',
+                cache: false,
+                success: function (data) {
+                    $('#DivServiço').html(data);
+                },
+                error: function () {
+                    console.log("Erro");
+                }
+            }).done(function () {
+                var InputServiço = $('#Serviços').selectize({
+                    sortField: 'text'
+                });
+                console.log("Partial JS rodado");
+            });
+        };
+
+        $(document).ready(function () {
+
+            if (Type == 2) {
+                var InputServiço = $('#Serviços').selectize({
+                    sortField: 'text'
+                });
+
+                 var ServiçoController = InputServiço[0].selectize;
+
+                ServiçoController.disable();
+
+                var InputCategoria = $('#Categorias').selectize({
+                    sortField: 'text',
+                    onChange: function () {
+                        eventHandler(InputCategoria);
+                    }
+                });
+            };
+            
+            $('#Peças').selectize({
+                sortField: 'text'
+            });
+        });
+
+        function LimparOrçamento() {
+            $(".itemOrçamento").empty();
+            $("#DivSoma").empty();
+
+            $.ajax
+            ({
+                type: 'GET',
+                url: "/Orçamento/LimparOrçamento/?Type=" + Type,
+                dataType: 'html',
+                cache: false,
+                error: function () {
+                    console.log("Erro");
+                }
+            });
+        }
+
+        function Submit() {
+            var serviços = $(".itemOrçamentoId").map((_, item) => item.value).get();
+
+            var total = $("#valorTotal").val();
+
+            var peças = $(".itemOrçamentoPeçaId").map((_, item) => item.value).get();
+
+            if (total != null) {
+
+                $.ajax
+                    ({
+                        type: 'POST',
+                        url: '@Url.Action("Update", "Orçamento")',
+                        data: {
+                            serviços: serviços,
+                            total: total,
+                            peças: peças,
+                            Id: @ViewBag.Orçamento.Id
+                        }
+
+                    })
+            }
+            else {
+                erro = '<div id="erro"><p>Insira algum item no orçamento para prosseguir.</p></div>';
+                $('#erro').html(erro);
+            }
+        }
+
+
+    </script>
+}

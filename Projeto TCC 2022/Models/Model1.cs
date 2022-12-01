@@ -269,7 +269,7 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 var query = from Oficina in context.Oficina
-                            where Oficina.Aprovada == false
+                            where Oficina.Aprovada == false && Oficina.Finalizada == false
                             select Oficina;
                 var oficinas = query.ToList();
                 return oficinas;
@@ -294,6 +294,32 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
+
+        public static void RecusarOficina(Oficina oficina)
+        {
+            using (var context = new Model1())
+            {
+                oficina.Finalizada = true;
+
+                context.Entry(oficina).State = EntityState.Modified;
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
 
         public static List<Messages> GetNonReadMessages()
         {
@@ -407,18 +433,6 @@ namespace Projeto_TCC_2022.Models
 
         // ----------------------------------------------------------------------------------------------------
         // OFICINA
-
-        public static List<Oficina> GetOficina(string x)
-        {
-            using (var context = new Model1())
-            {
-                var query = from Oficina in context.Oficina
-                            where Oficina.Nome.Contains(x)
-                            select Oficina;
-                var oficinas = query.ToList();
-                return oficinas;
-            }
-        }
         public static Oficina GetOficinaById(int Id)
         {
                 var context = new Model1();
@@ -431,7 +445,7 @@ namespace Projeto_TCC_2022.Models
         }
 
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, string Bairro,
-        string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado, string HorarioFuncionamento)
+        string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado, bool Finalizada, string HorarioFuncionamento)
         {
             using (var context = new Model1())
             {
@@ -450,6 +464,7 @@ namespace Projeto_TCC_2022.Models
                     Descrição = Descrição,
                     Aprovada = Aprovada,
                     AceitaImportado = AceitaImportado,
+                    Finalizada = Finalizada,
                     HorarioFuncionamento = HorarioFuncionamento
                 });
                 try
@@ -732,7 +747,7 @@ namespace Projeto_TCC_2022.Models
         }
 
 
-        public static Orçamento CreateOrçamento(int uID, string Placa, int OficinaId, DateTime DateOrçamento, decimal Valor)
+        public static Orçamento CreateOrçamento(int uID, string Placa, int OficinaId, DateTime DateOrçamento, decimal? Valor, int Tipo)
         {
             using (var context = new Model1())
             {
@@ -743,7 +758,8 @@ namespace Projeto_TCC_2022.Models
                     Data_Orçamento = DateOrçamento,
                     Data_Aprovação = null,
                     Status = 0,
-                    Valor = Valor
+                    Valor = Valor,
+                    Tipo = Tipo
                 };
 
                 context.Orçamento.Add(orçamento);
@@ -820,6 +836,20 @@ namespace Projeto_TCC_2022.Models
                 return item;
             }
         }
+
+        public static ItemOrçamento GetItemOrçamentoPeça(int OrçamentoId, int PeçaId)
+        {
+            using (var context = new Model1())
+            {
+                var query = from ItemOrçamento in context.ItemOrçamento
+                            where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId &&
+                            ItemOrçamento.Fk_Peça_Id == PeçaId
+                            select ItemOrçamento;
+                var item = query.SingleOrDefault();
+                return item;
+            }
+        }
+
 
         public static void AddItemOrçamento(int Orçamento_Id, int? Serviço_Id, int? Peça_Id, double quantidade)
         {
