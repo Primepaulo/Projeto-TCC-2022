@@ -36,10 +36,10 @@ namespace Projeto_TCC_2022.Controllers
             Model1.InsertCelular(CelularTelefone1, UserID);
             Response.Clear();
 
-            if (ViewBag.éPessoa == true)
-                return RedirectToAction("/Carros/CadastroCarros");
-            else if (ViewBag.éOficina == true)
-                return RedirectToAction("/Serviços/");
+            if (Pessoa == true)
+                return RedirectToAction("CadastroCarros", "Carros");
+            else if (Oficina == true)
+                return RedirectToAction("AdicionarServiços", "Serviços");
             else
                 return View();
         }

@@ -28,7 +28,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=LabVS2022" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -721,7 +721,7 @@ namespace Projeto_TCC_2022.Models
         // ----------------------------------------------------------------------------------------------------
         // Orçamento
 
-        public static List<Orçamento> GetOrçamentos(int uID)
+        public static List<Orçamento> GetAllOrçamentos(int uID)
         {
             using (var context = new Model1())
             {
@@ -734,6 +734,21 @@ namespace Projeto_TCC_2022.Models
                 return orçamentos;
             }
         }
+
+        public static List<Orçamento> GetOrçamentos(int uID)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Orçamento in context.Orçamento
+                            join Pessoa in context.Pessoa on Orçamento.fk_Pessoa_Id equals Pessoa.Id
+                            join Oficina in context.Oficina on Orçamento.fk_Oficina_Id equals Oficina.Id
+                            where (Orçamento.fk_Pessoa_Id == uID || Orçamento.fk_Oficina_Id == uID) && Orçamento.Status != 2
+                            select Orçamento;
+                var orçamentos = query.ToList();
+                return orçamentos;
+            }
+        }
+
         public static Orçamento GetOrçamento(int Id)
         {
             using (var context = new Model1())
@@ -783,13 +798,18 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AprovarFinalizarOrçamento(int Id, int Operação)
+        public static void AprovarFinalizarOrçamento(int Id, int Operação, decimal? Valor)
         {
             using (var context = new Model1())
             {
-                Orçamento orçamento = Model1.GetOrçamento(Id);
+                Orçamento orçamento = GetOrçamento(Id);
                 orçamento.Status = Operação;
                 orçamento.Data_Aprovação = DateTime.Now;
+
+                if (Valor != null)
+                {
+                    orçamento.Valor = Valor;
+                }
 
                 context.Entry(orçamento).State = EntityState.Modified;
                 try

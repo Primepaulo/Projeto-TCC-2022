@@ -184,6 +184,9 @@
                 url: "/Orçamento/LimparOrçamento/?Type=" + Type,
                 dataType: 'html',
                 cache: false,
+                success: function () {
+                    console.log("Foi " + Type);
+                },
                 error: function () {
                     console.log("Erro");
                 }

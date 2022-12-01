@@ -189,13 +189,16 @@ namespace Projeto_TCC_2022.Controllers
         [HttpGet]
         public ActionResult LimparOrçamento(int? Type)
         {
-            if (Type == null)
+            Debug.WriteLine("Foi" + Type);
+
+            if (Type == 2 || Type == null)
             {
+                Debug.WriteLine("Tipo: " + Type);
                 Session["ServiçoOrçamento"] = null;
                 Session["Soma"] = null;
                 ViewBag.Total = null;
             }
-            else
+            else if (Type == 1)
             {
                 decimal Valor = (decimal)Session["ValorOriginal"];
                 Session["Soma"] = Valor;
@@ -239,7 +242,7 @@ namespace Projeto_TCC_2022.Controllers
                             Model1.AddQuantidade(itemOrçamento);
                         }
                     }
-                    return JavaScript($"window.location='/Orçamento/StatusOrçamentoPessoa/'");
+                    return JavaScript($"window.location='/Orçamento/StatusOrçamentoPessoa/" + orçamento.Id + "'");
                 }
             }
             else if (Session["OficinaId"] == null)
@@ -305,10 +308,15 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult ConfirmarDeletarOrçamento(int Id, int Operação)
         {
             Orçamento orçamento = Model1.GetOrçamento(Id);
-            if (ViewBag.éOficina == true && orçamento.fk_Oficina_Id == UserID && Operação == 1)
+            if (orçamento.fk_Oficina_Id == UserID && Operação == 1)
             {
                 return RedirectToAction("AdicionarPeçaServiço/" + orçamento.Id);
 
+            }
+            else if (orçamento.fk_Oficina_Id == UserID && Operação == 2)
+            {
+                Model1.AprovarFinalizarOrçamento(orçamento.Id, Operação, null);
+                return RedirectToAction("VisualizarOrçamentos");
             }
 
             return View();
@@ -403,16 +411,26 @@ namespace Projeto_TCC_2022.Controllers
             if (serviçoPeçaTotal.Total != null)
             {
                 decimal valor = Decimal.Parse(serviçoPeçaTotal.Total);
-                decimal original = (decimal)Session["ValorOriginal"];
+                decimal original;
 
+                if (Session["ValorOriginal"] != null)
+                {
+                    original = (decimal)Session["ValorOriginal"];
+                }
+
+                else 
+                { 
+                    original = 0;
+                }
+
+                Debug.WriteLine(final + "/" + original + "/" + valor);
 
                 if (final + original == valor)
                 {
-                    orçamento.Data_Aprovação = DateTime.Now;
                     orçamento.Valor = valor;
 
-                    Model1.AprovarFinalizarOrçamento(orçamento.Id, 1);
-                    return JavaScript($"window.location='/Orçamento/StatusOrçamentoOficina/'" + orçamento.Id);
+                    Model1.AprovarFinalizarOrçamento(orçamento.Id, 1, valor);
+                    return JavaScript($"window.location='/Orçamento/StatusOrçamentoOficina/" + orçamento.Id + "'");
                 }
             }
 
