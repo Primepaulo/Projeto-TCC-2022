@@ -13,6 +13,7 @@ using System.Web.Services.Description;
 
 namespace Projeto_TCC_2022.Controllers
 {
+    //Nem todo o orçamento tem peças... Fazer isso amanhã
     public class OrçamentoController : DefaultController
     {
         public ActionResult VisualizarOrçamentos()
@@ -313,7 +314,12 @@ namespace Projeto_TCC_2022.Controllers
                 return RedirectToAction("AdicionarPeçaServiço/" + orçamento.Id);
 
             }
-            else if (orçamento.fk_Oficina_Id == UserID && Operação == 2)
+            else if (orçamento.fk_Pessoa_Id == UserID && Operação == 2)
+            {
+                Model1.AprovarFinalizarOrçamento(orçamento.Id, Operação, null);
+                return RedirectToAction("StatusOrçamentoPessoa", "Orçamento", new { orçamento.Id });
+            }
+            else if (orçamento.fk_Oficina_Id == UserID && (Operação == 3 || Operação == 4))
             {
                 Model1.AprovarFinalizarOrçamento(orçamento.Id, Operação, null);
                 return RedirectToAction("VisualizarOrçamentos");

@@ -1,5 +1,5 @@
 ﻿
-@using (Html.BeginForm("ConfirmarDeletarOrçamento", "Orçamento", FormMethod.Post))
+@using (Html.BeginForm("ConfirmarDeletarOrçamento", "Orçamento", FormMethod.Post, new {id = "id"}))
 {
     <div class="container mt-5">
         <div class="row text-center mt-3">
@@ -22,10 +22,11 @@
                 <div class="row">
                     <div class="col">
 
-                        <button class="btn btn-success" type="submit" name="Operação" value="1">Aceitar Orçamento</button>
+                        <button class="btn btn-success" type="submit" name="Operação" value="1">Aceitar Serviço</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-success" type="submit" name="Operação" value="3">Recusar Orçamento</button>
+                        @*<button class="btn btn-success" type="submit" name="Operação" value="4">Recusar Serviço</button>*@
+                        <button class="btn btn-danger" onclick="Confimar()">Recusar Serviço</button>
                     </div>
                 </div>
             }
@@ -36,7 +37,8 @@
                         <button class="btn btn-success" type="submit" name="Operação" value="1">Aceitar Análise</button>
                     </div>
                     <div class="col">
-                        <button class="btn btn-success" type="submit" name="Operação" value="3">Recusar Análise</button>
+                        @*<button class="btn btn-success" type="submit" name="Operação" value="4">Recusar Análise</button>*@
+                        <button class="btn btn-danger" onclick="Confimar()">Recusar Análise</button>
                     </div>
                 </div>
             }
@@ -44,8 +46,44 @@
 
         @if (ViewBag.Orçamento.Status == 1)
         {
-            <button class="btn btn-secondary" type="submit" name="Operação" value="2">Finalizar Orçamento</button>
+            <button class="btn btn-secondary" type="submit" name="Operação" value="3">Finalizar Orçamento</button>
         }
-    </div>
 
+        <div id="dialog-confirm" title="Recusar Orçamento?" class="d-none">
+            <p><span class="ui-icon ui-icon-alert"></span>Recusar o orçamento é um ato permanente. Você tem certeza dessa ação?</p>
+        </div>
+
+    </div>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $(function Confirmar() {
+                $("#dialog-confirm").dialog({
+
+                    resizable: false,
+                    height: "auto",
+                    width: 400,
+                    modal: true,
+                    buttons: [
+                        {
+                            text: "Recusar Orçamento",
+                            type: "submit",
+                            form: "id"
+                        },
+                        {
+                            text: "Retornar",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    ]
+                });
+            });
+
+        }
+    </script>
 }

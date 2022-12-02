@@ -17,16 +17,23 @@
                 var orçamentoId = @ViewBag.OrçamentoId;
             }
 
-            $.ajax
-                ({
-                    type: 'GET',
-                    url: "/Orçamento/StatusOrçamentoPessoaPartial/?Id=" + orçamentoId,
-                    dataType: 'html',
-                    cache: false,
-                    success: function (data) {
-                        $('#Status').append(data);
-                    }
-                });
+            function Load() {
+                $.ajax
+                    ({
+                        type: 'GET',
+                        url: "/Orçamento/StatusOrçamentoPessoaPartial/?Id=" + orçamentoId,
+                        dataType: 'html',
+                        cache: false,
+                        success: function (data) {
+                            $('#Status').html(data);
+                        }
+                    });
+
+            }
+
+            Load();
+
+            setInterval(Load(), 60000)
         });
     </script>
 }

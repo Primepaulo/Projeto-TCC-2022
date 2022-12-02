@@ -1,26 +1,35 @@
-﻿<div class="row text-center mt-3">
+﻿<div class="container border border-secondary" id="Status">
+<div class="row text-center mt-3">
     <div class="col">@ViewBag.Oficina.Nome</div>
     @if (ViewBag.Orçamento.Valor != null)
     {
-    <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
+        <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
     }
 </div>
 <div class="row text-center mb-4">
     @if (ViewBag.Orçamento.Status == 0)
     {
-        <h3>Em Análise</h3>
+        <h3>Aguardando retorno da Oficina</h3>
     }
     @if (ViewBag.Orçamento.Status == 1)
     {
-        <h3>Confirmado! Dirija-se à Oficina durante o horário de funcionamento</h3>
-        <p>@ViewBag.Horarios[0] até @ViewBag.Horarios[1]</p>
+        <h3>Confirmado pela Oficina! Avalie a proposta final do orçamento.</h3>
+        using (Html.BeginForm("ConfirmarDeletarOrçamento", "Orçamento", FormMethod.Post))
+        {
+            <div class="col">
+                <button class="btn btn-success" type="submit" name="Operação" value="2">Aceitar Orçamento</button>
+                <button class="btn btn-success" type="submit" name="Operação" value="4">Recusar Orçamento</button>
+            </div>
+        }
     }
     @if (ViewBag.Orçamento.Status == 2)
     {
-        <h3>Serviço em andamento...</h3>
+        <h3>Confirmado! Dirija-se a oficina durante o horário de funcionamento.</h3>
+        <p>@ViewBag.Horarios[0] até @ViewBag.Horarios[1]</p>
     }
     @if (ViewBag.Orçamento.Status == 3)
     {
         <h3>Serviço Finalizado!</h3>
     }
+</div>
 </div>

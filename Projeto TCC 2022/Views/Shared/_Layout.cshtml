@@ -56,7 +56,8 @@
                     <option value="OficinaBairro">Bairro</option>
                 </select>
                 <input for="navSearch" name="navSearch" class="form-control me-2 ms-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" size="40" />
-                <select for="categoria" name="categoria" class="d-none form-select" id="categoria">
+                <select for="categoria" name="categoria" class="d-none form-select categoria">
+                    <option></option>
                     @foreach (var item in ViewBag.Categorias)
                     {
                         <option value="@item.Nome">@item.Nome</option>
@@ -100,16 +101,22 @@
     @Scripts.Render("~/bundles/jqueryui")
     @RenderSection("scripts", required: false)
     <script>
+
+        $('.categoria').selectize({
+            sortField: 'text',
+            placeholder: "Insira o nome de uma categoria..."
+        });
+
         function exibirCategorias() {
 
             if ($("#filtro").val() == "ServiçoCategoria") {
                 $("#importado").addClass("d-none");
-                $("#categoria").removeClass("d-none");
+                $(".categoria").removeClass("d-none");
                 $("#navbarDarkDropdownMenuLink").addClass("d-none");
             }
             else if ($("#filtro").val() != "ServiçoCategoria") {
-                if (!$("#categoria").hasClass("d-none")) {
-                    $("#categoria").addClass("d-none");
+                if (!$(".categoria").hasClass("d-none")) {
+                    $(".categoria").addClass("d-none");
                     $("#importado").removeClass("d-none");
                     $("#navbarDarkDropdownMenuLink").removeClass("d-none");
                 }
