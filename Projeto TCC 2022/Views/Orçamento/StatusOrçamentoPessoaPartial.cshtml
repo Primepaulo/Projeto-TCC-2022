@@ -16,9 +16,10 @@
         <h3>Confirmado pela Oficina! Avalie a proposta final do orçamento.</h3>
         using (Html.BeginForm("ConfirmarDeletarOrçamento", "Orçamento", FormMethod.Post))
         {
+            <input type="hidden" name="Id" value="@ViewBag.Orçamento.Id" />
             <div class="col">
                 <button class="btn btn-success" type="submit" name="Operação" value="2">Aceitar Orçamento</button>
-                <button class="btn btn-success" type="submit" name="Operação" value="4">Recusar Orçamento</button>
+                <button class="btn btn-danger" type="submit" name="Operação" value="4">Recusar Orçamento</button>
             </div>
         }
     }

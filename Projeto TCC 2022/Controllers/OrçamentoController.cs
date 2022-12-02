@@ -21,9 +21,20 @@ namespace Projeto_TCC_2022.Controllers
             
             return View();
         }
-        public PartialViewResult VisualizarOrçamentoPessoaPartial()
+        public PartialViewResult VisualizarOrçamentoPessoaPartial(int data)
         {
-            List<Orçamento> orçamentos = Model1.GetOrçamentos(UserID);
+            List<Orçamento> orçamentos = new List<Orçamento>();
+
+            if (data == 1)
+            {
+                orçamentos = Model1.GetOrçamentos(UserID);
+            }
+
+            else if (data == 2)
+            {
+               orçamentos = Model1.GetAllOrçamentos(UserID);
+            }
+
             ViewBag.Orçamentos = orçamentos;
             List<Oficina> oficinas = new List<Oficina>();
             List<Carro> carros = new List<Carro>();
@@ -55,6 +66,10 @@ namespace Projeto_TCC_2022.Controllers
             return PartialView();
         }
 
+        public ActionResult HistoricoOrçamentos()
+        {
+            return View();
+        }
 
         public ActionResult EscolhaCarro(int Id, bool Value)
         {
@@ -448,6 +463,7 @@ namespace Projeto_TCC_2022.Controllers
             {
                 var valor = (decimal)Session["ValorOriginal"];
                 Model1.AprovarFinalizarOrçamento(orçamento.Id, 1, valor);
+                return JavaScript($"window.location='/Orçamento/StatusOrçamentoOficina/" + orçamento.Id + "'");
             }
 
             return View();

@@ -200,7 +200,7 @@
 
             var peças = $(".itemOrçamentoPeçaId").map((_, item) => item.value).get();
 
-            if (total != null || (serviços == null && peças == null)) {
+            if (total != null || Type == 1) {
 
                 $.ajax
                     ({

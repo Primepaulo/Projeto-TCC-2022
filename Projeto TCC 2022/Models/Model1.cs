@@ -28,7 +28,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -742,7 +742,7 @@ namespace Projeto_TCC_2022.Models
                 var query = from Orçamento in context.Orçamento
                             join Pessoa in context.Pessoa on Orçamento.fk_Pessoa_Id equals Pessoa.Id
                             join Oficina in context.Oficina on Orçamento.fk_Oficina_Id equals Oficina.Id
-                            where (Orçamento.fk_Pessoa_Id == uID || Orçamento.fk_Oficina_Id == uID) && Orçamento.Status != 2 && Orçamento.Status != 3
+                            where (Orçamento.fk_Pessoa_Id == uID || Orçamento.fk_Oficina_Id == uID) && Orçamento.Status != 3 && Orçamento.Status != 4
                             select Orçamento;
                 var orçamentos = query.ToList();
                 return orçamentos;

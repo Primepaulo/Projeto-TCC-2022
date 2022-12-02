@@ -5,7 +5,7 @@
         <div class="col">
             @if (ViewBag.Orçamentos[i].Valor != null)
             {
-            @ViewBag.Orçamentos[i].Valor.ToString("F")
+                @ViewBag.Orçamentos[i].Valor.ToString("F")
             }
         </div>
         <div class="col">
@@ -13,6 +13,9 @@
         </div>
         <div class="col">
             @ViewBag.Carros[i].Placa
+        </div>
+        <div class="col">
+            @ViewBag.Orçamentos[i].Data_Orçamento.ToString("dd/MM/yyy, HH:mm")
         </div>
         <div class="col">
             @Html.ActionLink("Ver Detalhes", "StatusOrçamentoPessoa", "Orçamento", new { Id = ViewBag.Orçamentos[i].Id }, null)
