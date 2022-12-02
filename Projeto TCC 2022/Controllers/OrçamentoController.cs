@@ -398,20 +398,24 @@ namespace Projeto_TCC_2022.Controllers
                 }
             }
 
-            foreach (string item in serviçoPeçaTotal.peças)
+            if (serviçoPeçaTotal.peças != null)
             {
-                Peça peça = Model1.GetPeça(Convert.ToInt32(item));
-                ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(orçamento.Id, peça.Id);
-                if (itemOrçamento == null)
+
+                foreach (string item in serviçoPeçaTotal.peças)
                 {
-                    Model1.AddItemOrçamento(orçamento.Id, null, peça.Id, 1);
+                    Peça peça = Model1.GetPeça(Convert.ToInt32(item));
+                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(orçamento.Id, peça.Id);
+                    if (itemOrçamento == null)
+                    {
+                        Model1.AddItemOrçamento(orçamento.Id, null, peça.Id, 1);
+                    }
+                    else
+                    {
+                        itemOrçamento.Quantidade += 1;
+                        Model1.AddQuantidade(itemOrçamento);
+                    }
+                    final += peça.Preço;
                 }
-                else
-                {
-                    itemOrçamento.Quantidade += 1;
-                    Model1.AddQuantidade(itemOrçamento);
-                }
-                final += peça.Preço;
             }
 
             if (serviçoPeçaTotal.Total != null)
@@ -438,6 +442,12 @@ namespace Projeto_TCC_2022.Controllers
                     Model1.AprovarFinalizarOrçamento(orçamento.Id, 1, valor);
                     return JavaScript($"window.location='/Orçamento/StatusOrçamentoOficina/" + orçamento.Id + "'");
                 }
+            }
+
+            else if (serviçoPeçaTotal.Total == null)
+            {
+                var valor = (decimal)Session["ValorOriginal"];
+                Model1.AprovarFinalizarOrçamento(orçamento.Id, 1, valor);
             }
 
             return View();
