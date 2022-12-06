@@ -19,6 +19,8 @@ namespace Projeto_TCC_2022.Models
 
         public double Quantidade { get; set; }
 
+        public bool? Avaliado { get; set; }
+
         public virtual Orçamento Orçamento { get; set; }
 
         public virtual Peça Peça { get; set; }

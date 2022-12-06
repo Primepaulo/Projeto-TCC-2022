@@ -134,5 +134,21 @@ namespace Projeto_TCC_2022.Controllers
             return View();
         }
 
+        public PartialViewResult NotificaçõesPartial()
+        {
+            ViewBag.Notificações = Model1.GetNotificações(UserID);
+            return PartialView();
+        }
+
+        public ActionResult MarkAsRead(int Id)
+        {
+            var notificação = Model1.GetNotificação(Id);
+            if (notificação.Fk_User_Id == UserID)
+            {
+                Model1.MarcarComoLido(notificação);
+            }
+            return null;
+        }
+
     }
 }

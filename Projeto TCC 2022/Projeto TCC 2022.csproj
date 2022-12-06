@@ -171,6 +171,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministradorController.cs" />
+    <Compile Include="Controllers\AvaliaçãoController.cs" />
     <Compile Include="Controllers\CadastroController.cs" />
     <Compile Include="Controllers\CarrosController.cs" />
     <Compile Include="Controllers\GenericController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
+    <Compile Include="Models\Classes\ServiçoAvaliação.cs" />
     <Compile Include="Models\Classes\ServiçoCategoria.cs" />
     <Compile Include="Models\Classes\ServiçoPeçaTotal.cs" />
     <Compile Include="Models\Classes\ServiçoTotal.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\Model1.cs" />
+    <Compile Include="Models\Notificação.cs" />
     <Compile Include="Models\Oficina.cs" />
     <Compile Include="Models\Orçamento.cs" />
     <Compile Include="Models\Pessoa.cs" />
@@ -315,6 +318,11 @@
     <Content Include="Views\Orçamento\StatusOrçamentoOficina.cshtml" />
     <Content Include="Views\Orçamento\AdicionarPeçaServiço.cshtml" />
     <Content Include="Views\Orçamento\HistoricoOrçamentos.cshtml" />
+    <Content Include="Views\Home\NotificaçõesPartial.cshtml" />
+    <Content Include="Views\Avaliação\VisualizarAvaliações.cshtml" />
+    <Content Include="Views\Avaliação\AvaliarServiço.cshtml" />
+    <Content Include="Views\Avaliação\EditarAvaliação.cshtml" />
+    <Content Include="Views\Avaliação\DeletarAvaliação.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

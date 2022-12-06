@@ -27,7 +27,7 @@
             @ViewBag.Carros[i].Placa
         </div>
         <div class="col">
-            @ViewBag.Orçamentos[i].Data_Orçamento.ToString("dd MM YYYY, HH:mm")
+            @ViewBag.Orçamentos[i].Data_Orçamento.ToString("dd/MM/yy, HH:mm")
         </div>
         <div class="col">
             @Html.ActionLink("Ver Detalhes", "StatusOrçamentoOficina", "Orçamento", new { Id = ViewBag.Orçamentos[i].Id }, null)

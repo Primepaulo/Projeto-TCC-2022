@@ -1,0 +1,63 @@
+﻿    <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="notificaçõesMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+
+                @{int count = 0;}
+
+                @foreach (var item in ViewBag.Notificações)
+                {
+                    if (item.Lido == false)
+                    {
+                        count++;
+                    }
+                }
+                @if (count > 0)
+                {
+
+                <i class="bi bi-bell-fill"><span class="badge rounded-pill badge-notification bg-danger position-absolute translate-middle"  style="font-size: 9px;">@count</span></i>
+                }
+
+                @if (count == 0)
+                 {
+                    <i class="bi bi-bell-fill"></i>
+                 }
+
+            </a>
+
+            <div class="dropdown-menu text-center notificação" aria-labelledby="navbarDarkDropdownMenuLink">
+                <ul id="notificaçãoLista">
+                    @if (ViewBag.Notificações.Count == 0)
+                    {
+                        <li>Sem notificações!</li>
+                    }
+                    @foreach (var item in ViewBag.Notificações)
+                    {
+                        <li>
+                            <div class="row">
+                                <div class="col">
+                                    <i class="bi bi-bell"></i>
+                                </div>
+                                @if (ViewBag.éPessoa == true)
+                                {
+                                    <div class="col">
+                                        <a class="read" href="/Orçamento/StatusOrçamentoPessoa/@item.Orçamento.Id">Houveram Modificações no status de um de seus orçamentos</a>
+                                        <input type="hidden" class="d-none" value="@item.Id" id="notificaçãoInput">
+                                    </div>
+                                }
+                                @if (ViewBag.éOficina == true)
+                                {
+                                    <div class="col">
+                                        <a class="read" href="/Orçamento/StatusOrçamentoOficina/@item.Orçamento.Id">Houveram Modificações no status de um de seus orçamentos</a>
+                                        <input type="hidden" class="d-none" value="@item.Id" id="notificaçãoInput">
+                                    </div>
+                                }
+                                <div class="col">
+                                    <button type="button" class="btn btn-outline-success me-2 read" value="@item.Id">Marcar como Lido</button>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+    </ul>

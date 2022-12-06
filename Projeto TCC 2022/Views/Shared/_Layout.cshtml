@@ -81,6 +81,10 @@
                     </ul>
                 </div>
 
+                <div class="collapse navbar-collapse" id="notificações">
+
+                </div>
+
                 <button type="submit" name="navSubmit" class="btn btn-outline-success ms-3"><i class="bi bi-search"></i></button>
 
             </form>
@@ -100,28 +104,80 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
     @RenderSection("scripts", required: false)
-    <script>
+<script>
 
-        $('.categoria').selectize({
-            sortField: 'text',
-            placeholder: "Insira o nome de uma categoria..."
-        });
+    $('.categoria').selectize({
+        sortField: 'text',
+        placeholder: "Insira o nome de uma categoria..."
+    });
 
-        function exibirCategorias() {
+    function exibirCategorias() {
 
-            if ($("#filtro").val() == "ServiçoCategoria") {
-                $("#importado").addClass("d-none");
-                $(".categoria").removeClass("d-none");
-                $("#navbarDarkDropdownMenuLink").addClass("d-none");
-            }
-            else if ($("#filtro").val() != "ServiçoCategoria") {
-                if (!$(".categoria").hasClass("d-none")) {
-                    $(".categoria").addClass("d-none");
-                    $("#importado").removeClass("d-none");
-                    $("#navbarDarkDropdownMenuLink").removeClass("d-none");
-                }
+        if ($("#filtro").val() == "ServiçoCategoria") {
+            $("#importado").addClass("d-none");
+            $(".categoria").removeClass("d-none");
+            $("#navbarDarkDropdownMenuLink").addClass("d-none");
+        }
+        else if ($("#filtro").val() != "ServiçoCategoria") {
+            if (!$(".categoria").hasClass("d-none")) {
+                $(".categoria").addClass("d-none");
+                $("#importado").removeClass("d-none");
+                $("#navbarDarkDropdownMenuLink").removeClass("d-none");
             }
         }
-    </script>
+    }
+
+    function AtualizarNotificações() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("NotificaçõesPartial", "Home")",
+            dataType: "html",
+            cache: false,
+            success: function (data) {
+                $("#notificações").html(data);
+            }
+        });
+    }
+
+    function MarcarComoLido(read) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Home/MarkAsRead/" + read,
+            dataType: "html",
+            cache: false,
+            success: function () {
+                $.ajax({
+                type: "GET",
+                url: "@Url.Action("NotificaçõesPartial", "Home")",
+                dataType: "html",
+                cache: false,
+                success: function (data) {
+                    $("#notificações").html(data);
+                    }
+                });
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        setInterval(function () {
+            AtualizarNotificações();
+        }, 20000);
+
+        AtualizarNotificações();
+
+        $("#notificações").on("click", 'button.read', function () {
+            var read = $(this).val();
+            MarcarComoLido(read);
+        });
+
+        $("#notificações").on("click", 'a.read', function () {
+            var read = $("#notificaçãoInput").val();
+            MarcarComoLido(read);
+        });
+    });
+
+</script>
 </body>
 </html>

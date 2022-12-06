@@ -19,6 +19,8 @@ namespace Projeto_TCC_2022.Models
 
         public int fk_Pessoa_Id { get; set; }
 
+        public int Fk_Orçamento_Id { get; set; }
+
         public virtual Serviço Serviços { get; set; }
 
         public virtual Pessoa Pessoa { get; set; }

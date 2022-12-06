@@ -2,6 +2,7 @@
 using Projeto_TCC_2022.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -26,6 +27,28 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.CelularTelefone = Model1.GetCelularTelefones(Id);
             ViewBag.Email = Model1.GetEmail(Id);
             ViewBag.Serviços = Model1.GetServiços(Id);
+
+            List<float> médias = new List<float>();
+
+            if (ViewBag.Serviços != null) {
+                foreach (var item in ViewBag.Serviços)
+                {
+                    float soma = 0;
+
+                    List<Avaliação> av1 = Model1.GetAvaliaçõesByServiçoId(item.Id);
+                    foreach (var avaliação in av1)
+                    {
+                        soma += avaliação.Estrelas;
+                    }
+
+                    float média = soma / av1.Count;
+
+                    médias.Add(média);
+                }
+            }
+
+            ViewBag.Médias = médias;
+
             return View();
         }
 

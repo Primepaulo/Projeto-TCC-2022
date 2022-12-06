@@ -20,59 +20,100 @@
 </div>
 
 
+@*@if (ViewBag.Serviços != null)
+    {
+        <h2>Serviços:</h2>
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    @foreach (var item in ViewBag.Serviços)
+                    {
+                    <p>@item.Nome</p>
+                    }
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    @foreach (var item in ViewBag.Serviços)
+                    {
+                        <p>@item.Preço.ToString("F")</p>
+                    }
+                </div>
+            </div>
+        </div>
+    }*@
+
 @if (ViewBag.Serviços != null)
 {
     <h2>Serviços:</h2>
     <div class="container">
-        <div class="row text-center">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                @foreach (var item in ViewBag.Serviços)
-                {
-                <p>@item.Nome</p>
-                }
+        @for (int i = 0; i < ViewBag.Serviços.Count; i++)
+        {
+            <div class="row text-center">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+
+                    <p>@ViewBag.Serviços[i].Nome</p>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12">
+
+                    <p>@ViewBag.Serviços[i].Preço.ToString("F")</p>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12">
+
+                    @if (ViewBag.Médias[i] != null && Double.IsNaN(ViewBag.Médias[i]) == false)
+                    {
+
+                        <p>@ViewBag.Médias[i]</p>
+
+                    }
+
+                    @if (ViewBag.Médias[i] == null || Double.IsNaN(ViewBag.Médias[i]) == true)
+                    {
+
+                        <p>0.00</p>
+
+                    }
+                </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                @foreach (var item in ViewBag.Serviços)
-                {
-                    <p>@item.Preço.ToString("F")</p>
-                }
-            </div>
-        </div>
+        }
     </div>
 }
 
-<h2 class="mt-4">Fale Conosco:</h2>
 
-@if (ViewBag.CelularTelefone != null)
-{
-    foreach (var item in ViewBag.CelularTelefone)
+    <h2 class="mt-4">Fale Conosco:</h2>
+
+    @if (ViewBag.CelularTelefone != null)
     {
-        <p>@item.CelularTelefone1</p>
+        foreach (var item in ViewBag.CelularTelefone)
+        {
+            <p>@item.CelularTelefone1</p>
+        }
+
     }
 
-}
+    <p>@ViewBag.Email</p>
 
-<p>@ViewBag.Email</p>
-
-<div class="container text-center mt-5">
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-12">
-            @if (ViewBag.Oficina.Id == ViewBag.userID)
-            {
-                <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar Dados da Oficina</a>
-            }
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12">
-            @if (ViewBag.Oficina.Id == ViewBag.userID)
-            {
-                <a href="@Url.Action("VisualizarServiços", "Serviços", new { Id = ViewBag.Oficina.Id })" class="mt-5">Serviços</a>
-            }
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12">
-            @if (ViewBag.Oficina.Id == ViewBag.userID)
-            {
-                <a href="@Url.Action("VisualizarPeças", "Peças", new { Id = ViewBag.Oficina.Id })" class="mt-5">Peças</a>
-            }
+    <div class="container text-center mt-5">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                @if (ViewBag.Oficina.Id == ViewBag.userID)
+                {
+                    <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.Oficina.Id })" class="mt-5">Editar Dados da Oficina</a>
+                }
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                @if (ViewBag.Oficina.Id == ViewBag.userID)
+                {
+                    <a href="@Url.Action("VisualizarServiços", "Serviços", new { Id = ViewBag.Oficina.Id })" class="mt-5">Serviços</a>
+                }
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                @if (ViewBag.Oficina.Id == ViewBag.userID)
+                {
+                    <a href="@Url.Action("VisualizarPeças", "Peças", new { Id = ViewBag.Oficina.Id })" class="mt-5">Peças</a>
+                }
+            </div>
         </div>
     </div>
-</div>

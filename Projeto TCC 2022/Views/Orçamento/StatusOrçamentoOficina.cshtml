@@ -1,5 +1,5 @@
 ﻿
-@using (Html.BeginForm("ConfirmarDeletarOrçamento", "Orçamento", FormMethod.Post, new {id = "id"}))
+@using (Html.BeginForm("ConfirmarDeletarOrçamento", "Orçamento", FormMethod.Post, new { id = "id" }))
 {
     <div class="container mt-5">
         <div class="row text-center mt-3">
@@ -10,6 +10,43 @@
             }
             <div class="col">@ViewBag.Carro.Marca @ViewBag.Carro.Modelo</div>
         </div>
+    </div>
+
+    <div class="container mt-5">
+        @if (ViewBag.ItemOrçamento != null)
+        {
+            for (int i = 0; i < ViewBag.ItemOrçamento.Count; i++)
+            {
+                
+                int peças = 0;
+                int serviços = 0;
+
+                <div class="row">
+
+                    @if (ViewBag.ItemOrçamento[i].Fk_Serviço_Id != null)
+                    {
+                        <div class="col">
+                            <p>@ViewBag.Serviços[serviços].Nome</p>
+                                @{serviços = serviços + 1;}
+                        </div>
+                    }
+                    @if (ViewBag.ItemOrçamento[i].Fk_Peça_Id != null)
+                    {
+                        <div class="col">
+                            <p>@ViewBag.Peças[peças].Nome</p>
+                                @{peças = peças + 1;}
+                        </div>
+                    }
+                    <div class="col">
+                        <p>@ViewBag.ItemOrçamento[i].Quantidade</p>
+                    </div>
+                    @if (ViewBag.Orçamento.Status == 3 && ViewBag.ItemOrçamento[i].Fk_Serviço_Id != null)
+                    {
+                        <a href="@Url.Action("AvaliarServiço", "Avaliação", new { Id = ViewBag.ItemOrçamento[i].Fk_Serviço_Id })"></a>
+                    }
+                </div>
+            }
+        }
     </div>
 
     <input type="hidden" name="Id" value="@ViewBag.Orçamento.Id" />
@@ -52,6 +89,11 @@
         @if (ViewBag.Orçamento.Status == 2)
         {
             <button class="btn btn-secondary" type="submit" name="Operação" value="3">Finalizar Orçamento</button>
+        }
+
+        @if (ViewBag.Orçamento.Status == 3)
+        {
+            <h3>Serviço Finalizado!</h3>
         }
 
         <div id="dialog-confirm" title="Recusar Orçamento?" class="d-none">

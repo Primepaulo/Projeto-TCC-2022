@@ -6,7 +6,43 @@
         <div class="col">R$ @ViewBag.Orçamento.Valor.ToString("F")</div>
     }
 </div>
-<div class="row text-center mb-4">
+
+<div class="container mt-5">
+    @for (int i = 0; i < ViewBag.ItemOrçamento.Count; i++)
+    {
+        int peças = 0;
+        int serviços = 0;
+
+        <div class="row">
+
+            @if (ViewBag.ItemOrçamento[i].Fk_Serviço_Id != null)
+            {
+                <div class="col">
+                    <p>@ViewBag.Serviços[serviços].Nome</p>
+                    @{serviços = serviços + 1;}
+                </div>
+            }
+            @if (ViewBag.ItemOrçamento[i].Fk_Peça_Id != null)
+            {
+                <div class="col">
+                    <p>@ViewBag.Peças[peças].Nome</p>
+                    @{peças = peças + 1;}
+                </div>
+            }
+            <div class="col">
+                <p>@ViewBag.ItemOrçamento[i].Quantidade</p>
+            </div>
+            @if (ViewBag.Orçamento.Status == 3 && ViewBag.ItemOrçamento[i].Fk_Serviço_Id != null && ViewBag.ItemOrçamento[i].Avaliado == false)
+            {
+                <div class="col">
+                    <a href="@Url.Action("AvaliarServiço", "Avaliação", new { Id = ViewBag.Serviços[i].Id, OrçamentoId = ViewBag.Orçamento.Id})">Avaliar Serviço</a>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<div class="row text-center mb-4 mt-5">
     @if (ViewBag.Orçamento.Status == 0)
     {
         <h3>Aguardando retorno da Oficina</h3>

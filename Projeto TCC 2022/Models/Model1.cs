@@ -21,6 +21,7 @@ using System.Web;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Web.DynamicData;
 using System.Web.Services.Description;
+using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -46,6 +47,7 @@ namespace Projeto_TCC_2022.Models
         public virtual DbSet<ItemOrçamento> ItemOrçamento { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<Messages> Messages { get; set; }
+        public virtual DbSet<Notificação> Notificação { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -89,6 +91,12 @@ namespace Projeto_TCC_2022.Models
 
             modelBuilder.Entity<Orçamento>()
                 .HasMany(e => e.ItemOrçamento)
+                .WithRequired(e => e.Orçamento)
+                .HasForeignKey(e => e.Fk_Orçamento_Id)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Orçamento>()
+                .HasMany(e => e.Notificação)
                 .WithRequired(e => e.Orçamento)
                 .HasForeignKey(e => e.Fk_Orçamento_Id)
                 .WillCascadeOnDelete(false);
@@ -139,7 +147,6 @@ namespace Projeto_TCC_2022.Models
                 .WithRequired(e => e.Categoria)
                 .HasForeignKey(e => e.Fk_Categoria_Id)
                 .WillCascadeOnDelete(false);
-
         }
 
         //Generic Controller
@@ -427,6 +434,80 @@ namespace Projeto_TCC_2022.Models
                             Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
                         }
                     }
+                }
+            }
+        }
+
+        // ----------------------------------------------------------------------------------------------------
+        // Notificações
+        public static void GerarNotificações(Orçamento orçamento, int userId)
+        {
+            using (var context = new Model1())
+            {
+                context.Notificação.Add(new Notificação
+                {
+                    Fk_Orçamento_Id = orçamento.Id,
+                    Fk_User_Id = userId,
+                    Lido = false
+                }); ;
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static List<Notificação> GetNotificações(int userId)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Notificação in context.Notificação
+                            .Include(Notificação => Notificação.Orçamento)
+                            where Notificação.Lido == false && Notificação.Fk_User_Id == userId
+                            select Notificação;
+                var notificações = query.ToList();
+                return notificações;
+            }
+        }
+
+        public static Notificação GetNotificação(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Notificação in context.Notificação
+                            where Notificação.Id == Id
+                            select Notificação;
+                var notificação = query.SingleOrDefault();
+                return notificação;
+            }
+        }
+
+        public static void MarcarComoLido(Notificação notificação)
+        {
+            using (var context = new Model1())
+            {
+                notificação.Lido = true;
+
+                context.Entry(notificação).State = EntityState.Modified;
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    Debug.WriteLine(ex.Message);
                 }
             }
         }
@@ -730,7 +811,7 @@ namespace Projeto_TCC_2022.Models
                             join Oficina in context.Oficina on Orçamento.fk_Oficina_Id equals Oficina.Id
                             where Orçamento.fk_Pessoa_Id == uID || Orçamento.fk_Oficina_Id == uID
                             select Orçamento;
-                var orçamentos = query.ToList();
+                var orçamentos = query.OrderByDescending(d => d.Id).ToList();
                 return orçamentos;
             }
         }
@@ -744,7 +825,7 @@ namespace Projeto_TCC_2022.Models
                             join Oficina in context.Oficina on Orçamento.fk_Oficina_Id equals Oficina.Id
                             where (Orçamento.fk_Pessoa_Id == uID || Orçamento.fk_Oficina_Id == uID) && Orçamento.Status != 3 && Orçamento.Status != 4
                             select Orçamento;
-                var orçamentos = query.ToList();
+                var orçamentos = query.OrderByDescending(d => DbFunctions.TruncateTime(d.Data_Orçamento)).ToList();
                 return orçamentos;
             }
         }
@@ -760,7 +841,6 @@ namespace Projeto_TCC_2022.Models
                 return orçamentos;
             }
         }
-
 
         public static Orçamento CreateOrçamento(int uID, string Placa, int OficinaId, DateTime DateOrçamento, decimal? Valor, int Tipo)
         {
@@ -871,7 +951,7 @@ namespace Projeto_TCC_2022.Models
         }
 
 
-        public static void AddItemOrçamento(int Orçamento_Id, int? Serviço_Id, int? Peça_Id, double quantidade)
+        public static void AddItemOrçamento(int Orçamento_Id, int? Serviço_Id, int? Peça_Id, double quantidade, bool? Avaliado)
         {
             using (var context = new Model1())
             {
@@ -880,7 +960,8 @@ namespace Projeto_TCC_2022.Models
                     Fk_Orçamento_Id = Orçamento_Id,
                     Fk_Serviço_Id = Serviço_Id,
                     Fk_Peça_Id = Peça_Id,
-                    Quantidade = quantidade
+                    Quantidade = quantidade,
+                    Avaliado = Avaliado
                 });
 
                 try
@@ -915,6 +996,28 @@ namespace Projeto_TCC_2022.Models
                     Debug.WriteLine(ex.Message);
                 }
 
+            }
+        }
+
+        public static void Avaliado(ItemOrçamento item)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(item).State = EntityState.Modified;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
             }
         }
 
@@ -1188,7 +1291,116 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static List<Avaliação> GetAvaliaçõesByUserId(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Avaliação in context.Avaliação
+                            where Avaliação.fk_Pessoa_Id == Id
+                            select Avaliação;
+                var avaliações = query.ToList();
+                return avaliações;
+            }
+        }
 
+        public static List<Avaliação> GetAvaliaçõesByServiçoId(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Avaliação in context.Avaliação
+                            where Avaliação.fk_Serviços_Id == Id
+                            select Avaliação;
+                var avaliações = query.ToList();
+                return avaliações;
+            }
+        }
+        
+        public static Avaliação GetAvaliação(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Avaliação in context.Avaliação
+                            where Avaliação.Id == Id
+                            select Avaliação;
+                var avaliação = query.SingleOrDefault();
+                return avaliação;
+            }
+        }
+
+        public static void Avaliar(int Estrelas, string Texto, int Fk_Serviços_id, int Fk_Pessoa_Id, int Fk_Orçamento_Id)
+        {
+            using (var context = new Model1())
+            {
+                context.Avaliação.Add(new Avaliação 
+                { 
+                    Estrelas = Estrelas,
+                    Texto = Texto,
+                    fk_Serviços_Id = Fk_Serviços_id,
+                    fk_Pessoa_Id = Fk_Pessoa_Id,
+                    Fk_Orçamento_Id = Fk_Orçamento_Id
+                });
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void UpdateAvaliação(Avaliação avaliação)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(avaliação).State = EntityState.Modified;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void DeleteAvaliação(int Id)
+        {
+            using (var context = new Model1())
+            {
+                Avaliação avaliação = context.Avaliação.Find(Id);
+                context.Avaliação.Remove(avaliação);
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationErrors.ValidationErrors)
+                        {
+                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }
