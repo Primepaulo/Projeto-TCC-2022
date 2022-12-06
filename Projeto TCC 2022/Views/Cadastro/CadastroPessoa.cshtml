@@ -77,7 +77,7 @@
         <div class="form-group d-none" id="textCPF">
             @Html.LabelFor(model => model.CPF, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control", name = "CPF", @id = "CPF", maxlength = 14, @autocomplete = "off" } })
+                <input data-val="true" data-val-required="Campo Requerido" type="text" class="form-control" name="CPF" id="CPF" maxlength="14" , autocomplete="off" />
                 @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -85,7 +85,8 @@
         <div class="form-group d-none" id="textCNPJ">
             @Html.LabelFor(model => model.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CNPJ, new { htmlAttributes = new { @class = "form-control", name = "CNPJ", @id = "CNPJ", maxlength = 18, @autocomplete = "off" } })
+
+                <input type="text" data-val="true" data-val-required="Campo Requerido" class="form-control" name="CNPJ" id="CNPJ" maxlength="18" , autocomplete="off" />
                 @Html.ValidationMessageFor(model => model.CNPJ, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -99,12 +100,15 @@
     </div>
 }
 
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
 @section scripts {
     <script>
         let inputCPF = $("#CPF")
 
-        inputCPF.on("keypress", function(){
+        inputCPF.on("keypress", function () {
             let inputLength = inputCPF.val().length;
 
             if (inputLength === 3 || inputLength === 7) {
@@ -135,20 +139,32 @@
 
             if ($("#física").is(":checked")) {
                 $("#textCPF").removeClass("d-none");
+                $("#CNPJ").removeAttr("data-val");
                 if (!$("#textCNPJ").hasClass("d-none")) {
                     $("#textCNPJ").addClass("d-none");
+                }
+
+                var attrCPF = $("#CPF").attr("data-val");
+
+                if (typeof attrCPF !== undefined) {
+                    $("#CPF").attr("data-val", true);
                 }
             }
             else if ($("#jurídica").is(":checked")) {
                 $("#textCNPJ").removeClass("d-none");
+                $("#CPF").removeAttr("data-val");
                 if (!$("#textCPF").hasClass("d-none")) {
                     $("#textCPF").addClass("d-none");
                 }
+
+                var attrCNPJ = $("#CNPJ").attr("data-val");
+
+                if (typeof attrCNPJ !== undefined) {
+                    $("#CNPJ").attr("data-val", true);
+                }
             }
         }
-
     </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
 }
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

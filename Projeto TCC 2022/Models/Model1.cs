@@ -29,7 +29,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=LAB3PAULO" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
