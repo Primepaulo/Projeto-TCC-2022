@@ -24,7 +24,8 @@
                     }
                     @if (ViewBag.éPessoa == true)
                     {
-                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarCarros", "Carros", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-car-front-fill me-2"></i>Carros</a></li>
+                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarCarros", "Carros")" class="nav-link"><i class="bi bi-car-front-fill me-2"></i>Carros</a></li>
+                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarAvaliações", "Avaliação")" class="nav-link"><i class="bi bi-list-stars me-2"></i>Avaliações</a></li>
                     }
                     @if (ViewBag.éPessoa == true || ViewBag.éOficina == true)
                     {

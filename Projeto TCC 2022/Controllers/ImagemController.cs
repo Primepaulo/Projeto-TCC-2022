@@ -87,7 +87,7 @@ namespace Projeto_TCC_2022.Controllers
                     string rPath = Path.Combine("../../UploadedFiles", tempo + _FileName);
                     img.SaveAs(_path);
                     Model1.SalvarImagem(rPath, UserID);
-                    RedirectToAction("VisualizarServiços", "Serviços");
+                    return RedirectToAction("VisualizarServiços", "Serviços");
                 }
             }
             catch (Exception ex)

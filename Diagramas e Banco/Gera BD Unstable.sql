@@ -620,3 +620,26 @@ USE [master]
 GO
 ALTER DATABASE [TBN(IN305)] SET  READ_WRITE 
 GO
+USE [TBN(IN305)]
+GO
+Insert into [dbo].[Categoria] values ('Revisão')
+Insert into [dbo].[Categoria] values ('Geometria e Balanceamento')
+Insert into [dbo].[Categoria] values ('Suspensão')
+Insert into [dbo].[Categoria] values ('Pneus')
+Insert into [dbo].[Categoria] values ('Freios')
+Insert into [dbo].[Categoria] values ('Elétrica e Ignição')
+Insert into [dbo].[Categoria] values ('Motor')
+Insert into [dbo].[Categoria] values ('Ar Condicionado')
+Insert into [dbo].[Categoria] values ('Transmissão')
+Insert into [dbo].[Categoria] values ('Funilaria')
+Insert into [dbo].[Categoria] values ('Escapamento')
+Insert into [dbo].[Categoria] values ('Envelopamento')
+Insert into [dbo].[Categoria] values ('Blindagem')
+Insert into [dbo].[Categoria] values ('Instalação GNV')
+Insert into [dbo].[Categoria] values ('Acessórios')
+GO
+insert into [dbo].[AspNetUsers] values ('admin@gmail.com', 0, 'AC/LqVf2SzzkuzljzCwKe8hxpaqCWpV6cBPhfS64h6Zzq6cWTbwA9Oir75SUSBoklQ==',
+'0e0327dd-24b6-4986-9e47-450ecafb0130', NULL, 0, 0, NULL, 1, 0, 'admin@gmail.com')
+GO
+insert into [dbo].[Administrador] values (1, 'Admin')
+GO

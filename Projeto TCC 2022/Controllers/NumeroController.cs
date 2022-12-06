@@ -31,9 +31,9 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CadastrarNúmero(string CelularTelefone1)
+        public ActionResult CadastrarNúmero(string CelularTelefone)
         {
-            Model1.InsertCelular(CelularTelefone1, UserID);
+            Model1.InsertCelular(CelularTelefone, UserID);
             Response.Clear();
 
             if (Pessoa == true)
