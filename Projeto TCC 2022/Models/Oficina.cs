@@ -34,6 +34,10 @@ namespace Projeto_TCC_2022.Models
         public string Nome { get; set; }
 
         [Required]
+        [StringLength(9)]
+        public string CEP { get; set; }
+
+        [Required]
         [StringLength(25)]
         public string Estado { get; set; }
 

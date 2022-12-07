@@ -70,7 +70,7 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarOficina([Bind(Include = "Id,Email,CNPJ,Nome,Estado,Cidade,Rua,Número,Complemento,Bairro,Descrição,Aprovada,AceitaImportado")] Oficina oficina, string inicio, string fim)
+        public ActionResult EditarOficina([Bind(Include = "Id,Email,CNPJ,Nome,CEP,Estado,Cidade,Rua,Número,Complemento,Bairro,Descrição,Aprovada,AceitaImportado")] Oficina oficina, string inicio, string fim)
         {
             if (UserID == oficina.Id && Oficina == true)
             {

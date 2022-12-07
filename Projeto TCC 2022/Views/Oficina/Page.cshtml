@@ -19,28 +19,6 @@
     </div>
 </div>
 
-
-@*@if (ViewBag.Serviços != null)
-    {
-        <h2>Serviços:</h2>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    @foreach (var item in ViewBag.Serviços)
-                    {
-                    <p>@item.Nome</p>
-                    }
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    @foreach (var item in ViewBag.Serviços)
-                    {
-                        <p>@item.Preço.ToString("F")</p>
-                    }
-                </div>
-            </div>
-        </div>
-    }*@
-
 @if (ViewBag.Serviços != null)
 {
     <h2>Serviços:</h2>

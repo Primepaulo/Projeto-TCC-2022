@@ -32,10 +32,20 @@
             </div>
         </div>
 
+
+        <div class="form-group">
+            <label for="cep">CEP:</label>
+            <div class="col-md-10">
+                <input name="cep" id="cep" class="form-control" maxlength="9" />
+                <p class="d-none" id="valCep">Cep Inválido</p>
+            </div>
+         </div>
+
+
         <div class="form-group">
             @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                 @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -43,7 +53,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Cidade, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Cidade, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Cidade, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                 @Html.ValidationMessageFor(model => model.Cidade, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -51,7 +61,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Bairro, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                 @Html.ValidationMessageFor(model => model.Bairro, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -60,7 +70,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Rua, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Rua, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Rua, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                 @Html.ValidationMessageFor(model => model.Rua, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -138,7 +148,55 @@
                 dropdown: false,
                 scrollbar: false
             });
+
+            //Trecho adaptado do exemplo da API do https://viacep.com.br/exemplo/jquery/
+            $("#cep").blur(function () {
+
+                if (!$("#valCep").hasClass("d-none")) {
+                    $("#valCep").addClass("d-none");
+                }
+
+                var cep = $(this).val().replace(/\D/g, '');
+
+                var validacep = /^[0-9]{8}$/;
+                if (validacep.test(cep)) {
+
+                    $("#Rua").val("...");
+                    $("#Bairro").val("...");
+                    $("#Cidade").val("...");
+                    $("#Estado").val("...");
+
+                    $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                        if (!("erro" in dados)) {
+
+                            $("#Rua").val(dados.logradouro);
+                            $("#Bairro").val(dados.bairro);
+                            $("#Cidade").val(dados.localidade);
+                            $("#Estado").val(dados.uf);
+                        }
+                        else {
+                            limpa_formulário_cep();
+                            $("#valCep").removeClass("d-none");
+                        }
+                    });
+
+                    function limpa_formulário_cep() {
+                        $("#Rua").val("");
+                        $("#Bairro").val("");
+                        $("#Cidade").val("");
+                        $("#Estado").val("");
+                    }
+                }
+            });
         });
+
+        $('form').submit(function (e) {
+            $(':disabled').each(function (e) {
+                $(this).removeAttr('disabled');
+            })
+        });
+
     </script>
 
     @Scripts.Render("~/bundles/jqueryval")

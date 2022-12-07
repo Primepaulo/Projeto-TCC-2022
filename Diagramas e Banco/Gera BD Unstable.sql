@@ -337,6 +337,7 @@ CREATE TABLE [dbo].[Oficina](
 	[Email] [nvarchar](50) NOT NULL,
 	[CNPJ] [nvarchar](14) NOT NULL,
 	[Nome] [nvarchar](50) NOT NULL,
+	[CEP] [nvarchar](9) NOT NULL,
 	[Estado] [nvarchar](25) NOT NULL,
 	[Cidade] [nvarchar](30) NOT NULL,
 	[Bairro] [nvarchar](50) NOT NULL,

@@ -29,7 +29,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=LAB3PAULO" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -524,7 +524,7 @@ namespace Projeto_TCC_2022.Models
             
         }
 
-        public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string Estado, string Cidade, string Bairro,
+        public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string CEP, string Estado, string Cidade, string Bairro,
         string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado, bool Finalizada, string HorarioFuncionamento)
         {
             using (var context = new Model1())
@@ -535,6 +535,7 @@ namespace Projeto_TCC_2022.Models
                     Email = Email,
                     CNPJ = CNPJ,
                     Nome = Nome,
+                    CEP = CEP,
                     Estado = Estado,
                     Cidade = Cidade,
                     Bairro = Bairro,
