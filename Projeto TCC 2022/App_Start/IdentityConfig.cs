@@ -61,7 +61,7 @@ namespace Projeto_TCC_2022
             };
 
             // Configurar padrões de bloqueio de usuário
-            manager.UserLockoutEnabledByDefault = true;
+            manager.UserLockoutEnabledByDefault = false;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
