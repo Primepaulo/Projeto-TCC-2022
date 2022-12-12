@@ -102,6 +102,14 @@ namespace Projeto_TCC_2022.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Peça>()
+                .Property(e => e.PreçoMin)
+                .HasPrecision(19, 4);
+
+            modelBuilder.Entity<Peça>()
+                .Property(e => e.PreçoMax)
+                .HasPrecision(19, 4);
+
+            modelBuilder.Entity<ItemOrçamento>()
                 .Property(e => e.Preço)
                 .HasPrecision(19, 4);
 
@@ -121,25 +129,17 @@ namespace Projeto_TCC_2022.Models
                 .HasForeignKey(e => e.fk_Pessoa_Id);
 
             modelBuilder.Entity<Serviço>()
-                .Property(e => e.Preço)
+                .Property(e => e.PreçoMin)
+                .HasPrecision(19, 4);
+
+            modelBuilder.Entity<Serviço>()
+                .Property(e => e.PreçoMax)
                 .HasPrecision(19, 4);
 
             modelBuilder.Entity<Serviço>()
                 .HasMany(e => e.Avaliação)
                 .WithRequired(e => e.Serviços)
                 .HasForeignKey(e => e.fk_Serviços_Id)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Serviço>()
-                .HasMany(e => e.ItemOrçamento)
-                .WithRequired(e => e.Serviço)
-                .HasForeignKey(e => e.Fk_Serviço_Id)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Peça>()
-                .HasMany(e => e.ItemOrçamento)
-                .WithRequired(e => e.Peça)
-                .HasForeignKey(e => e.Fk_Peça_Id)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Categoria>()
@@ -621,7 +621,7 @@ namespace Projeto_TCC_2022.Models
         }
 
 
-        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal Preço)
+        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal PreçoMin, decimal PreçoMax)
         {
             using (var context = new Model1())
             {
@@ -631,7 +631,8 @@ namespace Projeto_TCC_2022.Models
                     Nome = Nome,
                     Fk_Categoria_Id = Categoria,
                     Descrição = Descrição,
-                    Preço = Preço
+                    PreçoMin = PreçoMin,
+                    PreçoMax = PreçoMax
                 });
 
                 try
@@ -723,7 +724,7 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void InsertPeça(string Nome, int uID, string Marca, string Código, string Descrição, decimal Preço)
+        public static void InsertPeça(string Nome, int uID, string Marca, string Código, string Descrição, decimal PreçoMin, decimal PreçoMax)
         {
             using (var context = new Model1())
             {
@@ -734,7 +735,8 @@ namespace Projeto_TCC_2022.Models
                     Marca = Marca,
                     Código = Código,
                     Descrição = Descrição,
-                    Preço = Preço
+                    PreçoMin = PreçoMin,
+                    PreçoMax = PreçoMax
                 });
 
                 try
@@ -842,7 +844,7 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static Orçamento CreateOrçamento(int uID, string Placa, int OficinaId, DateTime DateOrçamento, decimal? Valor, int Tipo)
+        public static Orçamento CreateOrçamento(int uID, string Placa, int OficinaId, DateTime DateOrçamento, int Tipo)
         {
             using (var context = new Model1())
             {
@@ -853,7 +855,6 @@ namespace Projeto_TCC_2022.Models
                     Data_Orçamento = DateOrçamento,
                     Data_Aprovação = null,
                     Status = 0,
-                    Valor = Valor,
                     Tipo = Tipo
                 };
 
@@ -924,13 +925,13 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static ItemOrçamento GetItemOrçamentoServiço (int OrçamentoId, int ServiçoId)
+        public static ItemOrçamento GetItemOrçamentoServiço (int OrçamentoId, string Nome)
         {
             using (var context = new Model1())
             {
                 var query = from ItemOrçamento in context.ItemOrçamento
                             where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId &&
-                            ItemOrçamento.Fk_Serviço_Id == ServiçoId
+                            ItemOrçamento.Nome == Nome
                             select ItemOrçamento;
                 var item = query.SingleOrDefault();
                 return item;
@@ -951,16 +952,17 @@ namespace Projeto_TCC_2022.Models
         }
 
 
-        public static void AddItemOrçamento(int Orçamento_Id, int? Serviço_Id, int? Peça_Id, double quantidade, bool? Avaliado)
+        public static void AddItemOrçamento(int Orçamento_Id, string Nome, decimal Preço, string Descrição, double Quantidade, bool? Avaliado)
         {
             using (var context = new Model1())
             {
                 context.ItemOrçamento.Add(new ItemOrçamento
                 {
                     Fk_Orçamento_Id = Orçamento_Id,
-                    Fk_Serviço_Id = Serviço_Id,
-                    Fk_Peça_Id = Peça_Id,
-                    Quantidade = quantidade,
+                    Nome = Nome,
+                    Preço = Preço,
+                    Descrição = Descrição,
+                    Quantidade = Quantidade,
                     Avaliado = Avaliado
                 });
 

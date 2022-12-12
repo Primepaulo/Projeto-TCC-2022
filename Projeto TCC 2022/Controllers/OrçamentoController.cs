@@ -179,7 +179,8 @@ namespace Projeto_TCC_2022.Controllers
                 serviçoCategoria.Categoria = categoria;
 
                 ViewBag.ServiçoCategoria = serviçoCategoria;
-                Session["ServiçoOrçamento"] = serviço.Preço;
+                Session["ServiçoOrçamentoMin"] = serviço.PreçoMin;
+                Session["ServiçoOrçamentoMax"] = serviço.PreçoMax;
                 ViewBag.Tipo = 1;
             }
 
@@ -187,7 +188,8 @@ namespace Projeto_TCC_2022.Controllers
             {
                 var peça = Model1.GetPeça(Id);
                 ViewBag.Peça = peça;
-                Session["ServiçoOrçamento"] = peça.Preço;
+                Session["ServiçoOrçamentoMin"] = peça.PreçoMin;
+                Session["ServiçoOrçamentoMax"] = peça.PreçoMax;
                 ViewBag.Tipo = 2;
             }
 
@@ -196,20 +198,27 @@ namespace Projeto_TCC_2022.Controllers
 
         public PartialViewResult TotalPartial()
         {
-            decimal soma = 0;
+            decimal somaMin = 0;
+            decimal somaMax = 0;
 
-            decimal valor = Convert.ToDecimal(Session["ServiçoOrçamento"]);
+            decimal valorMin = Convert.ToDecimal(Session["ServiçoOrçamentoMin"]);
+            decimal valorMax = Convert.ToDecimal(Session["ServiçoOrçamentoMax"]);
 
-            if (Session["Soma"] == null)
+            if (Session["SomaMin"] == null && Session["SomaMax"] == null) // Bugs
             {
-                soma += valor;
+                somaMin += valorMin;
+                somaMax += valorMax;
             }
             else
             {
-                soma = Convert.ToDecimal(Session["Soma"]) + valor;
+                somaMin = Convert.ToDecimal(Session["SomaMin"]) + valorMin;
+                somaMax = Convert.ToDecimal(Session["SomaMax"]) + valorMax;
             }
-            Session["Soma"] = soma;
-            ViewBag.Total = soma;
+
+            Session["SomaMin"] = somaMin;
+            Session["SomaMax"] = somaMax;
+            ViewBag.TotalMin = somaMin;
+            ViewBag.TotalMax = somaMax;
             return PartialView();
         }
 
@@ -219,8 +228,10 @@ namespace Projeto_TCC_2022.Controllers
             if (Type == 2 || Type == null)
             {
                 Session["ServiçoOrçamento"] = null;
-                Session["Soma"] = null;
-                ViewBag.Total = null;
+                Session["SomaMin"] = null;
+                Session["SomaMax"] = null;
+                ViewBag.TotalMin = null;
+                ViewBag.TotalMax = null;
             }
             else if (Type == 1)
             {
@@ -234,23 +245,35 @@ namespace Projeto_TCC_2022.Controllers
         [HttpPost]
         public ActionResult Submit(ServiçoTotal serviçoTotal)
         {
-            decimal final = 0;
+            decimal finalMin = 0;
+            decimal finalMax = 0;
 
             foreach (string item in serviçoTotal.serviços)
             {
                 Serviço serviço = Model1.GetServiço(Convert.ToInt32(item));
-                final += serviço.Preço;
+
+                if (serviço.PreçoMin != null)
+                {
+                    finalMin += (decimal)serviço.PreçoMin;
+                }
+
+                if (serviço.PreçoMax != null)
+                {
+                    finalMax += (decimal)serviço.PreçoMax;
+                }
+
             }
-            if (Session["OficinaId"] != null && Session["carro"] != null && serviçoTotal.Total != null && serviçoTotal.serviços != null)
+            if (Session["OficinaId"] != null && Session["carro"] != null && serviçoTotal.serviços != null)
             {
-                decimal valor = Decimal.Parse(serviçoTotal.Total);
-                if (final == valor)
+                decimal valorMin = Decimal.Parse(serviçoTotal.TotalMin);
+                decimal valorMax = Decimal.Parse(serviçoTotal.TotalMax);
+                if (finalMin == valorMin && finalMax == valorMax)
                 {
                     Carro carro = (Carro)Session["carro"];
                     int oficinaId = (int)Session["OficinaId"];
                     DateTime data = DateTime.Now;
 
-                    Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, valor, 1);
+                    Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, 1);
                     Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id);
 
                     foreach (string item in serviçoTotal.serviços)
@@ -420,10 +443,13 @@ namespace Projeto_TCC_2022.Controllers
 
                 if (orçamento.Tipo == 1)
                 {
-                    Session["Soma"] = orçamento.Valor;
+
+                    //Mudar essa parte toda...
+                    Session["SomaMin"] = orçamento.Valor;
                     ViewBag.Total = Session["Soma"];
 
-                    Session["ValorOriginal"] = Session["Soma"];
+                    Session["ValorOriginalMin"] = Session["SomaMin"];
+                    Session["ValorOriginalMax"] = Session["SomaMax"];
                 }
 
                 ViewBag.CategoriasOficina = categorias;

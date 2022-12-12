@@ -13,18 +13,17 @@ namespace Projeto_TCC_2022.Models
 
         public int Fk_Orçamento_Id { get; set; }
 
-        public int? Fk_Serviço_Id { get; set; }
+        public string Nome { get; set; }
 
-        public int? Fk_Peça_Id { get; set; }
+        [Column(TypeName = "money")]
+        public decimal Preço { get; set; }
+
+        public string Descrição { get; set; }
 
         public double Quantidade { get; set; }
 
         public bool? Avaliado { get; set; }
 
         public virtual Orçamento Orçamento { get; set; }
-
-        public virtual Peça Peça { get; set; }
-
-        public virtual Serviço Serviço { get; set; }
     }
 }

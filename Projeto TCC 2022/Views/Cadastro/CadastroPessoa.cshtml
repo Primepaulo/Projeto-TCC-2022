@@ -108,8 +108,14 @@
     <script>
         let inputCPF = $("#CPF")
 
-        inputCPF.on("keypress", function () {
+        inputCPF.on("input", function () {
             let inputLength = inputCPF.val().length;
+
+            let inputVal = inputCPF.val();
+            if (isNaN(inputVal[inputVal.length - 1])) {
+                inputCPF.val(inputVal.substring(0, inputVal.length - 1));
+                return;
+            }
 
             if (inputLength === 3 || inputLength === 7) {
                 inputCPF.val(inputCPF.val() + ".")
@@ -121,8 +127,16 @@
         })
 
         let inputCNPJ = $("#CNPJ")
-        inputCNPJ.on("keypress", function () {
+        inputCNPJ.on("input", function () {
             let inputLength = inputCNPJ.val().length;
+
+            let inputVal = inputCNPJ.val();
+
+            if (isNaN(inputVal[inputVal.length - 1])) {
+                inputCNPJ.val(inputVal.substring(0, inputVal.length - 1));
+                return;
+            }
+
             if (inputLength === 2 || inputLength === 6) {
                 inputCNPJ.val(inputCNPJ.val() + ".");
             }

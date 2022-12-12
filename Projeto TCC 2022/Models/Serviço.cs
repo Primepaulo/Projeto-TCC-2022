@@ -13,7 +13,6 @@ namespace Projeto_TCC_2022.Models
         public Serviço()
         {
             Avaliação = new HashSet<Avaliação>();
-            ItemOrçamento = new HashSet<ItemOrçamento>();
         }
 
         public int Id { get; set; }
@@ -29,13 +28,15 @@ namespace Projeto_TCC_2022.Models
         public string Descrição { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal Preço { get; set; }
+        public decimal? PreçoMin { get; set; }
+
+        [Column(TypeName = "money")]
+        public decimal? PreçoMax { get; set; }
+
+        public bool NecessitaAvaliarVeiculo { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Avaliação> Avaliação { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ItemOrçamento> ItemOrçamento { get; set; }
 
         public virtual Oficina Oficina { get; set; }
 

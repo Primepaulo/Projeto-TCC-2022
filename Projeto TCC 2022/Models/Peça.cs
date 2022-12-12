@@ -10,10 +10,6 @@ namespace Projeto_TCC_2022.Models
     public partial class Peça
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Peça()
-        {
-            ItemOrçamento = new HashSet<ItemOrçamento>();
-        }
 
         public int Id { get; set; }
 
@@ -24,7 +20,10 @@ namespace Projeto_TCC_2022.Models
         public int Fk_Oficina_Id { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal Preço { get; set; }
+        public decimal PreçoMin { get; set; }
+
+        [Column(TypeName = "money")]
+        public decimal PreçoMax { get; set; }
 
         [StringLength(50)]
         public string Marca { get; set; }
@@ -32,9 +31,6 @@ namespace Projeto_TCC_2022.Models
         public string Descrição { get; set; }
 
         public string Código { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ItemOrçamento> ItemOrçamento { get; set; }
 
         public virtual Oficina Oficina { get; set; }
     }

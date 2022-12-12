@@ -67,7 +67,7 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarServiço(string Nome, string Descrição, decimal Preço)
+        public ActionResult AdicionarServiço(string Nome, string Descrição, decimal Preço, bool NecessitaAvaliarVeiculo)
         {
             if (Oficina == true)
             {
