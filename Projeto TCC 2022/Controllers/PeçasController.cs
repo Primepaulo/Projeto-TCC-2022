@@ -55,11 +55,11 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarPeça(string Nome, string Marca, string Código, string Descrição, decimal Preço)
+        public ActionResult AdicionarPeça(string Nome, string Marca, string Código, string Descrição, decimal PreçoMin, decimal PreçoMax)
         {
             if (Oficina == true)
             {
-                Model1.InsertPeça(Nome, UserID, Marca, Código, Descrição, Preço);
+                Model1.InsertPeça(Nome, UserID, Marca, Código, Descrição, PreçoMin, PreçoMax);
                 return RedirectToAction("VisualizarPeças/" + UserID);
             }
             return RedirectToAction("Home", "Index");
@@ -77,7 +77,7 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarPeça([Bind(Include = "Id, Nome, Descrição, Preço, Fk_Oficina_Id, Marca, Código")] Peça peça)
+        public ActionResult EditarPeça([Bind(Include = "Id, Nome, Descrição, PreçoMin, PreçoMax, Fk_Oficina_Id, Marca, Código")] Peça peça)
         {
             if (peça.Fk_Oficina_Id == UserID)
             {

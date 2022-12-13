@@ -4,21 +4,22 @@
     ViewBag.Title = "View";
 }
 
-<h2>View</h2>
+<h2>Insira seu número:</h2>
 
 
-@using (Html.BeginForm("CadastrarNúmero", "Numero", FormMethod.Post)) 
+@using (Html.BeginForm("CadastrarNúmero", "Numero", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>CelularTelefone: DDD (sem zero) + Número</h4>
+        <h4>Telefone Fixo ou Celular</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.CelularTelefone1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="CelularTelefone1" class="control-label col-md-2">Telefone ou Celular:</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CelularTelefone1, new { htmlAttributes = new { @class = "form-control", name = "CelularTelefone", @id = "CelularTelefone", max = 99999999999, type = "number" }})
+                <input class="form-control text-box single-line mt-3" name="CelularTelefone1" , id="CelularTelefone" data-val="true" data-val-length="O campo CelularTelefone1 deve ser uma cadeia de caracteres com um comprimento máximo de 11."
+                       data-val-length-max="11" data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="^[0-9]+$" data-val-regex="Caracteres Inválidos" />
                 @Html.ValidationMessageFor(model => model.CelularTelefone1, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,10 +34,11 @@
 
 <div>
     @if (ViewBag.Novo != null)
-     {
+    {
         @Html.ActionLink("Retornar para a página inicial", "Index", "Home")
-     }
+    }
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }

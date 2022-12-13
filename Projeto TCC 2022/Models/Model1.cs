@@ -29,7 +29,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=LAB3PAULO" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -621,7 +621,7 @@ namespace Projeto_TCC_2022.Models
         }
 
 
-        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal PreçoMin, decimal PreçoMax)
+        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal PreçoMin, decimal PreçoMax, bool NecessitaAvaliarVeiculo)
         {
             using (var context = new Model1())
             {
@@ -632,7 +632,8 @@ namespace Projeto_TCC_2022.Models
                     Fk_Categoria_Id = Categoria,
                     Descrição = Descrição,
                     PreçoMin = PreçoMin,
-                    PreçoMax = PreçoMax
+                    PreçoMax = PreçoMax,
+                    NecessitaAvaliarVeiculo = NecessitaAvaliarVeiculo
                 });
 
                 try
@@ -925,13 +926,23 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static ItemOrçamento GetItemOrçamentoServiço (int OrçamentoId, string Nome)
+
+        //Pensar em fundir e passar nome no controller
+
+        public static ItemOrçamento GetItemOrçamentoServiço (int OrçamentoId, int ServiçoId)
         {
             using (var context = new Model1())
             {
+
+                var query1 = from Serviço in context.Serviços
+                             where Serviço.Id == ServiçoId
+                             select Serviço;
+
+                var result = query1.SingleOrDefault();
+
                 var query = from ItemOrçamento in context.ItemOrçamento
                             where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId &&
-                            ItemOrçamento.Nome == Nome
+                            ItemOrçamento.Nome == result.Nome
                             select ItemOrçamento;
                 var item = query.SingleOrDefault();
                 return item;
@@ -942,15 +953,20 @@ namespace Projeto_TCC_2022.Models
         {
             using (var context = new Model1())
             {
+                var query1 = from Peça in context.Peça
+                             where Peça.Id == PeçaId
+                             select Peça;
+
+                var result = query1.SingleOrDefault();
+
                 var query = from ItemOrçamento in context.ItemOrçamento
                             where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId &&
-                            ItemOrçamento.Fk_Peça_Id == PeçaId
+                            ItemOrçamento.Nome == result.Nome
                             select ItemOrçamento;
                 var item = query.SingleOrDefault();
                 return item;
             }
         }
-
 
         public static void AddItemOrçamento(int Orçamento_Id, string Nome, decimal Preço, string Descrição, double Quantidade, bool? Avaliado)
         {

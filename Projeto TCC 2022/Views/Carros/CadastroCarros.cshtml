@@ -17,7 +17,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Placa, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input data-val="true" data-val-required="Campo Requerido" type="text" class="form-control" name="Placa" id="Placa" maxlength="7" , autocomplete="off" data-val- />
+                <input data-val="true" data-val-required="Campo Requerido" type="text" class="form-control" name="Placa" id="Placa" autocomplete="off" pattern="[a-zA-Z0-9]{7}"/>
                 @Html.ValidationMessageFor(model => model.Placa, "", new { @class = "text-danger" })
             </div>
         </div>

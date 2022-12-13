@@ -67,14 +67,14 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarServiço(string Nome, string Descrição, decimal Preço, bool NecessitaAvaliarVeiculo)
+        public ActionResult AdicionarServiço(string Nome, string Descrição, decimal PreçoMin, decimal PreçoMax, bool NecessitaAvaliarVeiculo)
         {
             if (Oficina == true)
             {
                 string categoria = Request.Form["categoria"];
                 int categoriaId = Model1.GetCategoriaByName(categoria).Id;
 
-                Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, Preço);
+                Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, PreçoMin, PreçoMax, NecessitaAvaliarVeiculo);
                 return RedirectToAction("VisualizarServiços/" + UserID);
             }
 
@@ -99,7 +99,7 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, Preço, Fk_Oficina_Id")] Serviço serviço, string Categoria)
+        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, PreçoMin, PreçoMax, Fk_Oficina_Id, NecessitaAvaliarVeiculo")] Serviço serviço, string Categoria)
         {
 
             if (serviço.Fk_Oficina_Id == UserID)
