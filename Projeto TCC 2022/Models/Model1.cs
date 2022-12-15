@@ -1036,11 +1036,11 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AdicionarPreço(ItemOrçamento itemOrçamento)
+        public static void AdicionarPreço(ItemOrçamento itemOrçamento, decimal Valor)
         {
             using (var context = new Model1())
             {
-
+                itemOrçamento.Preço = Valor;
                 context.Entry(itemOrçamento).State = EntityState.Modified;
                 try
                 {

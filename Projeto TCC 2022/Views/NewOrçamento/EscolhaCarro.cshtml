@@ -1,0 +1,45 @@
+﻿<div class="container mt-5 text-center">
+    <h2>Primeiramente, vamos escolher o carro que deseja utilizar para o Orçamento</h2>
+</div>
+
+<div class="container mt-5 text-center">
+    @using (Html.BeginForm("EscolherCarro", "Orçamento", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <select for="carro" name="carro" class="form-select" id="carro" placeholder="Escolha um carro">
+            @if (ViewBag.Carros != null)
+            {
+                foreach (var item in ViewBag.Carros)
+                {
+                    <option value="@item.Placa">@item.Marca @item.Modelo</option>
+                }
+            }
+        </select>
+
+        <input type="hidden" name="Value" id="Value" value="@TempData["Value"].ToString()" />
+
+        <div class="form-group text-center">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" name="choose" class="btn">Prosseguir<i class="bi bi-arrow-right-circle-fill ms-2"></i></button>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts
+{
+
+    <script>
+
+    $(document).ready(function () {
+        $('#carro').selectize({
+            sortField: 'text'
+
+        });
+    });
+
+    </script>
+
+
+}

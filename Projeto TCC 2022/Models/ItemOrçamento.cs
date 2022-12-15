@@ -16,7 +16,7 @@ namespace Projeto_TCC_2022.Models
         public string Nome { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal Preço { get; set; }
+        public decimal? Preço { get; set; }
 
         public string Descrição { get; set; }
 

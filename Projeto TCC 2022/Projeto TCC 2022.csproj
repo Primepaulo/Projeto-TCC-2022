@@ -330,11 +330,14 @@
     <Content Include="Views\Avaliação\AvaliarServiço.cshtml" />
     <Content Include="Views\Avaliação\EditarAvaliação.cshtml" />
     <Content Include="Views\Avaliação\DeletarAvaliação.cshtml" />
+    <Content Include="Views\NewOrçamento\EscolhaCarro.cshtml" />
+    <Content Include="Views\NewOrçamento\AgendarServiço.cshtml" />
+    <Content Include="Views\NewOrçamento\StatusOrçamento.cshtml" />
+    <Content Include="Views\NewOrçamento\OficinaApprovePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="UploadedFiles\" />
-    <Folder Include="Views\NewOrçamento\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.css.map" />

@@ -333,10 +333,8 @@ namespace Projeto_TCC_2022.Controllers
         [HttpPost]
         public ActionResult FormularOrçamento(ListItemViewModel ItensOrçamento)
         {
-            List<ItemOrçamento> itens = new List<ItemOrçamento>();
-
             int OrçamentoId = ItensOrçamento.OrçamentoId;
-
+            
             foreach (ItemViewModel item in ItensOrçamento.Items)
             {
                 if (item.Tipo == 1)
@@ -351,6 +349,7 @@ namespace Projeto_TCC_2022.Controllers
                     {
                         itemOrçamento.Quantidade += 1;
                         Model1.AddQuantidade(itemOrçamento);
+                        Model1.AdicionarPreço(itemOrçamento, item.Preço);
                     }
                 }
 
@@ -360,12 +359,16 @@ namespace Projeto_TCC_2022.Controllers
                     ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(OrçamentoId, item.Id);
                     if (itemOrçamento == null)
                     {
-                    Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Preço, peça.Descrição, 1, null);
+                        Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Preço, peça.Descrição, 1, null);
                     }
                     else
                     {
                         itemOrçamento.Quantidade += 1;
                         Model1.AddQuantidade(itemOrçamento);
+                        if (itemOrçamento.Preço == null)
+                        {
+                            Model1.AdicionarPreço(itemOrçamento, item.Preço);
+                        }
                     }
                 }
                 Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, ItensOrçamento.Total, null);

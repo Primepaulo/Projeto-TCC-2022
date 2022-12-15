@@ -1,0 +1,91 @@
+﻿@model Projeto_TCC_2022.Models.Orçamento
+
+<div id="Div" class="mt-5">
+
+
+
+
+
+
+
+
+    @*if (Model.Status == Recusado)
+    {
+
+    }
+    *@
+
+
+
+    @*if (Model.Status == Finalizado)
+    {
+
+    }
+    *@
+
+    @*if (Model.Status == Abandonado)
+    {
+
+    }
+    *@
+
+</div>
+
+@section scripts{
+
+    @if (Model.Status == 10)
+    {
+        <script>
+
+            function Update() {
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("OficinaApprovePartial", "NewOrçamento")',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            };
+
+            function exibir() {
+
+                if ($("#Horário1").is(":checked")) {
+                    $("#tempo").addClass("d-none");
+                    $("#tempo").removeAttr("data-val");
+
+                    var attrTempo = $("#tempo").attr("data-val");
+
+                    if (typeof attrTempo !== undefined) {
+                        $("#tempo").attr("data-val", true);
+                    }
+                }
+                else if ($("#Horário2").is(":checked")) {
+                    $("#tempo").removeClass("d-none");
+                    $("#tempo").addAttr("data-val");
+
+                    var attrCNPJ = $("#tempo").attr("data-val", true);
+
+                    if (typeof attrCNPJ !== undefined) {
+                        $("#CNPJ").attr("data-val", true);
+                    }
+                }
+            }
+
+        </script>
+    }
+
+    <script>
+        $(document).ready(function () {
+
+            setInterval(function () {
+                Update();
+            }, 20000);
+        });
+    </script>
+}
