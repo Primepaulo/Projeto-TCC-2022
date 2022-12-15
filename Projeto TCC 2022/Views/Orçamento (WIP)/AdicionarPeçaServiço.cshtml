@@ -20,6 +20,11 @@
             </select>
         </div>
 
+        <div class="col">
+            <label for="valorFinal">Insira o valor final do item:</label>
+            <input class="form-control valorFinal text-box single-line" name="valorFinal" required type="number" data-val="true" data-val-number="O campo deve ser preenchido com um número" />
+        </div>
+
 
         <div class="col">
             <button onclick="AddItem(1)">Adicionar Serviço</button>
@@ -40,6 +45,11 @@
                     }
                 }
             </select>
+        </div>
+
+        <div class="col">
+            <label for="valorFinal">Insira o valor final do item:</label>
+            <input class="form-control valorFinal text-box single-line" name="valorFinal" required type="number" data-val="true" data-val-number="O campo deve ser preenchido com um número" />
         </div>
 
         <div class="col">
@@ -83,7 +93,7 @@
                         $.ajax
                         ({
                             type: 'GET',
-                            url: "/Orçamento/TotalPartial/",
+                            url: "/Orçamento/TotalPartial/?Id=" + 2,
                             dataType: 'html',
                             cache: false,
                             success: function (data) {
@@ -200,6 +210,8 @@
 
             var peças = $(".itemOrçamentoPeçaId").map((_, item) => item.value).get();
 
+            var itens = $(".itemOrçamentoPeçaId").map((_, item) => item.value).get();
+
             if (total != null || Type == 1) {
 
                 $.ajax
@@ -210,6 +222,7 @@
                             serviços: serviços,
                             total: total,
                             peças: peças,
+                            itens: itens,
                             Id: @ViewBag.Orçamento.Id
                         }
 

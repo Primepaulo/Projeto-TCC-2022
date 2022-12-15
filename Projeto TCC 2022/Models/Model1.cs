@@ -29,7 +29,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=LAB3PAULO" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -880,17 +880,23 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AprovarFinalizarOrçamento(int Id, int Operação, decimal? Valor)
+        public static void AprovarFinalizarOrçamento(int Id, int Operação, decimal? Valor, string DateT)
         {
             using (var context = new Model1())
             {
                 Orçamento orçamento = GetOrçamento(Id);
+                Oficina oficina = GetOficinaById(orçamento.fk_Oficina_Id);
                 orçamento.Status = Operação;
-                orçamento.Data_Aprovação = DateTime.Now;
+                orçamento.Data_Aprovação = Convert.ToString(DateTime.Now);
 
                 if (Valor != null)
                 {
                     orçamento.Valor = Valor;
+                }
+
+                if (DateT != null)
+                {
+                    orçamento.Data_Aprovação = DateT;
                 }
 
                 context.Entry(orçamento).State = EntityState.Modified;
@@ -968,7 +974,20 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AddItemOrçamento(int Orçamento_Id, string Nome, decimal Preço, string Descrição, double Quantidade, bool? Avaliado)
+        public static ItemOrçamento GetItemOrçamentoByName(int OrçamentoId, string Nome)
+        {
+            using (var context = new Model1())
+            {
+                var query = from ItemOrçamento in context.ItemOrçamento
+                            where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId &&
+                            ItemOrçamento.Nome == Nome
+                            select ItemOrçamento;
+                var item = query.SingleOrDefault();
+                return item;
+            }
+        }
+
+        public static void AddItemOrçamento(int Orçamento_Id, string Nome, decimal? Preço, string Descrição, double Quantidade, bool? Avaliado)
         {
             using (var context = new Model1())
             {
@@ -976,7 +995,7 @@ namespace Projeto_TCC_2022.Models
                 {
                     Fk_Orçamento_Id = Orçamento_Id,
                     Nome = Nome,
-                    Preço = Preço,
+                    Preço = (decimal)Preço,
                     Descrição = Descrição,
                     Quantidade = Quantidade,
                     Avaliado = Avaliado
@@ -1016,6 +1035,25 @@ namespace Projeto_TCC_2022.Models
 
             }
         }
+
+        public static void AdicionarPreço(ItemOrçamento itemOrçamento)
+        {
+            using (var context = new Model1())
+            {
+
+                context.Entry(itemOrçamento).State = EntityState.Modified;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+
+            }
+        }
+
 
         public static void Avaliado(ItemOrçamento item)
         {

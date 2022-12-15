@@ -33,6 +33,11 @@ namespace Projeto_TCC_2022.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarNúmero(string CelularTelefone1)
         {
+            if (CelularTelefone1.StartsWith("0"))
+            {
+                CelularTelefone1 = CelularTelefone1.Split('0')[1];
+            }
+
             Model1.InsertCelular(CelularTelefone1, UserID);
             Response.Clear();
 

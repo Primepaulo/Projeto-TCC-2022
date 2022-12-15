@@ -9,7 +9,8 @@
             <input class="d-none itemOrçamentoId" value="@ViewBag.ServiçoCategoria.Serviço.Id" />
         </div>
         <div class="col">
-            <p class="preço">@ViewBag.ServiçoCategoria.Serviço.Preço.ToString("F")</p>
+            <p class="preço">@ViewBag.ServiçoCategoria.Serviço.PreçoMin.ToString("F")</p>
+            <p class="preço">@ViewBag.ServiçoCategoria.Serviço.PreçoMax.ToString("F")</p>
         </div>
     </div>
 }
@@ -25,7 +26,8 @@
             <input class="d-none itemOrçamentoPeçaId" value="@ViewBag.Peça.Id" />
         </div>
         <div class="col">
-            <p class="preço">@ViewBag.Peça.Preço.ToString("F")</p>
+            <p class="preço">@ViewBag.Peça.PreçoMin.ToString("F")</p>
+            <p class="preço">@ViewBag.Peça.PreçoMax.ToString("F")</p>
         </div>
     </div>
 }

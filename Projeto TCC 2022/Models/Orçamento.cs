@@ -33,7 +33,8 @@ namespace Projeto_TCC_2022.Models
 
         public DateTime Data_Orçamento { get; set; }
 
-        public DateTime? Data_Aprovação { get; set; }
+        [StringLength(7)]
+        public string Data_Aprovação { get; set; }
 
         public int Tipo { get; set; }
 

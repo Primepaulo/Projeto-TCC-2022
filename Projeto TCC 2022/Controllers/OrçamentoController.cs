@@ -17,7 +17,7 @@
 //    {
 //        public ActionResult VisualizarOrçamentos()
 //        {
-            
+
 //            return View();
 //        }
 //        public PartialViewResult VisualizarOrçamentoPessoaPartial(int data)
@@ -31,7 +31,7 @@
 
 //            else if (data == 2)
 //            {
-//               orçamentos = Model1.GetAllOrçamentos(UserID);
+//                orçamentos = Model1.GetAllOrçamentos(UserID);
 //            }
 
 //            ViewBag.Orçamentos = orçamentos;
@@ -120,7 +120,7 @@
 //            {
 //                Carro carro = (Carro)Session["carro"];
 //                DateTime data = DateTime.Now;
-//                Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, Id, data, null, 2);
+//                Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, Id, data, 2);
 //                Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id);
 
 //                return RedirectToAction("StatusOrçamentoPessoa", "Orçamento", new { orçamento.Id });
@@ -159,7 +159,7 @@
 
 //            return RedirectToAction("Erro"); //TBA
 //        }
-        
+
 //        public PartialViewResult ServiçosDisponiveisPartial(int categoriaId, int oficinaId)
 //        {
 //            List<Serviço> serviços = Model1.GetServiçosByOficinaFilterByCategoria(categoriaId, oficinaId);
@@ -167,7 +167,7 @@
 //            return PartialView();
 //        }
 
-//        public PartialViewResult ItemOrçamentoPartial(int Id, int? Tipo)
+//        public PartialViewResult ItemOrçamentoPartial(int Id, int? Tipo, decimal? valor)
 //        {
 //            if (Tipo == 1 || Tipo == null)
 //            {
@@ -188,37 +188,62 @@
 //            {
 //                var peça = Model1.GetPeça(Id);
 //                ViewBag.Peça = peça;
-//                Session["ServiçoOrçamentoMin"] = peça.PreçoMin;
-//                Session["ServiçoOrçamentoMax"] = peça.PreçoMax;
+//                //Session["ServiçoOrçamentoMin"] = peça.PreçoMin;
+//                //Session["ServiçoOrçamentoMax"] = peça.PreçoMax;
+//                Session["ItemOrçamento"] = valor;
+
 //                ViewBag.Tipo = 2;
 //            }
 
 //            return PartialView();
 //        }
 
-//        public PartialViewResult TotalPartial()
+//        public PartialViewResult TotalPartial(int Id)
 //        {
-//            decimal somaMin = 0;
-//            decimal somaMax = 0;
-
-//            decimal valorMin = Convert.ToDecimal(Session["ServiçoOrçamentoMin"]);
-//            decimal valorMax = Convert.ToDecimal(Session["ServiçoOrçamentoMax"]);
-
-//            if (Session["SomaMin"] == null && Session["SomaMax"] == null) // Bugs
+//            if (Id == 1)
 //            {
-//                somaMin += valorMin;
-//                somaMax += valorMax;
-//            }
-//            else
-//            {
-//                somaMin = Convert.ToDecimal(Session["SomaMin"]) + valorMin;
-//                somaMax = Convert.ToDecimal(Session["SomaMax"]) + valorMax;
+//                decimal somaMin = 0;
+//                decimal somaMax = 0;
+
+//                decimal valorMin = Convert.ToDecimal(Session["ServiçoOrçamentoMin"]);
+//                decimal valorMax = Convert.ToDecimal(Session["ServiçoOrçamentoMax"]);
+
+//                if (Session["SomaMin"] == null && Session["SomaMax"] == null)
+//                {
+//                    somaMin += valorMin;
+//                    somaMax += valorMax;
+//                }
+//                else
+//                {
+//                    somaMin = Convert.ToDecimal(Session["SomaMin"]) + valorMin;
+//                    somaMax = Convert.ToDecimal(Session["SomaMax"]) + valorMax;
+//                }
+
+//                Session["SomaMin"] = somaMin;
+//                Session["SomaMax"] = somaMax;
+//                ViewBag.TotalMin = somaMin;
+//                ViewBag.TotalMax = somaMax;
 //            }
 
-//            Session["SomaMin"] = somaMin;
-//            Session["SomaMax"] = somaMax;
-//            ViewBag.TotalMin = somaMin;
-//            ViewBag.TotalMax = somaMax;
+//            if (Id == 2)
+//            {
+//                decimal SomaFinal = 0;
+//                decimal ValorFinal = Convert.ToDecimal(Session["ItemOrçamento"]);
+
+//                if (Session["Soma"] == null)
+//                {
+//                    SomaFinal += ValorFinal;
+//                }
+//                else
+//                {
+//                    SomaFinal= Convert.ToDecimal(Session["SomaMin"]) + ValorFinal;
+//                }
+
+//                Session["Soma"] = SomaFinal;
+//                ViewBag.Total = SomaFinal;
+//            }
+
+
 //            return PartialView();
 //        }
 
@@ -235,9 +260,12 @@
 //            }
 //            else if (Type == 1)
 //            {
-//                decimal Valor = (decimal)Session["ValorOriginal"];
-//                Session["Soma"] = Valor;
-//                ViewBag.Total = Valor;
+//                decimal ValorMin = (decimal)Session["ValorOriginalMin"];
+//                Session["SomaMin"] = ValorMin;
+//                decimal ValorMax = (decimal)Session["ValorOriginalMax"];
+//                Session["SomaMax"] = ValorMax;
+//                ViewBag.TotalMin = ValorMin;
+//                ViewBag.TotalMax = ValorMax;
 //            }
 //            return null;
 //        }
@@ -276,13 +304,15 @@
 //                    Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, 1);
 //                    Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id);
 
-//                    foreach (string item in serviçoTotal.serviços)
+//                    //foreach (string item in serviçoTotal.serviços)
+//                    for (int i = 0; i < serviçoTotal.serviços.Length; i++)
 //                    {
-//                        int ServiçoId = Convert.ToInt32(item);
+//                        int ServiçoId = Convert.ToInt32(serviçoTotal.serviços[i]);
+//                        Serviço serviço = Model1.GetServiço(ServiçoId);
 //                        ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(orçamento.Id, ServiçoId);
 //                        if (itemOrçamento == null)
 //                        {
-//                            Model1.AddItemOrçamento(orçamento.Id, ServiçoId, null, 1, false);
+//                            Model1.AddItemOrçamento(orçamento.Id, serviço.Nome, Convert.ToDecimal(serviçoTotal.itens[i]), serviço.Descrição, 1, false);
 //                        }
 //                        else
 //                        {
@@ -305,7 +335,7 @@
 //            }
 //            return View();
 //        }
-    
+
 //        public ActionResult StatusOrçamentoPessoa(int Id)
 //        {
 //            Response.Clear();
@@ -340,7 +370,8 @@
 
 //            foreach (var item in ViewBag.ItemOrçamento)
 //            {
-//                if (item.Fk_Serviço_Id != null) {
+//                if (item.Fk_Serviço_Id != null)
+//                {
 //                    serviços.Add(Model1.GetServiço(item.Fk_Serviço_Id));
 //                }
 //                else if (item.Fk_Peça_Id != null)
@@ -418,7 +449,7 @@
 //            return View();
 //        }
 
-//        public ActionResult AdicionarPeçaServiço (int Id)
+//        public ActionResult AdicionarPeçaServiço(int Id)
 //        {
 //            Session["ServiçoOrçamento"] = null;
 //            Session["Soma"] = null;
@@ -471,16 +502,17 @@
 
 //            if (orçamento.Tipo == 2)
 //            {
-//                foreach (string item in serviçoPeçaTotal.serviços)
+//                //foreach (string item in serviçoPeçaTotal.serviços)
+//                for (int i = 0; i < serviçoPeçaTotal.serviços.Length; i++)
 //                {
-//                    Serviço serviço = Model1.GetServiço(Convert.ToInt32(item));
-//                    final += serviço.Preço;
-
+//                    Serviço serviço = Model1.GetServiço(Convert.ToInt32(serviçoPeçaTotal.serviços[i]));
 //                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(orçamento.Id, serviço.Id);
+
+//                    final += itemOrçamento.Preço;
 
 //                    if (itemOrçamento == null)
 //                    {
-//                        Model1.AddItemOrçamento(orçamento.Id, serviço.Id, null, 1, false);
+//                        Model1.AddItemOrçamento(orçamento.Id, serviço.Nome, Convert.ToDecimal(serviçoPeçaTotal.itens[i]), serviço.Descrição, 1, false);
 //                    }
 //                    else
 //                    {
@@ -494,20 +526,21 @@
 //            if (serviçoPeçaTotal.peças != null)
 //            {
 
-//                foreach (string item in serviçoPeçaTotal.peças)
+//                //foreach (string item in serviçoPeçaTotal.peças)
+//                for (int i = 0; i < serviçoPeçaTotal.peças.Length; i++)
 //                {
-//                    Peça peça = Model1.GetPeça(Convert.ToInt32(item));
+//                    Peça peça = Model1.GetPeça(Convert.ToInt32(serviçoPeçaTotal.peças[i]));
 //                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(orçamento.Id, peça.Id);
 //                    if (itemOrçamento == null)
 //                    {
-//                        Model1.AddItemOrçamento(orçamento.Id, null, peça.Id, 1, null);
+//                        Model1.AddItemOrçamento(orçamento.Id, peça.Nome, Convert.ToDecimal(serviçoPeçaTotal.itens[i]), peça.Descrição, 1, null);
 //                    }
 //                    else
 //                    {
 //                        itemOrçamento.Quantidade += 1;
 //                        Model1.AddQuantidade(itemOrçamento);
 //                    }
-//                    final += peça.Preço;
+//                    final += itemOrçamento.Preço;
 //                }
 //            }
 
@@ -521,8 +554,8 @@
 //                    original = (decimal)Session["ValorOriginal"];
 //                }
 
-//                else 
-//                { 
+//                else
+//                {
 //                    original = 0;
 //                }
 

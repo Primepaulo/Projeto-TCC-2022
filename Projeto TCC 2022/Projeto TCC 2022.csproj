@@ -181,6 +181,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ImagemController.cs" />
+    <Compile Include="Controllers\NewOrçamentoController.cs" />
     <Compile Include="Controllers\NumeroController.cs" />
     <Compile Include="Controllers\OficinaController.cs" />
     <Compile Include="Controllers\OrçamentoController.cs" />
@@ -195,10 +196,11 @@
     <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
+    <Compile Include="Models\Classes\OficinaItemOrçamento.cs" />
     <Compile Include="Models\Classes\ServiçoAvaliação.cs" />
     <Compile Include="Models\Classes\ServiçoCategoria.cs" />
-    <Compile Include="Models\Classes\ServiçoPeçaTotal.cs" />
     <Compile Include="Models\Classes\ServiçoTotal.cs" />
+    <Compile Include="Models\Classes\ValorMinMax.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -331,6 +333,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="UploadedFiles\" />
+    <Folder Include="Views\NewOrçamento\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.css.map" />

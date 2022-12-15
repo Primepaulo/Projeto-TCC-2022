@@ -9,7 +9,6 @@ namespace Projeto_TCC_2022.Models.Classes
     {
         public string[] serviços { get; set; }
         public string TotalMin { get; set; }
-
         public string TotalMax { get; set; }
     }
 }
