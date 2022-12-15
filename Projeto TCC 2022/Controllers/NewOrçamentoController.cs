@@ -170,7 +170,7 @@ namespace Projeto_TCC_2022.Controllers
                         Model1.AddQuantidade(itemOrçamento);
                     }
                 }
-                    return JavaScript($"window.location='/Orçamento/StatusOrçamentoPessoa/" + orçamento.Id + "'");
+                    return JavaScript($"window.location='/NewOrçamento/StatusOrçamento/" + orçamento.Id + "'");
             }
         
             else if (Session["OficinaId"] == null)
@@ -368,9 +368,9 @@ namespace Projeto_TCC_2022.Controllers
                         Model1.AddQuantidade(itemOrçamento);
                     }
                 }
-
+                Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, ItensOrçamento.Total, null);
             }
-
+            return JavaScript($"window.location='/NewOrçamento/StatusOrçamento/" + OrçamentoId + "'");
         }
 
 
