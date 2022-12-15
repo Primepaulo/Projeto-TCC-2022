@@ -196,7 +196,8 @@
     <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
-    <Compile Include="Models\Classes\OficinaItemOrçamento.cs" />
+    <Compile Include="Models\Classes\ItemViewModel.cs" />
+    <Compile Include="Models\Classes\ListItemViewModel.cs" />
     <Compile Include="Models\Classes\ServiçoAvaliação.cs" />
     <Compile Include="Models\Classes\ServiçoCategoria.cs" />
     <Compile Include="Models\Classes\ServiçoTotal.cs" />

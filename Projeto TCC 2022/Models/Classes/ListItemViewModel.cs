@@ -5,8 +5,9 @@ using System.Web;
 
 namespace Projeto_TCC_2022.Models.Classes
 {
-    public class OficinaItemOrçamento
+    public class ListItemViewModel
     {
-        public IList<ItemOrçamento> Itens { get; set; }
+        public int OrçamentoId { get; set; }
+        public List<ItemViewModel> Items{ get; set; }
     }
 }

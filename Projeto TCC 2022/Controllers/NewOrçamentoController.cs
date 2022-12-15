@@ -331,12 +331,46 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
-        public ActionResult FormularOrçamento(FormCollection form)
+        public ActionResult FormularOrçamento(ListItemViewModel ItensOrçamento)
         {
-            foreach (string key in form.AllKeys)
+            List<ItemOrçamento> itens = new List<ItemOrçamento>();
+
+            int OrçamentoId = ItensOrçamento.OrçamentoId;
+
+            foreach (ItemViewModel item in ItensOrçamento.Items)
             {
-                ItemOrçamento item = 
+                if (item.Tipo == 1)
+                {
+                    Serviço serviço = Model1.GetServiço(item.Id);
+                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(OrçamentoId, item.Id);
+                    if (itemOrçamento == null)
+                    {
+                        Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, item.Preço, serviço.Descrição, 1, false);
+                    }
+                    else
+                    {
+                        itemOrçamento.Quantidade += 1;
+                        Model1.AddQuantidade(itemOrçamento);
+                    }
+                }
+
+                if (item.Tipo == 2)
+                {
+                    Peça peça = Model1.GetPeça(item.Id);
+                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(OrçamentoId, item.Id);
+                    if (itemOrçamento == null)
+                    {
+                    Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Preço, peça.Descrição, 1, null);
+                    }
+                    else
+                    {
+                        itemOrçamento.Quantidade += 1;
+                        Model1.AddQuantidade(itemOrçamento);
+                    }
+                }
+
             }
+
         }
 
 
