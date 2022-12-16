@@ -29,7 +29,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPC4" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -436,6 +436,41 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
+
+        public static void UpdateCategoria(Categoria categoria)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(categoria).State = EntityState.Modified;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+        }
+
+        public static void DeleteCategoria(int Id)
+        {
+            using (var context = new Model1())
+            {
+                Categoria categoria = context.Categoria.Find(Id);
+                context.Categoria.Remove(categoria);
+                try
+                {
+                    context.SaveChanges();
+                }
+
+                catch(Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+        }
+
 
         // ----------------------------------------------------------------------------------------------------
         // Notificações

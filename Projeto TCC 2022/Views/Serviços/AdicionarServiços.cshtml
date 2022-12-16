@@ -50,17 +50,17 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PreçoMin, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2" for="PreçoMin">Preço Min.:</label>
         <div class="col-md-10">
-            @Html.EditorFor(model => model.PreçoMin, new { htmlAttributes = new { @class = "form-control", name = "Preço", @id = "Preço" } })
+            <input class="form-control text-box single-line" data-val="true" data-val-number="O campo Preço Min. deve ser um número." id="PreçoMin" name="PreçoMin" type="text" value="">
             @Html.ValidationMessageFor(model => model.PreçoMin, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PreçoMax, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2" for="PreçoMax">Preço Max.:</label>
         <div class="col-md-10">
-            @Html.EditorFor(model => model.PreçoMax, new { htmlAttributes = new { @class = "form-control", name = "Preço", @id = "Preço" } })
+            <input class="form-control text-box single-line" data-val="true" data-val-number="O campo Preço Max. deve ser um número." id="PreçoMax" name="PreçoMax" type="text" value="">
             @Html.ValidationMessageFor(model => model.PreçoMax, "", new { @class = "text-danger" })
         </div>
     </div>

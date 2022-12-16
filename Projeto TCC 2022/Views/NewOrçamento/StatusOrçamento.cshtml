@@ -58,18 +58,12 @@
                 if ($("#Horário1").is(":checked")) {
                     $("#tempo").addClass("d-none");
                     $("#tempo").removeAttr("data-val");
-
-                    var attrTempo = $("#tempo").attr("data-val");
-
-                    if (typeof attrTempo !== undefined) {
-                        $("#tempo").attr("data-val", true);
-                    }
                 }
                 else if ($("#Horário2").is(":checked")) {
                     $("#tempo").removeClass("d-none");
                     $("#tempo").addAttr("data-val");
 
-                    var attrCNPJ = $("#tempo").attr("data-val", true);
+                    var attrCNPJ = $("#tempo").attr("data-val");
 
                     if (typeof attrCNPJ !== undefined) {
                         $("#CNPJ").attr("data-val", true);

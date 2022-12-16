@@ -131,5 +131,32 @@ namespace Projeto_TCC_2022.Controllers
             Model1.InsertCategorias(Nome);
             return RedirectToAction("VisualizarCategorias");
         }
+
+        public ActionResult UpdateCategoria(int Id)
+        {
+            Categoria categoria = Model1.GetCategoriaById(Id);
+            return View(categoria);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateCategoria([Bind(Include = "Id, Nome")]Categoria categoria)
+        {
+            Model1.UpdateCategoria(categoria);
+            return RedirectToAction("VisualizarCategorias");
+        }
+
+
+        public ActionResult DeleteCategoria(int Id)
+        {
+            Categoria categoria = Model1.GetCategoriaById(Id);
+            return View(categoria);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletarCategoria(int Id)
+        {
+            Model1.DeleteCategoria(Id);
+            return RedirectToAction("VisualizarCategorias");
+        }
     }
 }

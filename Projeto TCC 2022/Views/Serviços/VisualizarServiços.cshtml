@@ -16,7 +16,8 @@
         <tr>
             <td>@ViewBag.Lista[i].Nome</td>
             <td>@ViewBag.Lista[i].Descrição</td>
-            <td>@ViewBag.Lista[i].Preço.ToString("F")</td>
+            <td>@ViewBag.Lista[i].PreçoMin.ToString("F")</td>
+            <td>@ViewBag.Lista[i].PreçoMax.ToString("F")</td>
             <td>@ViewBag.Categorias[i].Nome</td>
             <td>
                 @Html.ActionLink("Editar", "EditarServiço", new { Id = ViewBag.Lista[i].Id }) |

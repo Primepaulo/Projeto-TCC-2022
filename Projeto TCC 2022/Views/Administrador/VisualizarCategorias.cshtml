@@ -11,12 +11,18 @@
             <ul>
                 @foreach (var item in ViewBag.Categorias)
                 {
-                    <li>@item.Nome</li>
+                <li>@item.Nome 
+                    @Html.ActionLink("Editar", "UpdateCategoria", new { Id = item.Id }, new { @class = "" })
+                    @Html.ActionLink("Excluir", "DeleteCategoria", new { Id = item.Id }, new { @class = "" })
+                </li>
+
                 }
             </ul>
         </div>
+    </div>
+    <div class="row">
         <div class="col text-center">
-            @Html.ActionLink("Adicionar Categorias", "AdicionarCategorias", null, new {@class = "btn btn-success"})
+            @Html.ActionLink("Adicionar Categorias", "AdicionarCategorias", null, new { @class = "btn btn-success" })
         </div>
     </div>
 </div>

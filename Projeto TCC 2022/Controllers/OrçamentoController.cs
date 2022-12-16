@@ -236,7 +236,7 @@
 //                }
 //                else
 //                {
-//                    SomaFinal= Convert.ToDecimal(Session["SomaMin"]) + ValorFinal;
+//                    SomaFinal = Convert.ToDecimal(Session["SomaMin"]) + ValorFinal;
 //                }
 
 //                Session["Soma"] = SomaFinal;

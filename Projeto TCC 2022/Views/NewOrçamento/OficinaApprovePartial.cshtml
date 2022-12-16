@@ -1,13 +1,19 @@
 ﻿<div id="Div" class="mt-5">
     @Html.BeginForm("AprovarRecusar", "NewOrçamento", FormMethod.Post)
     {
-        <div class="row">
-            <label for="Horário1">Horário de Funcionamento</label>
-            <input type="radio" id="Horário1" name="Horario" />
+    <div class="row">
+        <label for="Horário1">Horário de Funcionamento</label>
+        <input type="radio" id="Horário1" name="Horario" />
 
-            <label for="Horário2">Horário Definido:</label>
-            <input type="radio" id="Horário2" name="Horario" onchange="exibir()"/>
+        <label for="Horário2">Horário Definido:</label>
+        <input type="radio" id="Horário2" name="Horario" onchange="exibir()" />
+        <div>
+            <div class="col-md-10 mt-3 d-none" id="tempo">
+                <input id="inicio" name="inicio" type="text" value="" class="timepicker" /> <span class="ms-2 me-2"> Até</span>
+                <input id="fim" name="fim" type="text" value="" class="timepicker" />
+            </div>
         </div>
+    </div>
         <div class="row">
             <div class="col-md-6 col-sm-12">
                 <button type="submit" lass="btn btn-default" value="12" name="Operação">Aceitar</button>
