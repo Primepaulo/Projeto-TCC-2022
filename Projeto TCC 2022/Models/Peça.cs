@@ -20,10 +20,10 @@ namespace Projeto_TCC_2022.Models
         public int Fk_Oficina_Id { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal PreçoMin { get; set; }
+        public decimal? PreçoMin { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal PreçoMax { get; set; }
+        public decimal? PreçoMax { get; set; }
 
         [StringLength(50)]
         public string Marca { get; set; }

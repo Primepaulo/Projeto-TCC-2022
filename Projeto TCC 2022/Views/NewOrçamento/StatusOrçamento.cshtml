@@ -1,34 +1,40 @@
 ﻿@model Projeto_TCC_2022.Models.Orçamento
 
-<div id="Div" class="mt-5">
+<div id="Div" class="mt-5 card mx-auto">
+    <div class="card-header">
+        <i class="bi bi-clipboard2-fill me-2"></i> " Orçamento: "
+    </div>
+    <div class="card-body">
+        @if (Model.Status == 11) //Recusado pela Oficina
+        {
 
+        }
 
+        @if (Model.Status == 12 && ViewBag.éPessoa == true) //Aceito pela Oficina, aguardando formulação do orçamento
+        {
 
+        }
 
+        @if (Model.Status == 22 && ViewBag.éPessoa == true) // Em Formulação
+        {
 
+        }
 
+        @if (Model.Status == 24) //Cliente nunca levou o carro
+        {
 
+        }
 
-    @*if (Model.Status == Recusado)
-    {
+        @if (Model.Status == 32) //Finalizado com sucesso
+        {
 
-    }
-    *@
+        }
 
+        @if (Model.Status == 31) //Reprovado pelo Cliente
+        {
 
-
-    @*if (Model.Status == Finalizado)
-    {
-
-    }
-    *@
-
-    @*if (Model.Status == Abandonado)
-    {
-
-    }
-    *@
-
+        }
+    </div>
 </div>
 
 @section scripts{
@@ -41,7 +47,7 @@
                 $.ajax
                 ({
                     type: 'GET',
-                    url: '@Url.Action("OficinaApprovePartial", "NewOrçamento")',
+                    url: '@Url.Action("OficinaApprovePartial", "NewOrçamento", new { Id = Model.Id })',
                     dataType: 'html',
                     cache: false,
                     success: function (data) {
@@ -74,12 +80,58 @@
         </script>
     }
 
+    @if (Model.Status == 21)
+    {
+        <script>
+            function Update() {
+                $.ajax({
+
+                    type: 'GET',
+                    url: '@Url.Action("ConfirmarAvaliaçãoPartial", "NewOrçamento", new { Id = Model.Id })',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            };
+        </script>
+    }
+
+    @if (Model.Status == 12 && ViewBag.éOficina == true || Model.Status == 22 && ViewBag.éOficina == true)
+    {
+        <script>
+            function Update() {
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("FormularPromptPartial", "NewOrçamento", new { Id = Model.Id })',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            };
+        </script>
+    }
+
     <script>
         $(document).ready(function () {
-
-            setInterval(function () {
-                Update();
-            }, 20000);
+            @if (Model.Status != 10) {
+                <text>
+                    setInterval(function() {
+                        Update();
+                    }, 20000);
+                </text>
+             }
+            Update();
         });
     </script>
 }

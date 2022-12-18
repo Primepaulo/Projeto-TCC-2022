@@ -22,6 +22,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Web.DynamicData;
 using System.Web.Services.Description;
 using System.Web.Mvc;
+using Microsoft.SqlServer.Server;
 
 namespace Projeto_TCC_2022.Models
 {
@@ -29,7 +30,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=BibliotecaPonta" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -655,8 +656,21 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static Serviço GetServiçoByNomeId(int UserId, string Nome)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Serviço in context.Serviços
+                            where Serviço.Fk_Oficina_Id == UserId &&
+                            Serviço.Nome == Nome
+                            select Serviço;
+                var serviço = query.SingleOrDefault();
+                return serviço;
+            }
+        }
 
-        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal PreçoMin, decimal PreçoMax, bool NecessitaAvaliarVeiculo)
+
+        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal? PreçoMin, decimal? PreçoMax, bool NecessitaAvaliarVeiculo)
         {
             using (var context = new Model1())
             {
@@ -760,7 +774,7 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void InsertPeça(string Nome, int uID, string Marca, string Código, string Descrição, decimal PreçoMin, decimal PreçoMax)
+        public static void InsertPeça(string Nome, int uID, string Marca, string Código, string Descrição, decimal? PreçoMin, decimal? PreçoMax)
         {
             using (var context = new Model1())
             {
@@ -890,7 +904,7 @@ namespace Projeto_TCC_2022.Models
                     fk_Oficina_Id = OficinaId,
                     Data_Orçamento = DateOrçamento,
                     Data_Aprovação = null,
-                    Status = 0,
+                    Status = 10,
                     Tipo = Tipo
                 };
 
@@ -922,7 +936,7 @@ namespace Projeto_TCC_2022.Models
                 Orçamento orçamento = GetOrçamento(Id);
                 Oficina oficina = GetOficinaById(orçamento.fk_Oficina_Id);
                 orçamento.Status = Operação;
-                orçamento.Data_Aprovação = Convert.ToString(DateTime.Now);
+                orçamento.Data_Aprovação = DateT;
 
                 if (Valor != null)
                 {
@@ -949,6 +963,15 @@ namespace Projeto_TCC_2022.Models
                         }
                     }
                 }
+            }
+        }
+
+        public static void UpdateOrçamento(Orçamento orçamento)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(orçamento).State = EntityState.Modified;
+                context.SaveChanges();
             }
         }
 
@@ -1030,7 +1053,7 @@ namespace Projeto_TCC_2022.Models
                 {
                     Fk_Orçamento_Id = Orçamento_Id,
                     Nome = Nome,
-                    Preço = (decimal)Preço,
+                    Preço = Preço,
                     Descrição = Descrição,
                     Quantidade = Quantidade,
                     Avaliado = Avaliado

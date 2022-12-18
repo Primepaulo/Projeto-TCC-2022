@@ -4,40 +4,27 @@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
-
-<div class="collapse navbar-collapse ms-2 text-center" id="navbarNavDarkDropdown">
-    <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person" style="font-size: 1.2rem;"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item nav-link">
-                        <a href="@Url.Action("Index", "Manage", null)" class="nav-link"><i class="bi bi-key-fill me-2"></i>Mudar Senha</a>
-                    </li>
-                    @if (ViewBag.éOficina == true)
-                    {
-                        <li class="nav-item nav-link"> <a href="@Url.Action("Page", "Oficina", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-wrench me-2"></i>Oficina</a></li>
-                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarServiços", "Serviços", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-wrench me-2"></i>Serviços</a></li>
-                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarPeças", "Peças", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-gear me-2"></i>Peças</a></li>
-                    }
-                    @if (ViewBag.éPessoa == true)
-                    {
-                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarCarros", "Carros")" class="nav-link"><i class="bi bi-car-front-fill me-2"></i>Carros</a></li>
-                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarAvaliações", "Avaliação")" class="nav-link"><i class="bi bi-list-stars me-2"></i>Avaliações</a></li>
-                    }
-                    @if (ViewBag.éPessoa == true || ViewBag.éOficina == true)
-                    {
-                        <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarOrçamentos", "Orçamento")" class="nav-link"><i class="bi bi-clipboard2-fill me-2"></i>Orçamentos</a></li>
-                    }
-                    <li class="nav-item nav-link"><a href="javascript:document.getElementById('logoutForm').submit()" class="deco-none nav-link"><i class="bi bi-door-open me-2"></i>Fazer logoff</a></li>
-                </ul>
-            </div>
-        </li>
-    </ul>
-</div>
-
+        <div class="collapse navbar-collapse ms-2 text-center" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person" style="font-size: 1.2rem;"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <ul class="nav navbar-nav navbar-right">
+                            @if (ViewBag.éOficina == true)
+                            {
+                            <li class="nav-item nav-link"> <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.UserID })" class="nav-link"><i class="bi bi-wrench me-2"></i>Oficina</a></li>
+                            }
+                            <li class="nav-item nav-link">
+                                <a href="@Url.Action("Index", "Manage", null)" class="nav-link"><i class="bi bi-key-fill me-2"></i>Mudar Senha</a>
+                            </li>
+                            <li class="nav-item nav-link"><a href="javascript:document.getElementById('logoutForm').submit()" class="deco-none nav-link"><i class="bi bi-door-open me-2"></i>Fazer logoff</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
     }
 }
 else

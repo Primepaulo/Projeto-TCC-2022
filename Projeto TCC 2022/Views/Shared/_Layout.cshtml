@@ -11,86 +11,103 @@
 </head>
 <body>
     <div class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <!--Botão de Toggle-->
-            <button type="button"
-                    class="navbar-toggler"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainCollapse"
-                    aria-controls="mainCollapse"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
+        <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">SOBOM <i class="bi bi-wrench-adjustable-circle-fill"></i></a>
+        <button type="button"
+                class="navbar-toggler"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainCollapse"
+                aria-controls="mainCollapse"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
 
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainCollapse">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-link">@Html.ActionLink("Página Inicial", "Index", "Home", null, new { @class = "nav-link" })</li>
+                @if (ViewBag.éPessoa == true)
+                {
+                    <li class="nav-item nav-link">@Html.ActionLink("Carros", "VisualizarCarros", "Carros", null, new { @class = "nav-link" })</li>
+                }
+                @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
+                {
+                    <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
+                }
+                @if (ViewBag.éOficina == true)
+                {
+                    <li class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
+                }
+                @if (ViewBag.éOficina == true && ViewBag.éAprovada == true)
+                {
+                    <li class="nav-item nav-link">@Html.ActionLink("Sugerir Categoria", "Sugerir", "Oficina", null, new { @class = "nav-link" })</li>
+                }
 
-            <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">SOBOM <i class="bi bi-wrench-adjustable-circle-fill"></i></a>
+            </ul>
+            <form class="d-flex mx-auto my-2" method="get" role="search" action="@Url.Action("DataRequestSessions", "Home")">
+                <div class="col-md-3">
+                    <select for="filter" name="filter" onchange="exibirCategorias()" id="filtro" class="form-control text-center">
+                        <option value="OficinaNome">Oficina</option>
+                        <option value="ServiçoCategoria">Serviço</option>
+                        <option value="OficinaBairro">Bairro</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <input for="navSearch" name="navSearch" class="form-control" type="search" placeholder="Search" aria-label="Search" id="navSearch" />
+                </div>
+                <div class="col-md-3">
+                    <select for="categoria" name="categoria" class="d-none form-select categoria">
+                        <option></option>
+                        @foreach (var item in ViewBag.Categorias)
+                        {
+                            <option value="@item.Nome">@item.Nome</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" name="navSubmit" class="btn btn-outline-success"><i class="bi bi-search"></i></button>
+                </div>
+                @*<div id="navbarNavDarkDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                            Filtrar
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
 
-            <div class="collapse navbar-collapse" id="mainCollapse">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item nav-link">@Html.ActionLink("Página Inicial", "Index", "Home", null, new { @class = "nav-link" })</li>
-                    @if (ViewBag.éPessoa == true)
-                    {
-                        <li class="nav-item nav-link">@Html.ActionLink("Carros", "VisualizarCarros", "Carros", null, new { @class = "nav-link" })</li>
-                    }
-                    @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
-                    {
-                        <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
-                    }
-                    @if (ViewBag.éOficina == true)
-                    {
-                        <li class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
-                    }
-                    @if (ViewBag.éOficina == true && ViewBag.éAprovada == true)
-                    {
-                        <li class="nav-item nav-link">@Html.ActionLink("Sugerir Categoria", "Sugerir", "Oficina", null, new { @class = "nav-link" })</li>
-                    }
+                            <input type="checkbox" name="importado" id="importado" value="true">
+                            <label for="importado">Carro Importado</label><br>
 
+                        </div>
+                    </li>
                 </ul>
-            </div>
-
-            <form method="get" class="d-flex justify-content-center" role="search" action="@Url.Action("DataRequestSessions", "Home")">
-                <select for="filter" name="filter" onchange="exibirCategorias()" id="filtro" class="form-select text-center">
-                    <option value="OficinaNome">Oficina</option>
-                    <option value="ServiçoCategoria">Serviço</option>
-                    <option value="OficinaBairro">Bairro</option>
-                </select>
-                <input for="navSearch" name="navSearch" class="form-control me-2 ms-2" type="search" placeholder="Search" aria-label="Search" id="navSearch" size="40" />
-                <select for="categoria" name="categoria" class="d-none form-select categoria">
-                    <option></option>
-                    @foreach (var item in ViewBag.Categorias)
-                    {
-                        <option value="@item.Nome">@item.Nome</option>
-                    }
-                </select>
-
-
-                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                                Filtrar
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-
-                                <input type="checkbox" name="importado" id="importado" value="true">
-                                <label for="importado">Carro Importado</label><br>
-
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="collapse navbar-collapse" id="notificações">
-
-                </div>
-
-                <button type="submit" name="navSubmit" class="btn btn-outline-success ms-3"><i class="bi bi-search"></i></button>
-
+            </div>*@
             </form>
-
-            @Html.Partial("_LoginPartial")
         </div>
+
+        <div class="me-2" id="notificações">
+
+        </div>
+
+        <div class="row">
+            <ul class="nav navbar-nav navbar-right">
+                @if (ViewBag.éOficina == true)
+                {
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarServiços", "Serviços", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-wrench me-2"></i>Serviços</a></li>
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarPeças", "Peças", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-gear me-2"></i>Peças</a></li>
+                }
+                @if (ViewBag.éPessoa == true)
+                {
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarCarros", "Carros")" class="nav-link"><i class="bi bi-car-front-fill me-2"></i>Carros</a></li>
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarAvaliações", "Avaliação")" class="nav-link"><i class="bi bi-list-stars me-2"></i>Avaliações</a></li>
+                }
+                @if (ViewBag.éPessoa == true || ViewBag.éOficina == true)
+                {
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarOrçamentos", "NewOrçamento")" class="nav-link"><i class="bi bi-clipboard2-fill me-2"></i>Orçamentos</a></li>
+                }
+            </ul>
+        </div>
+
+        @Html.Partial("_LoginPartial")
     </div>
     <div class="container body-content">
         @RenderBody()
@@ -108,7 +125,7 @@
 
     $('.categoria').selectize({
         sortField: 'text',
-        placeholder: "Insira o nome de uma categoria..."
+        placeholder: "Categoria..."
     });
 
     function exibirCategorias() {

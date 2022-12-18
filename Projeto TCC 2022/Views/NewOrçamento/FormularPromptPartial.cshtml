@@ -1,0 +1,21 @@
+﻿<div id="Div" class="mt-5 card mx-auto">
+    <div class="card-header">
+        <i class="bi bi-clipboard2-fill me-2"></i> " Orçamento: "
+    </div>
+    <div class="card-body">
+
+        @if (ViewBag.Formulação != null)
+        {
+            using (Html.BeginForm("Formulando", "NewOrçamento", FormMethod.Post))
+            {
+                <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
+                <input type="submit" class="btn btn-primary" value="Formular Orçamento" />
+            }
+        }
+
+        @if (ViewBag.Formulação == null)
+        {
+            <a class="btn btn-primary" href="@Url.Action("AddItemOrçamento2", "NewOrçamento", new {Id = ViewBag.Id})">Formular Orçamento</a>
+        }
+    </div>
+</div>

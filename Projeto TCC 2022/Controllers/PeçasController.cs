@@ -19,7 +19,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
 
-            if (Pessoa == true || Admin == true)
+            if (Oficina != true)
             {
                 filterContext.HttpContext.Response.Redirect("/Home/Index");
             }
@@ -55,14 +55,32 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarPeça(string Nome, string Marca, string Código, string Descrição, decimal PreçoMin, decimal PreçoMax)
+        public ActionResult AdicionarPeça(string Nome, string Marca, string Código, string Descrição, string PreçoMin, string PreçoMax)
         {
-            if (Oficina == true)
+            decimal? PreçoMn = null, PreçoMx = null;
+            if (PreçoMax.Contains("."))
             {
-                Model1.InsertPeça(Nome, UserID, Marca, Código, Descrição, PreçoMin, PreçoMax);
-                return RedirectToAction("VisualizarPeças/" + UserID);
+                PreçoMax = PreçoMax.Replace(".", ",");
             }
-            return RedirectToAction("Home", "Index");
+
+            if (PreçoMin.Contains("."))
+            {
+                PreçoMin = PreçoMin.Replace(".", ",");
+            }
+
+            if (PreçoMin != null)
+            {
+                PreçoMn = Decimal.Parse(PreçoMin);
+            }
+
+            if (PreçoMax != null)
+            {
+                PreçoMx = Decimal.Parse(PreçoMax);
+            }
+
+            Model1.InsertPeça(Nome, UserID, Marca, Código, Descrição, PreçoMn, PreçoMx);
+            return RedirectToAction("VisualizarPeças/" + UserID);
+            
         }
 
         public ActionResult EditarPeça(int Id)
@@ -77,10 +95,34 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarPeça([Bind(Include = "Id, Nome, Descrição, PreçoMin, PreçoMax, Fk_Oficina_Id, Marca, Código")] Peça peça)
+        public ActionResult EditarPeça([Bind(Include = "Id, Nome, Descrição, Fk_Oficina_Id, Marca, Código")] Peça peça, string PreçoMin, string PreçoMax)
         {
             if (peça.Fk_Oficina_Id == UserID)
             {
+                decimal? PreçoMn = null, PreçoMx = null;
+                if (PreçoMax.Contains("."))
+                {
+                    PreçoMax = PreçoMax.Replace(".", ",");
+                }
+
+                if (PreçoMin.Contains("."))
+                {
+                    PreçoMin = PreçoMin.Replace(".", ",");
+                }
+
+                if (PreçoMin != null)
+                {
+                    PreçoMn = Decimal.Parse(PreçoMin);
+                }
+
+                if (PreçoMax != null)
+                {
+                    PreçoMx = Decimal.Parse(PreçoMax);
+                }
+
+                peça.PreçoMin = PreçoMn;
+                peça.PreçoMax = PreçoMx;
+
                 if (ModelState.IsValid)
                 {
                     Model1.UpdatePeça(peça);

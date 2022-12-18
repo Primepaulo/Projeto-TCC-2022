@@ -20,7 +20,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
 
-            if (Pessoa == true || Admin == true)
+            if (Oficina != true)
             {
                 filterContext.HttpContext.Response.Redirect("/Home/Index");
             }
@@ -67,18 +67,35 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarServiço(string Nome, string Descrição, decimal PreçoMin, decimal PreçoMax, bool NecessitaAvaliarVeiculo)
+        public ActionResult AdicionarServiço(string Nome, string Descrição, string PreçoMin, string PreçoMax, bool NecessitaAvaliarVeiculo)
         {
-            if (Oficina == true)
+            decimal? PreçoMn = null, PreçoMx = null;
+            if (PreçoMax.Contains("."))
             {
-                string categoria = Request.Form["categoria"];
-                int categoriaId = Model1.GetCategoriaByName(categoria).Id;
-
-                Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, PreçoMin, PreçoMax, NecessitaAvaliarVeiculo);
-                return RedirectToAction("VisualizarServiços/" + UserID);
+                PreçoMax = PreçoMax.Replace(".", ",");
             }
 
-            return RedirectToAction("Home", "Index");
+            if (PreçoMin.Contains("."))
+            {
+                PreçoMin = PreçoMin.Replace(".", ",");
+            }
+
+            if (PreçoMin != null)
+            {
+                PreçoMn = Decimal.Parse(PreçoMin);
+            }
+
+            if (PreçoMax != null)
+            {
+                PreçoMx = Decimal.Parse(PreçoMax);
+            }
+
+            string categoria = Request.Form["categoria"];
+            int categoriaId = Model1.GetCategoriaByName(categoria).Id;
+
+            Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, PreçoMn, PreçoMx, NecessitaAvaliarVeiculo);
+
+            return RedirectToAction("VisualizarServiços/" + UserID);
         }
 
         public ActionResult EditarServiço(int Id)
@@ -99,7 +116,7 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, PreçoMin, PreçoMax, Fk_Oficina_Id, NecessitaAvaliarVeiculo")] Serviço serviço, string Categoria)
+        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, Fk_Oficina_Id, NecessitaAvaliarVeiculo")] Serviço serviço, string Categoria, string PreçoMin, string PreçoMax)
         {
 
             if (serviço.Fk_Oficina_Id == UserID)
@@ -108,6 +125,30 @@ namespace Projeto_TCC_2022.Controllers
                 ViewBag.sCategoria = categoria;
 
                 serviço.Fk_Categoria_Id = categoria.Id;
+
+                decimal? PreçoMn = null, PreçoMx = null;
+                if (PreçoMax.Contains("."))
+                {
+                    PreçoMax = PreçoMax.Replace(".", ",");
+                }
+
+                if (PreçoMin.Contains("."))
+                {
+                    PreçoMin = PreçoMin.Replace(".", ",");
+                }
+
+                if (PreçoMin != null)
+                {
+                    PreçoMn = Decimal.Parse(PreçoMin);
+                }
+
+                if (PreçoMax != null)
+                {
+                    PreçoMx = Decimal.Parse(PreçoMax);
+                }
+
+                serviço.PreçoMin = PreçoMn;
+                serviço.PreçoMax = PreçoMx;
 
                 if (ModelState.IsValid)
                 {

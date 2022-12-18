@@ -572,7 +572,7 @@
 //            else if (serviçoPeçaTotal.Total == null)
 //            {
 //                var valor = (decimal)Session["ValorOriginal"];
-//                Model1.AprovarFinalizarOrçamento(orçamento.Id, 1, valor);
+//                Model1.AprovarFinalizarOrçamento(orçamento.Id, 1, valor);s
 //                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
 //                return JavaScript($"window.location='/Orçamento/StatusOrçamentoOficina/" + orçamento.Id + "'");
 //            }

@@ -5,9 +5,9 @@ using System.Web;
 
 namespace Projeto_TCC_2022.Models.Classes
 {
-    public class ValorMinMax
+    public class OficinaApprovePartial
     {
-        public decimal Min { get; set; }
-        public decimal Max { get; set; }
+        public int Id { get; set; }
+        public bool Marcar { get; set; }
     }
 }

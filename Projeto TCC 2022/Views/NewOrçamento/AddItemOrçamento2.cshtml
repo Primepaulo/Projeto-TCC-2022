@@ -20,46 +20,69 @@
 
 
         <div class="col">
-            <button onclick="AddItem()">Adicionar Serviço</button>
+            <button onclick="AddItem('Serviço')">Adicionar Serviço</button>
         </div>
-
-
-        <div class="container mt-5" id="corpo"></div>
-        <div class="container mt-5" id="total"></div>
-        <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
-        <div id="erro"></div>
-        <div class="text-center"><button onclick="Submit()" class="btn btn-default">Confirmar</button></div>
-
-        <div class="text-center mt-4">*Valor ainda não inclui valores das peças, somente do serviço*</div>
-
     </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12" id="DivPeça">
+            <select id="Peças" placeholder="Escolha uma Peça">
+                <option value="">Escolha uma Peça</option>
+                    @foreach (var item in ViewBag.Peças)
+                     {
+                        <option value="@item.Id">@item.Nome</option>
+                     }
+            </select>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <button onclick="AddItem('Peça')"></button>
+        </div>
+    </div>
+
+    <div class="container mt-5" id="corpo"></div>
+    <div class="container mt-5" id="total"></div>
+    <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
+    <div id="erro"></div>
+    <div class="text-center"><button onclick="Submit()" class="btn btn-default">Confirmar</button></div>
+
 </div>
-
-
-
-
 
 @section scripts{
 
     <script>
 
-        function AddItem() {
+        function AddItem(x) {
 
-            var serviçoId = $("#Serviços").val();
-            let dado;
+            if (x == 'Serviço') {
+                var itemId = $("#Serviços").val();
+            }
+
+            if (x == 'Peça') {
+                var itemId = $("#Peças").val();
+            }
 
             $.ajax
             ({
                 type: 'GET',
-                url: "/NewOrçamento/ItemOrçamentoPartial1/?Id=" + serviçoId,
+                url: "/NewOrçamento/ItemOrçamentoPartial2/" + itemId + "?Tipo" + x,
                 dataType: 'html',
                 cache: false,
                 success: function (data) {
                     $('#corpo').append(data);
+
+                    var serviços = $(".serviçosId").map((_, item) => item.value).get();
+                    var peças = $(".peçasId").map((_, item) => item.value).get();
+                    var final = $(".itemOrçamentoId").map((_, item) => item.value).get();
+
                     $.ajax
                     ({
                         type: 'GET',
-                        url: "/NewOrçamento/TotalPartial1/",
+                        url: "/NewOrçamento/TotalPartial2/",
+                        data: {
+                            serviços: serviços,
+                            peças: peças,
+                            final: final
+                        },
                         dataType: 'html',
                         cache: false,
                         success: function (data) {
@@ -76,7 +99,7 @@
             var categoriaId = CategoriaController.getValue();
             console.log("Executado");
 
-            var url = "/NewOrçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @ViewBag.OrçamentoOficina.Id;
+            var url = "/NewOrçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @ViewBag.Oficina.Id;
 
             $.ajax
             ({
@@ -123,7 +146,7 @@
             $.ajax
             ({
                 type: 'GET',
-                url: "/NewOrçamento/LimparOrçamento1",
+                url: "/NewOrçamento/LimparOrçamento2",
                 dataType: 'html',
                 cache: false,
                 error: function () {
