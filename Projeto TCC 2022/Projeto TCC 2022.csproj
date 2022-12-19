@@ -196,6 +196,7 @@
     <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
+    <Compile Include="Models\ViewModels\AddItemOrçamento2View.cs" />
     <Compile Include="Models\ViewModels\ItemViewModel.cs" />
     <Compile Include="Models\ViewModels\ListItemViewModel.cs" />
     <Compile Include="Models\ViewModels\OficinaApprovePartial.cs" />
@@ -342,6 +343,8 @@
     <Content Include="Views\NewOrçamento\ItemOrçamentoPartial1.cshtml" />
     <Content Include="Views\NewOrçamento\TotalPartial1.cshtml" />
     <Content Include="Views\NewOrçamento\AddItemOrçamento2.cshtml" />
+    <Content Include="Views\NewOrçamento\ItemOrçamentoPartial2.cshtml" />
+    <Content Include="Views\NewOrçamento\TotalPartial2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

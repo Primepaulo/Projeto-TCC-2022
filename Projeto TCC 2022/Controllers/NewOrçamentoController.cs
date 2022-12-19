@@ -85,7 +85,7 @@ namespace Projeto_TCC_2022.Controllers
         }
 
 
-        public PartialViewResult ItemOrçamentoPartial1(int Id)
+        public PartialViewResult ItemOrçamentoPartial1(int Id, string Tipo)
         {
             ServiçoCategoria serviçoCategoria = new ServiçoCategoria();
             Serviço serviço = Model1.GetServiço(Id);
@@ -94,11 +94,15 @@ namespace Projeto_TCC_2022.Controllers
             serviçoCategoria.Serviço = serviço;
             serviçoCategoria.Categoria = categoria;
 
-            ViewBag.ServiçoCategoria = serviçoCategoria;
-            Session["ServiçoOrçamentoMin"] = serviço.PreçoMin;
-            Session["ServiçoOrçamentoMax"] = serviço.PreçoMax;
+            ViewBag.Tipo = Tipo;
 
-            return PartialView();
+            if (Tipo == "")
+            {
+                Session["ServiçoOrçamentoMin"] = serviço.PreçoMin;
+                Session["ServiçoOrçamentoMax"] = serviço.PreçoMax;
+            }
+
+            return PartialView(serviçoCategoria);
         }
 
         public PartialViewResult TotalPartial1()
@@ -318,8 +322,16 @@ namespace Projeto_TCC_2022.Controllers
             Orçamento orçamento = Model1.GetOrçamento(Id);
             if (orçamento.fk_Oficina_Id == UserID)
             {
+                List<Serviço> Inseridos = new List<Serviço>();
                 List<ItemOrçamento> itens = Model1.GetItems(orçamento.fk_Oficina_Id);
                 List<Serviço> serviços = Model1.GetServiços(orçamento.fk_Oficina_Id);
+
+                foreach (var item in itens)
+                {
+                    Inseridos.Add(Model1.GetServiçoByNomeId(UserID, item.Nome));
+                }
+
+
                 List<Categoria> categorias = new List<Categoria>();
                 List<Peça> peças = Model1.GetPeças(orçamento.fk_Oficina_Id);
 
@@ -332,31 +344,26 @@ namespace Projeto_TCC_2022.Controllers
                     }
                 }
 
-                ViewBag.Oficina = Model1.GetOficinaById(orçamento.fk_Oficina_Id);
-                ViewBag.CategoriasOficina = categorias;
-                ViewBag.Peças = peças;
-                ViewBag.Itens = itens;
+                AddItemOrçamento2View ViewModel = new AddItemOrçamento2View
+                {
+                    Itens = itens,
+                    Oficina = Model1.GetOficinaById(orçamento.fk_Oficina_Id),
+                    Categorias = categorias,
+                    Peças = peças,
+                    Padrão = Inseridos
+                };
 
-                return View();
+                return View(ViewModel);
             }
             return RedirectToAction("Index", "Home");
         }
 
         public ActionResult ItemOrçamentoPartial2(int Id, string Tipo)
         {
+            Debug.WriteLine(Tipo);
             if (Tipo == "Serviço")
             {
-                ServiçoCategoria serviçoCategoria = new ServiçoCategoria();
-                Serviço serviço = Model1.GetServiço(Id);
-                if (serviço.Fk_Oficina_Id == UserID)
-                {
-                    Categoria categoria = Model1.GetCategoriaById(serviço.Fk_Categoria_Id);
-
-                    serviçoCategoria.Serviço = serviço;
-                    serviçoCategoria.Categoria = categoria;
-
-                    return PartialView(serviçoCategoria);
-                }
+                return RedirectToAction("ItemOrçamentoPartial1", "NewOrçamento", new { Id, Tipo });
             }
 
             if (Tipo == "Peça")
@@ -376,33 +383,50 @@ namespace Projeto_TCC_2022.Controllers
             decimal IMax = 0;
             decimal total = 0;
 
-            List<Peça> peças = new List<Peça>();
-            List<Serviço> serviços = new List<Serviço>();
-
-            foreach (var item in itens.Peças)
+            if (itens.Peças != null)
             {
-                Peça peça = Model1.GetPeça(Convert.ToInt32(item));
-                if (peça.PreçoMin == null)
+                foreach (var item in itens.Peças)
                 {
-                    peça.PreçoMin = 0;
-                }
-                if (peça.PreçoMax == null)
-                {
-                    peça.PreçoMax = 0;
-                }
+                    Peça peça = Model1.GetPeça(Convert.ToInt32(item));
+                    if (peça.PreçoMin == null)
+                    {
+                        peça.PreçoMin = 0;
+                    }
+                    if (peça.PreçoMax == null)
+                    {
+                        peça.PreçoMax = 0;
+                    }
 
-                IMin += (decimal)peça.PreçoMin;
-                IMax += (decimal)peça.PreçoMax;
+                    IMin += (decimal)peça.PreçoMin;
+                    IMax += (decimal)peça.PreçoMax;
+                }
             }
 
-            foreach (var item in itens.serviços)
+            if (itens.serviços != null)
             {
-                serviços.Add(Model1.GetServiço(Convert.ToInt32(item)));
+                foreach (var item in itens.serviços)
+                {
+                    Serviço serviço = Model1.GetServiço(Convert.ToInt32(item));
+                    if (serviço.PreçoMin == null)
+                    {
+                        serviço.PreçoMin = 0;
+                    }
+                    if (serviço.PreçoMax == null)
+                    {
+                        serviço.PreçoMax = 0;
+                    }
+
+                    IMin += (decimal)serviço.PreçoMin;
+                    IMax += (decimal)serviço.PreçoMax;
+                }
             }
 
-            foreach (string item in itens.final)
+            if (itens.final != null)
             {
-                total += Decimal.Parse(item);
+                foreach (string item in itens.final)
+                {
+                    total += Decimal.Parse(item);
+                }
             }
 
             Session["ValorIMin"] = IMin;
@@ -464,7 +488,7 @@ namespace Projeto_TCC_2022.Controllers
                         }
                     }
                 }
-                Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, ItensOrçamento.Total, null);
+                Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, Decimal.Parse(ItensOrçamento.Total), null);
             }
             return JavaScript($"window.location='/NewOrçamento/StatusOrçamento/" + OrçamentoId + "'");
         }

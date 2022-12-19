@@ -1,10 +1,15 @@
-﻿
+﻿@model Projeto_TCC_2022.Models.Classes.AddItemOrçamento2View
+
+@{
+    decimal Min = 0, Max = 0;
+}
+
 <div class="container mt-5">
     <div class="row">
         <div class="col">
             <select id="Categorias" placeholder="Escolha uma Categoria">
                 <option value="">Escolha uma Categoria</option>
-                @foreach (var item in ViewBag.CategoriasOficina)
+                @foreach (var item in Model.Categorias)
                 {
                     <option value="@item.Id">@item.Nome</option>
                 }
@@ -28,10 +33,10 @@
         <div class="col-md-6 col-sm-12" id="DivPeça">
             <select id="Peças" placeholder="Escolha uma Peça">
                 <option value="">Escolha uma Peça</option>
-                    @foreach (var item in ViewBag.Peças)
-                     {
-                        <option value="@item.Id">@item.Nome</option>
-                     }
+                @foreach (var item in Model.Peças)
+                {
+                    <option value="@item.Id">@item.Nome</option>
+                }
             </select>
         </div>
         <div class="col-md-6 col-sm-12">
@@ -39,7 +44,36 @@
         </div>
     </div>
 
-    <div class="container mt-5" id="corpo"></div>
+    <div class="container mt-5" id="corpo">
+
+        @foreach (var item in Model.Padrão)
+        {
+
+            <div class="row itemOrçamento">
+                <div class="col">
+                    <p>@item.Nome</p>
+                </div>
+                <input class="d-none serviçosId" value="@item.Id" />
+                <div class="col">
+                    @if (item.PreçoMin != null)
+                    {
+                        Min = (decimal)item.PreçoMin;
+                        <p class="preço">@Min.ToString("F")</p>
+                    }
+                    @if (item.PreçoMax != null)
+                    {
+                        Max = (decimal)item.PreçoMax;
+                        <p class="preço">@Max.ToString("F")</p>
+                    }
+
+                </div>
+
+                <div class="col">
+                    <input class="form-control itemOrçamentoValue" data-val="true" data-val-required="Campo Requerido" @if (item.PreçoMin != null) { <text> min="@Min" </text> } @if (item.PreçoMin != null) { <text> max="@Max" </text> } data-val-number="Valor precisa ser um número." />
+                </div>
+            </div>
+        }
+    </div>
     <div class="container mt-5" id="total"></div>
     <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
     <div id="erro"></div>
@@ -52,7 +86,6 @@
     <script>
 
         function AddItem(x) {
-
             if (x == 'Serviço') {
                 var itemId = $("#Serviços").val();
             }
@@ -64,7 +97,7 @@
             $.ajax
             ({
                 type: 'GET',
-                url: "/NewOrçamento/ItemOrçamentoPartial2/" + itemId + "?Tipo" + x,
+                url: "/NewOrçamento/ItemOrçamentoPartial2/" + itemId + "?Tipo=" + x,
                 dataType: 'html',
                 cache: false,
                 success: function (data) {
@@ -72,7 +105,7 @@
 
                     var serviços = $(".serviçosId").map((_, item) => item.value).get();
                     var peças = $(".peçasId").map((_, item) => item.value).get();
-                    var final = $(".itemOrçamentoId").map((_, item) => item.value).get();
+                    var final = $(".itemOrçamentoValue").map((_, item) => item.value).get();
 
                     $.ajax
                     ({
@@ -99,7 +132,7 @@
             var categoriaId = CategoriaController.getValue();
             console.log("Executado");
 
-            var url = "/NewOrçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @ViewBag.Oficina.Id;
+            var url = "/NewOrçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @Model.Oficina.Id;
 
             $.ajax
             ({
@@ -141,7 +174,7 @@
 
         function LimparOrçamento() {
             $(".itemOrçamento").empty();
-            $("#DivSoma").empty();
+            $("#total").empty();
 
             $.ajax
             ({
@@ -156,21 +189,34 @@
         }
 
         function Submit() {
-            var serviços = $(".itemOrçamentoId").map((_, item) => item.value).get();
 
-            var totalMin = $("#valorTotalMin").val();
-            var totalMax = $("#valorTotalMax").val();
+            var ItensId = $(".itemOrçamentoId").map((_, item) => item.value).get();
+            var ItensTipo = $(".itemOrçamentoTipo").map((_, item) => item.value).get();
+            var ItensValue = $(".itemOrçamentoValue").map((_, item) => item.value).get();
+
+            var Itens = [];
+
+
+            for (i = 0; i < ItensId.length; i++) {
+                var Item = {};
+                Item['Id'] = ItensId[i];
+                Item['Tipo'] = ItensTipo[i];
+                Item['Value'] = ItensValue[i];
+                Itens.push(Item);
+            }
+
+            var Final = $("#Final").val();
 
             if (total != null) {
 
                 $.ajax
                     ({
                         type: 'POST',
-                        url: '@Url.Action("Submit1", "NewOrçamento")',
+                        url: '@Url.Action("FormularOrçamento", "NewOrçamento")',
                         data: {
-                            serviços: serviços,
-                            totalMin: totalMin,
-                            totalMax: totalMax
+                            OrçamentoId: @Model.OrçamentoId,
+                            Items: Itens,
+                            Total: Final
                         }
 
                     })
