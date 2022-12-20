@@ -269,7 +269,7 @@ CREATE TABLE [dbo].[ItemOrçamento](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Fk_Orçamento_Id] [int] NOT NULL,
 	[Nome] [nvarchar](50) NOT NULL,
-	[Preço] [money] NOT NULL,
+	[Preço] [money] NULL,
 	[Descrição] [nchar](10) NULL,
 	[Quantidade] [float] NOT NULL,
 	[Avaliado] [bit] NULL,

@@ -96,7 +96,7 @@ namespace Projeto_TCC_2022.Controllers
 
             ViewBag.Tipo = Tipo;
 
-            if (Tipo == "")
+            if (Tipo == null)
             {
                 Session["ServiçoOrçamentoMin"] = serviço.PreçoMin;
                 Session["ServiçoOrçamentoMax"] = serviço.PreçoMax;
@@ -110,6 +110,7 @@ namespace Projeto_TCC_2022.Controllers
             decimal somaMax = 0;
             decimal somaMin = 0;
 
+            Debug.WriteLine(Convert.ToDecimal(Session["ServiçoOrçamentoMin"]));
 
             decimal valorMin = Convert.ToDecimal(Session["ServiçoOrçamentoMin"]);
             decimal valorMax = Convert.ToDecimal(Session["ServiçoOrçamentoMax"]);
