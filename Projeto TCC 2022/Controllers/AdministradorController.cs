@@ -151,7 +151,8 @@ namespace Projeto_TCC_2022.Controllers
             Categoria categoria = Model1.GetCategoriaById(Id);
             return View(categoria);
         }
-        [HttpPost]
+
+        [HttpPost, ActionName("DeleteCategoria")]
         [ValidateAntiForgeryToken]
         public ActionResult DeletarCategoria(int Id)
         {

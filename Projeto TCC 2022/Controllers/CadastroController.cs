@@ -25,6 +25,10 @@ namespace Projeto_TCC_2022.Controllers
                 filterContext.HttpContext.Response.Redirect("/Home/Index");
             }
         }
+        public ActionResult Cadastro()
+        {
+            return View();
+        }
         public ActionResult CadastroPessoa()
         {
             return View();

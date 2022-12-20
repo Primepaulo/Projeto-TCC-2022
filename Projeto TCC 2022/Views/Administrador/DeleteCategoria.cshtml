@@ -13,6 +13,14 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
 
@@ -27,7 +35,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Retornar", "VisualizarCategorias")
+            @Html.ActionLink("Retornar", "VisualizarCategorias", "Administrador", null, new { @class = "" })
         </div>
     }
 </div>

@@ -270,7 +270,7 @@ CREATE TABLE [dbo].[ItemOrçamento](
 	[Fk_Orçamento_Id] [int] NOT NULL,
 	[Nome] [nvarchar](50) NOT NULL,
 	[Preço] [money] NULL,
-	[Descrição] [nchar](10) NULL,
+	[Descrição] [nvarchar](MAX) NULL,
 	[Quantidade] [float] NOT NULL,
 	[Avaliado] [bit] NULL,
  CONSTRAINT [PK_dbo.ItemOrçamento] PRIMARY KEY CLUSTERED 
@@ -352,7 +352,7 @@ CREATE TABLE [dbo].[Orçamento](
 	[fk_Oficina_Id] [int] NOT NULL,
 	[fk_Carro_Placa] [nvarchar](7) NOT NULL,
 	[Data_Orçamento] [datetime] NOT NULL,
-	[Data_Aprovação] [datetime] NULL,
+	[Data_Aprovação] [nvarchar](11) NULL,
 	[Tipo] [int] NOT NULL,
  CONSTRAINT [PK_dbo.Orçamento] PRIMARY KEY CLUSTERED 
 (
