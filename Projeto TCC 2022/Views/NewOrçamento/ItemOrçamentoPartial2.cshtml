@@ -23,7 +23,7 @@
     </div>
 
     <div class="col">
-        <input class="form-control itemOrçamentoValue" data-val="true" data-val-required="Campo Requerido" @if (Model.PreçoMin != null) { <text>min = "@PreçoMin"</text>} @if (Model.PreçoMin != null) { <text>max="@PreçoMax"</text>} data-val-number="Valor precisa ser um número." />
+        <input class="form-control itemOrçamentoValue" onchange="Valor()" data-val="true" data-val-required="Campo Requerido" @if (Model.PreçoMin != null) { <text>min = "@PreçoMin"</text>} @if (Model.PreçoMin != null) { <text>max="@PreçoMax"</text>} data-val-number="Valor precisa ser um número." />
     </div>
 
 </div>
