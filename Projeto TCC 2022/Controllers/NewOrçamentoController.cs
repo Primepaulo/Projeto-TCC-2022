@@ -170,9 +170,9 @@ namespace Projeto_TCC_2022.Controllers
                         Model1.AddQuantidade(itemOrçamento);
                     }
                 }
-                    return JavaScript($"window.location='/NewOrçamento/StatusOrçamento/" + orçamento.Id + "'");
+                return JavaScript($"window.location='/NewOrçamento/StatusOrçamento/" + orçamento.Id + "'");
             }
-        
+
             else if (Session["OficinaId"] == null)
             {
                 return RedirectToAction("Erro");
@@ -295,7 +295,7 @@ namespace Projeto_TCC_2022.Controllers
                 orçamento.Status = 24;
                 Model1.UpdateOrçamento(orçamento);
             }
-            return RedirectToAction("StatusOrçamento", "NewOrçamento", new {Id});
+            return RedirectToAction("StatusOrçamento", "NewOrçamento", new { Id });
         }
         public ActionResult FormularPromptPartial(int Id)
         {
@@ -450,7 +450,7 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult FormularOrçamento(ListItemViewModel ItensOrçamento)
         {
             int OrçamentoId = ItensOrçamento.OrçamentoId;
-            
+
             foreach (ItemViewModel item in ItensOrçamento.Items)
             {
                 if (item.Tipo == 1)
@@ -475,7 +475,7 @@ namespace Projeto_TCC_2022.Controllers
                     ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(OrçamentoId, item.Id);
                     if (itemOrçamento == null)
                     {
-                        Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Preço, peça.Descrição, 1, null);
+                       Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Preço, peça.Descrição, 1, null);
                     }
                     else
                     {

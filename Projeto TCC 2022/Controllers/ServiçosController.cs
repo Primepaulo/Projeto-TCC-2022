@@ -93,9 +93,12 @@ namespace Projeto_TCC_2022.Controllers
             string categoria = Request.Form["categoria"];
             int categoriaId = Model1.GetCategoriaByName(categoria).Id;
 
-            Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, PreçoMn, PreçoMx, NecessitaAvaliarVeiculo);
+            if (Model1.GetServiçoByNomeId(UserID, Nome) == null)
+            {
+                Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, PreçoMn, PreçoMx, NecessitaAvaliarVeiculo);
+            }
 
-            return RedirectToAction("VisualizarServiços/" + UserID);
+            return RedirectToAction("VisualizarServiços");
         }
 
         public ActionResult EditarServiço(int Id)

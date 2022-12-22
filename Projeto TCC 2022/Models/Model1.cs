@@ -774,6 +774,19 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static Peça GetPeçaByUIDNome(int UID, string Nome)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Peça in context.Peça
+                            where Peça.Nome == Nome
+                            && Peça.Fk_Oficina_Id == UID
+                            select Peça;
+                var peça = query.SingleOrDefault();
+                return peça;
+            }
+        }
+
         public static void InsertPeça(string Nome, int uID, string Marca, string Código, string Descrição, decimal? PreçoMin, decimal? PreçoMax)
         {
             using (var context = new Model1())
@@ -1151,7 +1164,6 @@ namespace Projeto_TCC_2022.Models
                 return oficinas;
             }
         }
-
         public static Carro GetCarro(string Placa)
         {
             using (var context = new Model1())
@@ -1193,7 +1205,6 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
-
         public static void UpdateCarro(Carro carro)
         {
             using (var context = new Model1())
@@ -1215,7 +1226,6 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
-
         public static void DeleteCarro(string Placa)
         {
             using (var context = new Model1())
@@ -1277,10 +1287,8 @@ namespace Projeto_TCC_2022.Models
                 }
             }
         }
-
         // ----------------------------------------------------------------------------------------------------
         // PESSOA
-
         public static Pessoa GetPessoa(int uID)
         {
             using (var context = new Model1())
@@ -1292,7 +1300,6 @@ namespace Projeto_TCC_2022.Models
                 return Pessoa;
             }
         }
-
         public static string GetEmail(int uID)
         {
             using (var context = new ApplicationDbContext())

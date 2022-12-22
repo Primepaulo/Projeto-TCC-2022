@@ -24,23 +24,18 @@ namespace Projeto_TCC_2022.Controllers
                 filterContext.HttpContext.Response.Redirect("/Home/Index");
             }
         }
-        public ActionResult VisualizarPeças(int Id)
+        public ActionResult VisualizarPeças()
         {
-            Oficina oficina = Model1.GetOficinaById(Id);
+            Oficina oficina = Model1.GetOficinaById(UserID);
             if (oficina == null)
             {
                 return HttpNotFound();
 
             }
 
-            if (oficina.Id == UserID)
-            {
-                var lista = Model1.GetPeças(Id);
-                ViewBag.Lista = lista;
-                return View();
-            }
-
-            return RedirectToAction("Page", "Oficina", Id);
+            var lista = Model1.GetPeças(UserID);
+            ViewBag.Lista = lista;
+            return View();
         }
 
         public ActionResult AdicionarPeça()
@@ -78,9 +73,12 @@ namespace Projeto_TCC_2022.Controllers
                 PreçoMx = Decimal.Parse(PreçoMax);
             }
 
-            Model1.InsertPeça(Nome, UserID, Marca, Código, Descrição, PreçoMn, PreçoMx);
-            return RedirectToAction("VisualizarPeças/" + UserID);
-            
+            if (Model1.GetPeçaByUIDNome(UserID, Nome) == null)
+            {
+                Model1.InsertPeça(Nome, UserID, Marca, Código, Descrição, PreçoMn, PreçoMx);
+            }
+
+            return RedirectToAction("VisualizarPeças");
         }
 
         public ActionResult EditarPeça(int Id)
@@ -126,7 +124,7 @@ namespace Projeto_TCC_2022.Controllers
                 if (ModelState.IsValid)
                 {
                     Model1.UpdatePeça(peça);
-                    return RedirectToAction("VisualizarPeças/" + peça.Fk_Oficina_Id);
+                    return RedirectToAction("VisualizarPeças/");
                 }
                 return View(peça);
             }
