@@ -20,11 +20,18 @@ Após isso é só deletar o banco antigo e executar novamente.
 <add name="Nome da nova conexão" connectionString="Sua Connection String" providerName="System.Data.SqlClient" />
 ```
 
-4. Após adicionar no **Web.Config**, modificar o arquivo **Model1** na pasta **Models** nessa linha (linha 13):
+4. Após adicionar no **Web.Config**, modificar o arquivo **Model1** e o arquivo **IdentityModels** na pasta **Models** nessa linha (linha 13 e 54, respectivamente):
 
 ```
 public Model1()
             : base("name=Nome da conexão criada no passo 3")
+```
+
+```
+public ApplicationDbContext()
+            : base("Nome da conexão criada no passo 3")
+        {
+        }
 ```
 
 ## Avisos e Dicas:
