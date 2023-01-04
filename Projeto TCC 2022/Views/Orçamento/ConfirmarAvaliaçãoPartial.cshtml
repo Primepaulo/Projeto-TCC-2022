@@ -3,7 +3,7 @@
         <i class="bi bi-clipboard2-fill me-2"></i> " Orçamento: "
     </div>
     <div class="card-body">
-        @using (Html.BeginForm("ConfirmarAvaliação", "NewOrçamento", FormMethod.Post))
+        @using (Html.BeginForm("ConfirmarAvaliação", "Orçamento", FormMethod.Post))
         {
             <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
             <div class="row">

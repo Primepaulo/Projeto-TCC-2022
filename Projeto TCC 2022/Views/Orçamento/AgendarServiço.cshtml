@@ -1,39 +1,39 @@
 ﻿
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col">
-                <select id="Categorias" placeholder="Escolha uma Categoria">
-                    <option value="">Escolha uma Categoria</option>
-                    @foreach (var item in ViewBag.CategoriasOficina)
-                    {
-                        <option value="@item.Id">@item.Nome</option>
-                    }
-                </select>
-            </div>
-
-
-            <div class="col" id="DivServiço">
-                <select id="Serviços" placeholder="Escolha um Serviço">
-                    <option value="">Escolha um Serviço</option>
-                </select>
-            </div>
-
-
-            <div class="col">
-                <button onclick="AddItem()">Adicionar Serviço</button>
-            </div>
-
-
-            <div class="container mt-5" id="corpo"></div>
-            <div class="container mt-5" id="total"></div>
-            <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
-            <div id="erro"></div>
-            <div class="text-center"><button onclick="Submit()" class="btn btn-default">Confirmar</button></div>
-
-            <div class="text-center mt-4">*Valor ainda não inclui valores das peças, somente do serviço*</div>
-        
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <select id="Categorias" placeholder="Escolha uma Categoria">
+                <option value="">Escolha uma Categoria</option>
+                @foreach (var item in ViewBag.CategoriasOficina)
+                {
+                    <option value="@item.Id">@item.Nome</option>
+                }
+            </select>
         </div>
+
+
+        <div class="col" id="DivServiço">
+            <select id="Serviços" placeholder="Escolha um Serviço">
+                <option value="">Escolha um Serviço</option>
+            </select>
+        </div>
+
+
+        <div class="col">
+            <button onclick="AddItem()">Adicionar Serviço</button>
+        </div>
+
+
+        <div class="container mt-5" id="corpo"></div>
+        <div class="container mt-5" id="total"></div>
+        <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
+        <div id="erro"></div>
+        <div class="text-center"><button onclick="Submit()" class="btn btn-default">Confirmar</button></div>
+
+        <div class="text-center mt-4">*Valor ainda não inclui valores das peças, somente do serviço*</div>
+
     </div>
+</div>
 
 
 
@@ -51,7 +51,7 @@
             $.ajax
             ({
                 type: 'GET',
-                url: "/NewOrçamento/ItemOrçamentoPartial/?Id=" + serviçoId,
+                url: "/Orçamento/ItemOrçamentoPartial1/?Id=" + serviçoId,
                 dataType: 'html',
                 cache: false,
                 success: function (data) {
@@ -59,7 +59,7 @@
                     $.ajax
                     ({
                         type: 'GET',
-                        url: "/NewOrçamento/TotalPartial1/",
+                        url: "/Orçamento/TotalPartial1/",
                         dataType: 'html',
                         cache: false,
                         success: function (data) {
@@ -123,7 +123,7 @@
             $.ajax
             ({
                 type: 'GET',
-                url: "/Orçamento/LimparOrçamento",
+                url: "/Orçamento/LimparOrçamento1",
                 dataType: 'html',
                 cache: false,
                 error: function () {
@@ -133,24 +133,20 @@
         }
 
         function Submit() {
-            var serviços = $(".itemOrçamentoId").map((_, item) => item.value).get();
-            
-            var total = $("#valorTotal").val();
-
-            let ServiçoTotal = {
-                serviços: serviços,
-                Total: total
-            }
+            var serviços = $(".serviçosId").map((_, item) => item.value).get();
+            var totalMin = $("#valorTotalMin").val();
+            var totalMax = $("#valorTotalMax").val();
 
             if (total != null) {
 
                 $.ajax
                     ({
                         type: 'POST',
-                        url: '@Url.Action("Submit", "Orçamento")',
+                        url: '@Url.Action("Submit1", "Orçamento")',
                         data: {
                             serviços: serviços,
-                            total: total
+                            totalMin: totalMin,
+                            totalMax: totalMax
                         }
 
                     })

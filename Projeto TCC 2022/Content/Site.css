@@ -2,7 +2,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    padding-top:70px;
+    padding-top:120px;
 }
 
 .upload > input {
@@ -61,6 +61,20 @@ a.deco-none:hover {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.categoriaLayout.selectize-control.single .selectize-input {
+    background: none !important;
+    width: 100px !important;
+    position: absolute !important;
+}
+
+.categoriaLayout.selectize-control.single .selectize-dropdown{
+    width: 300px !important;
+}
+
+#navSearch{
+    width: 400px;
 }
 
 #notificaçãoLista {

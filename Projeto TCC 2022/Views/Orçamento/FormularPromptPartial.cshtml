@@ -6,7 +6,7 @@
 
         @if (ViewBag.Formulação != null)
         {
-            using (Html.BeginForm("Formulando", "NewOrçamento", FormMethod.Post))
+            using (Html.BeginForm("Formulando", "Orçamento", FormMethod.Post))
             {
                 <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
                 <input type="submit" class="btn btn-primary" value="Formular Orçamento" />
@@ -15,7 +15,7 @@
 
         @if (ViewBag.Formulação == null)
         {
-            <a class="btn btn-primary" href="@Url.Action("AddItemOrçamento2", "NewOrçamento", new {Id = ViewBag.Id})">Formular Orçamento</a>
+            <a class="btn btn-primary" href="@Url.Action("AddItemOrçamento2", "Orçamento", new {Id = ViewBag.Id})">Formular Orçamento</a>
         }
     </div>
 </div>

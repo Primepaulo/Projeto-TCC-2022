@@ -1,30 +1,29 @@
 ﻿@{
     ViewBag.Title = "Search Results";
 }
-
-@{
-    if (ViewBag.Oficinas != null)
-    {
-        for (int i = 0; i < ViewBag.Oficinas.Count; i++)
+    @{
+        if (ViewBag.Oficinas != null)
         {
-            if (ViewBag.Oficinas[i].Aprovada == true) 
-            { 
-                <div>
-                <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.Oficinas[i].Id })" class="mt-5">@ViewBag.Oficinas[i].Nome</a>
-                @if (ViewBag.Imagens[i] != null)
-                 {
-                    <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive" width="150" height="50" />
-                 }
-            </div>
+            for (int i = 0; i < ViewBag.Oficinas.Count; i++)
+            {
+                if (ViewBag.Oficinas[i].Aprovada == true)
+                {
+                    <div>
+                        <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.Oficinas[i].Id })" class="mt-5">@ViewBag.Oficinas[i].Nome</a>
+                        @if (ViewBag.Imagens[i] != null)
+                        {
+                            <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive" width="150" height="50" />
+                        }
+                    </div>
+                }
             }
-        }
 
+        }
+        else
+        {
+            <div class="text-center">
+                <h1><i class="bi bi-exclamation-triangle-fill" style="font-size:larger"></i></h1>
+                <h1>Oficina ou Serviço com os filtros desejado não foi encontrada<i class="bi bi-exclamation-lg"></i></h1>
+            </div>
+        }
     }
-    else
-    {
-        <div class="text-center">
-            <h1><i class="bi bi-exclamation-triangle-fill" style="font-size:larger"></i></h1>
-            <h1>Oficina ou Serviço com os filtros desejado não foi encontrada<i class="bi bi-exclamation-lg"></i></h1>
-        </div>
-    }
-}

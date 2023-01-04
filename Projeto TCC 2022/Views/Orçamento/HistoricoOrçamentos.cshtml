@@ -1,0 +1,55 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.HistoricoOrçamento
+@{ string Status = "";}
+<h1 class="text-center">Orçamentos:</h1>
+
+
+@for (int i = 0; i < Model.Orçamentos.Count; i++)
+{
+    switch (Model.Orçamentos[i].Status)
+    {
+        case 10:
+            Status = "Aguardando Aprovação da Oficina";
+            break;
+        case 11:
+            Status = "Finaliazdo. Rejeitado pela Oficina";
+            break;
+        case 12:
+            Status = "Aceito pela Oficina";
+            break;
+        case 21:
+            Status = "Aguardando avaliação do Veículo";
+            break;
+        case 22:
+            Status = "Em Formulação";
+            break;
+        case 23:
+            Status = "Orçamento Concluído. Aguardando Aprovação";
+            break;
+        case 24:
+            Status = "Finalizado. Cliente não levou carro para análise";
+            break;
+        case 31:
+            Status = "Finalizado. Rejeitado pelo Cliente";
+            break;
+        case 32:
+            Status = "Finalizado. Aprovado pelo Cliente ";
+            break;
+    }
+
+    <div class="row">
+        <div class="col-md-3">
+            <img src="@Model.Imagens[i].Url" />
+            <p>@Model.Oficinas[i].Nome</p>
+        </div>
+        <div class="col-md-3">
+            <p>@Model.Carros[i].Placa</p>
+        </div>
+        <div class="col-md-3">
+            @Model.Orçamentos[i].Valor
+        </div>
+        <div class="col-md-3">
+            <p>@Status</p>
+        </div>
+    </div>
+
+}

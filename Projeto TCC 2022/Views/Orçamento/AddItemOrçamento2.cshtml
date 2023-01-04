@@ -2,6 +2,8 @@
 
 @{
     decimal Min = 0, Max = 0;
+    int Count = 0;
+    var x = System.Globalization.CultureInfo.GetCultureInfo("en-US");
 }
 
 <div class="container mt-5">
@@ -44,46 +46,56 @@
         </div>
     </div>
 
-    <div class="container mt-5" id="corpo">
+    @using (Html.BeginForm("FormularOrçamento", "Orçamento", FormMethod.Post))
+    {
+        <input type="hidden" class="d-none" value="@Model.OrçamentoId" name="OrçamentoId" id="OrçamentoId" />
+        <div class="container mt-5" id="corpo">
+            @foreach (var item in Model.Padrão)
+            {
 
-        @foreach (var item in Model.Padrão)
-        {
+                <div class="row itemOrçamento">
+                    <div class="col">
+                        <p>@item.Nome</p>
+                    </div>
+                    <input class="d-none serviçosId" value="@item.Id" name="Itens[@Count].Id" />
+                    <input class="d-none tipo" value="1" name="Itens[@Count].Tipo" />
+                    <div class="col">
+                        @if (item.PreçoMin != null)
+                        {
+                            Min = (decimal)item.PreçoMin;
+                            <p class="preço">@Min.ToString("F")</p>
+                        }
+                        @if (item.PreçoMax != null)
+                        {
+                            Max = (decimal)item.PreçoMax;
+                            <p class="preço">@Max.ToString("F")</p>
+                        }
 
-            <div class="row itemOrçamento">
-                <div class="col">
-                    <p>@item.Nome</p>
+                    </div>
+
+                    <div class="col">
+                        <input name="Itens[@Count].Val" class="form-control itemOrçamentoValue" oninput="Valor()" data-val="true" data-val-number="Valor precisa ser um número."
+                               data-val-range="Preencha um valor que esteja entre o valor mínimo ou máximo."
+                               @if (item.PreçoMin != null) { <text> data-val-range-min="@Min.ToString("F", x)" </text> }
+                               @if (item.PreçoMax != null) { <text> data-val-range-max="@Max.ToString("F", x)" </text> }
+                               data-val-required="Campo Requerido" type="number" lang="pt-br" />
+                        <span class="field-validation-valid" data-valmsg-for="Itens[@Count].Val" data-valmsg-replace="true"></span>
+                    </div>
                 </div>
-                <input class="d-none serviçosId" value="@item.Id" />
-                <div class="col">
-                    @if (item.PreçoMin != null)
-                    {
-                        Min = (decimal)item.PreçoMin;
-                        <p class="preço">@Min.ToString("F")</p>
-                    }
-                    @if (item.PreçoMax != null)
-                    {
-                        Max = (decimal)item.PreçoMax;
-                        <p class="preço">@Max.ToString("F")</p>
-                    }
-
-                </div>
-
-                <div class="col">
-                    <input onchange="Valor()" class="form-control itemOrçamentoValue" data-val="true" data-val-required="Campo Requerido" @if (item.PreçoMin != null) { <text> min="@Min" </text> } @if (item.PreçoMin != null) { <text> max="@Max" </text> } data-val-number="Valor precisa ser um número." />
-                </div>
-            </div>
-        }
-    </div>
-    <div class="container mt-5" id="total"></div>
-    <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
-    <div id="erro"></div>
-    <div class="text-center"><button onclick="Submit()" class="btn btn-default">Confirmar</button></div>
-
+                Count++;
+            }
+        </div>
+        <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
+        <div class="container mt-5" id="total"></div>
+        <div class="text-center"><button type="submit" class="btn btn-default">Confirmar</button></div>
+    }
 </div>
 
 @section scripts{
 
     <script>
+
+        var y = @Model.Padrão.Count;
 
         function AddItem(x) {
             if (x == 'Serviço') {
@@ -97,7 +109,7 @@
             $.ajax
             ({
                 type: 'GET',
-                url: "/NewOrçamento/ItemOrçamentoPartial2/" + itemId + "?Tipo=" + x,
+                url: "/Orçamento/ItemOrçamentoPartial2/" + itemId + "?Tipo=" + x + "&" + "Quant=" + y,
                 dataType: 'html',
                 cache: false,
                 success: function (data) {
@@ -107,53 +119,63 @@
                     var peças = $(".peçasId").map((_, item) => item.value).get();
                     var final = $(".itemOrçamentoValue").map((_, item) => item.value).get();
 
+                    y++;
+
                     $.ajax
                     ({
-                        type: 'GET',
-                        url: "/NewOrçamento/TotalPartial2/",
+                        type: 'POST',
+                        url: "/Orçamento/TotalPartial2/",
                         data: {
                             serviços: serviços,
                             Peças: peças,
                             final: final
                         },
                         cache: false,
-                        success: function (data) {
-                            $('#total').html(data);
+                        success: function (response) {
+                            $('#total').html(response);
+
                         }
                     })
 
+                },
+                //Trecho retirado de uma página de dúvidas da microsoft: 
+                //https://social.msdn.microsoft.com/Forums/en-US/da561161-8345-43e9-bd9b-7d53bc3c06ff/unobtrusive-validation-not-working-on-ajax-loaded-partial-view?forum=aspmvc
+                complete: function () {
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
                 }
             });
+        }
 
-            function Valor() {
+        function Valor() {
 
-                var serviços = $(".serviçosId").map((_, item) => item.value).get();
-                var peças = $(".peçasId").map((_, item) => item.value).get();
-                var final = $(".itemOrçamentoValue").map((_, item) => item.value).get();
+            var serviços = $(".serviçosId").map((_, item) => item.value).get();
+            var peças = $(".peçasId").map((_, item) => item.value).get();
+            var final = $(".itemOrçamentoValue").map((_, item) => item.value).get();
 
-                $.ajax
-                ({ 
-                    type: 'GET',
-                    url: "/NewOrçamento/TotalPartial2/",
+            $.ajax
+                ({
+                    type: 'POST',
+                    url: "/Orçamento/TotalPartial2/",
                     data: {
                         serviços: serviços,
-                        peças: peças,
+                        Peças: peças,
                         final: final
                     },
                     cache: false,
-                    success: function (data) {
-                        $('#total').html(data);
+                    success: function (response) {
+                        $('#total').html(response);
                     }
                 })
-            }
         }
+
 
         function eventHandler(InputCategoria) {
             var CategoriaController = InputCategoria[0].selectize;
             var categoriaId = CategoriaController.getValue();
             console.log("Executado");
 
-            var url = "/NewOrçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @Model.Oficina.Id;
+            var url = "/Orçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @Model.Oficina.Id;
 
             $.ajax
             ({
@@ -204,7 +226,7 @@
             $.ajax
             ({
                 type: 'GET',
-                url: "/NewOrçamento/LimparOrçamento2",
+                url: "/Orçamento/LimparOrçamento2",
                 dataType: 'html',
                 cache: false,
                 error: function () {
@@ -212,46 +234,7 @@
                 }
             });
         }
-
-        function Submit() {
-
-            var ItensId = $(".itemOrçamentoId").map((_, item) => item.value).get();
-            var ItensTipo = $(".itemOrçamentoTipo").map((_, item) => item.value).get();
-            var ItensValue = $(".itemOrçamentoValue").map((_, item) => item.value).get();
-
-            var Itens = [];
-
-
-            for (i = 0; i < ItensId.length; i++) {
-                var Item = {};
-                Item['Id'] = ItensId[i];
-                Item['Tipo'] = ItensTipo[i];
-                Item['Value'] = ItensValue[i];
-                Itens.push(Item);
-            }
-
-            var Final = $("#Final").val();
-
-            if (total != null) {
-
-                $.ajax
-                    ({
-                        type: 'POST',
-                        url: '@Url.Action("FormularOrçamento", "NewOrçamento")',
-                        data: {
-                            OrçamentoId: @Model.OrçamentoId,
-                            Items: Itens,
-                            Total: Final
-                        }
-
-                    })
-            }
-            else {
-                erro = '<div id="erro"><p>Insira algum item no orçamento para prosseguir.</p></div>';
-                $('#erro').html(erro);
-            }
-        }
-
-
     </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
 }

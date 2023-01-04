@@ -1,0 +1,43 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.PeçaQuant
+
+@{
+    var x = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+    decimal PreçoMin = 0, PreçoMax = 0;
+}
+
+<div class="row itemOrçamento">
+    <div class="col">
+        <p>@Model.Peça.Nome</p>
+    </div>
+    <input name="Itens[@Model.Quant].Id" class="d-none peçasId" value="@Model.Peça.Id" />
+    <div class="col">
+        @if (Model.Peça.PreçoMin != null)
+        {
+            PreçoMin = (decimal)Model.Peça.PreçoMin;
+            <p class="preço">@PreçoMin.ToString("F")</p>
+        }
+        @if (Model.Peça.PreçoMax != null)
+        {
+            PreçoMax = (decimal)Model.Peça.PreçoMax;
+            <p class="preço">@PreçoMax.ToString("F")</p>
+        }
+    </div>
+
+    <div class="col">
+        <div class="col">
+            <input name="Itens[@Model.Quant].Val" class="form-control itemOrçamentoValue" oninput="Valor()" data-val="true" data-val-number="Valor precisa ser um número."
+                   data-val-range="Preencha um valor que esteja entre o valor mínimo ou máximo."
+                   @if (Model.Peça.PreçoMin != null) { <text> data-val-range-min="@PreçoMin.ToString("F", x)" </text> }
+                   @if (Model.Peça.PreçoMax != null) { <text> data-val-range-max="@PreçoMax.ToString("F", x)" </text> }
+                   data-val-required="Campo Requerido" type="number" lang="pt-br" />
+            <input class="d-none tipo" value="2" name="Itens[@Model.Quant].Tipo" />
+            <span class="field-validation-valid" data-valmsg-for="Itens[@Model.Quant].Val" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
