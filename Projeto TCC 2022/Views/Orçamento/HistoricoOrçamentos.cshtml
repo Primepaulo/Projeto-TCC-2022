@@ -8,47 +8,66 @@
     switch (Model.Orçamentos[i].Status)
     {
         case 10:
-            Status = "Aguardando Aprovação da Oficina";
+            Status = "Aguardando Aprovação da Oficina.";
             break;
         case 11:
-            Status = "Finaliazdo. Rejeitado pela Oficina";
+            Status = "Finaliazdo. Rejeitado pela Oficina.";
             break;
         case 12:
-            Status = "Aceito pela Oficina";
+            Status = "Aceito pela Oficina.";
             break;
         case 21:
-            Status = "Aguardando avaliação do Veículo";
+            Status = "Aguardando avaliação do Veículo.";
             break;
         case 22:
-            Status = "Em Formulação";
+            Status = "Em Formulação.";
             break;
         case 23:
-            Status = "Orçamento Concluído. Aguardando Aprovação";
+            Status = "Orçamento Concluído. Aguardando Aprovação.";
             break;
         case 24:
-            Status = "Finalizado. Cliente não levou carro para análise";
+            Status = "Finalizado. Cliente não levou carro para análise.";
             break;
         case 31:
-            Status = "Finalizado. Rejeitado pelo Cliente";
+            Status = "Finalizado. Rejeitado pelo Cliente.";
             break;
         case 32:
-            Status = "Finalizado. Aprovado pelo Cliente ";
+            Status = "Finalizado. Aprovado pelo Cliente.";
+            break;
+        default:
+            Status = "Erro";
             break;
     }
 
+
+
     <div class="row">
         <div class="col-md-3">
+            @if (Model.Imagens != null && Model.Imagens[i] != null)
+            {
             <img src="@Model.Imagens[i].Url" />
+            }
             <p>@Model.Oficinas[i].Nome</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <p>@Model.Carros[i].Placa</p>
         </div>
-        <div class="col-md-3">
-            @Model.Orçamentos[i].Valor
+        <div class="col-md-2">
+            @if (Model.Orçamentos[i].Valor == null)
+            {
+                <p>A definir.</p>
+            }
+            else if (Model.Orçamentos[i].Valor != null)
+            {
+                decimal valor = (decimal)Model.Orçamentos[i].Valor;
+                <p>@valor.ToString("F")</p>
+            }
         </div>
         <div class="col-md-3">
             <p>@Status</p>
+        </div>
+        <div class="col-md-2">
+            @Html.ActionLink("Ver Detalhes", "StatusOrçamento", "Orçamento", new { Model.Orçamentos[i].Id }, null)
         </div>
     </div>
 

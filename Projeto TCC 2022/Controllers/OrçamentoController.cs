@@ -532,7 +532,6 @@ namespace Projeto_TCC_2022.Controllers
             {
                 carros.Add(Model1.GetCarro(orçamento.fk_Carro_Placa));
                 oficinas.Add(Model1.GetOficinaById(orçamento.fk_Oficina_Id));
-                //Se a oficina não tiver imagem, o null entra na lista? Testar depois.
                 imagens.Add(Model1.GetImagem(orçamento.fk_Oficina_Id));
             }
 
@@ -543,12 +542,49 @@ namespace Projeto_TCC_2022.Controllers
                 Oficinas = oficinas,
                 Imagens = imagens
             };
-
             return View(historicoOrçamento);
         }
 
+        public ActionResult DetalhesOrçamentoPartial(int Id)
+        {
+            DetalhesOrçamento detalhes = new DetalhesOrçamento();
+            Orçamento orçamento = Model1.GetOrçamento(Id);
 
+            if (orçamento.fk_Oficina_Id == UserID || orçamento.fk_Pessoa_Id == UserID)
+            {
+                Carro carro = Model1.GetCarro(orçamento.fk_Carro_Placa);
+                Oficina oficina = Model1.GetOficinaById(orçamento.fk_Oficina_Id);
+                List<ItemOrçamento> itens = Model1.GetItems(Id);
+                Imagem imagem = Model1.GetImagem(orçamento.fk_Oficina_Id);
+                List<Peça> peças = new List<Peça>();
+                List<Serviço> serviços = new List<Serviço>();
+                foreach (ItemOrçamento item in itens)
+                {
+                    Serviço serviço = Model1.GetServiçoByNomeId(oficina.Id, item.Nome);
+                    Peça peça = Model1.GetPeçaByUIDNome(oficina.Id, item.Nome);
 
+                    if (peça != null)
+                    {
+                        peças.Add(peça);
+                    }
+
+                    else if (serviço != null)
+                    {
+                        serviços.Add(serviço);
+                    }
+                }
+                detalhes.Serviços = serviços;
+                detalhes.Peças = peças;
+                detalhes.Orçamento = orçamento;
+                detalhes.ItensOrçamento = itens;
+                detalhes.Oficina = oficina;
+                detalhes.Carro = carro;
+                detalhes.Imagem = imagem;
+
+                return PartialView(detalhes);
+            }
+            return new HttpStatusCodeResult(500);
+        }
 
         //Fim da parte complicada, fique agora com uma frase "motivacional". - Paulo
 

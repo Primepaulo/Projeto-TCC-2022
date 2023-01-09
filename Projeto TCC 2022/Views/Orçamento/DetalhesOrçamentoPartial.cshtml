@@ -1,0 +1,102 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.DetalhesOrçamento
+@{decimal s = 0;}
+
+<div id="Status" class="row mt-2">
+    <div class="col-md-4 pe-0">
+        <div class="card" style="height:100%">
+            <div class="card-body">
+                <h2 class="card-title mt-5">
+                    Nome da Oficina:
+                </h2>
+                <p class="card-title mb-5 text-center mt-3">
+                    @Model.Oficina.Nome
+                </p>
+                <div class="text-center">
+                    <a href="@Url.Action("Page", "Oficina", Model.Oficina.Id)" style="color:darkred;">Página da Oficina</a>
+                </div>
+                @if (Model.Imagem != null)
+                {
+                    <img src="@Model.Imagem.Url" style="border-radius:50%" />
+                }
+                <h2 class="card-title mt-5">
+                    Placa do Veículo:
+                </h2>
+                <p class="card-title text-center mt-3">
+                    @Model.Carro.Placa
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    Data de Criação:
+                    <strong>@Model.Orçamento.Data_Orçamento</strong>
+                </div>
+
+                @if (Model.Orçamento.Data_Aprovação != null)
+                {
+                    <div>
+                        Data de Aprovação:
+                        <strong>@Model.Orçamento.Data_Aprovação</strong>
+                    </div>
+                }
+            </div>
+
+         @if (Model.ItensOrçamento != null)
+          {
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">Nome do Item:</div>
+                    <div class="col-md-2">Tipo do Item:</div>
+                    <div class="col-md-2">Valor Mínimo:</div>
+                    <div class="col-md-2">Valor Máximo:</div>
+                    <div class="col-md-2">Valor Definido:</div>
+                </div>
+                <div class="row text-center mt-4" style="height:200px !important">
+                    @foreach (var item in Model.ItensOrçamento)
+                    {
+                        var count = 1;
+                        Projeto_TCC_2022.Models.Serviço x = Model.Serviços.Where(i => i.Nome == item.Nome).SingleOrDefault();
+                        Projeto_TCC_2022.Models.Peça y = Model.Peças.Where(i => i.Nome == item.Nome).SingleOrDefault();
+
+                        if (item.Preço != null)
+                        {
+                            s = s + (decimal)item.Preço;
+                        }
+
+                        <div class="col-md-2">@item.Nome</div>
+                        if (x != null)
+                        {
+                            <div class="col-md-2">Serviço</div>
+                            <div class="col-md-2">@Convert.ToDecimal(x.PreçoMin).ToString("F")</div>
+                            <div class="col-md-2">@Convert.ToDecimal(x.PreçoMax).ToString("F")</div>
+                        }
+                        if (y != null)
+                        {
+                            <div class="col-md-2">Peça</div>
+                            <div class="col-md-2">@Convert.ToDecimal(y.PreçoMin).ToString("F")</div>
+                            <div class="col-md-2">@Convert.ToDecimal(y.PreçoMax).ToString("F")</div>
+                        }
+                        count++;
+                    }
+                </div>
+                <div class="text-center">
+                    <h1>Total: @s.ToString("F")</h1>
+                </div>
+            
+            </div>
+          }
+
+         @if (Model.ItensOrçamento == null)
+          {
+             <div class="card-body">
+                 <div class="text-center">
+                     <h3>Sem itens até o momento.</h3>
+                 </div>
+             </div>
+          }
+    </div>
+    </div>
+</div>

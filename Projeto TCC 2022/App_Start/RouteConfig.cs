@@ -22,7 +22,7 @@ namespace Projeto_TCC_2022
             routes.MapRoute(
                 name: "Orçamento",
                 url: "Orçamento/{action}/{id}",
-                new { controller = "Orçamento", action = "VisualizarOrçamentos", id = UrlParameter.Optional }
+                new { controller = "Orçamento", action = "HistoricoOrçamentos", id = UrlParameter.Optional }
                 );
 
             routes.MapRoute(

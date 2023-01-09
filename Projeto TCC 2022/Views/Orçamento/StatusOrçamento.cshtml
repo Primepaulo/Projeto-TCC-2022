@@ -1,6 +1,6 @@
 ﻿@model Projeto_TCC_2022.Models.Orçamento
 
-<div id="Div" class="mt-5 card mx-auto">
+<div id="Div" class="card mx-auto">
     <div class="card-header">
         <i class="bi bi-clipboard2-fill me-2"></i> Orçamento:
     </div>
@@ -37,8 +37,6 @@
                         </button>
                     </div>
                 </div>
-
-
             }
         }
 
@@ -66,6 +64,38 @@
         }
     </div>
 </div>
+<div id="Status">
+
+</div>
+
+
+@if (Model.Status != 32)
+{
+    <div class="text-center mt-3">
+        <a href="@Url.Action("HistoricoOrçamento", "Orçamento")">Retornar</a>
+    </div>
+
+}
+
+<div class="row mt-3 text-center">
+    <div class="col-md-3 offset-md-2">
+
+    </div>
+    <a href="@Url.Action("HistoricoOrçamento", "Orçamento")">Retornar</a>
+</div>
+
+@if (Model.Status == 32 && ViewBag.éPessoa == true)
+{
+    <div class="row mt-3 text-center">
+        <div class="col-md-4 offset-md-2">
+            <a href="@Url.Action("HistoricoOrçamento", "Orçamento")">Retornar</a>
+        </div>
+        <div class="col-md-4 offset-md-2">
+            <a href="">Avaliar Serviços</a>
+        </div>
+    </div>
+}
+
 
 @section scripts{
 
@@ -153,15 +183,34 @@
     }
 
     <script>
+
+        function Lista() {
+            $.ajax({
+
+                type: 'GET',
+                url: '@Url.Action("DetalhesOrçamentoPartial", "Orçamento", new {Id = Model.Id})',
+                dataType: 'html',
+                cache: false,
+                success: function (data) {
+                    $('#Status').html(data);
+                },
+                error: function () {
+                    console.log("Detalhes Ajax Erro");
+                }
+            })
+        }
+
         $(document).ready(function () {
-            @if (Model.Status != 10) {
+            @if (Model.Status != 10 && Model.Status != 24 && Model.Status != 32 && Model.Status != 31) {
                 <text>
                     setInterval(function() {
                         Update();
+                        Lista();
                     }, 20000);
+                    Update();
                 </text>
-             }
-            Update();
+            }
+            Lista();
         });
     </script>
 }
