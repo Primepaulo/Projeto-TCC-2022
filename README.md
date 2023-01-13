@@ -98,6 +98,3 @@ $.ajax
     }
 })
 ```
-
-## Sobre Docker:
-**TBA**
