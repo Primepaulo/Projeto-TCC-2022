@@ -1,52 +1,54 @@
 ﻿@model Projeto_TCC_2022.Models.Classes.OficinaApprovePartial
 
-<div id="Div" class="mt-5 card mx-auto">
-    <div class="card-header">
-        <i class="bi bi-clipboard2-fill me-2"></i> " Orçamento: "
-    </div>
-    @if (ViewBag.éOficina == true)
-    {
-        <div class="card-body">
-            @using (Html.BeginForm("AprovarRecusar", "Orçamento", FormMethod.Post))
+<div class="card-header cardHeader">
+    <i class="bi bi-clipboard2-fill me-2"></i> <h6 class="d-inline-block smallHeader">Orçamento</h6>
+</div>
+
+@if (ViewBag.éOficina == true)
+{
+    <div class="card-body">
+        <h4 class="smallHeader">Status</h4>
+        @using (Html.BeginForm("AprovarRecusar", "Orçamento", FormMethod.Post))
+        {
+            if (Model.Marcar == true)
             {
-                if (Model.Marcar == true)
-                {
-                    <div class="row">
-
-                        <label for="Horário1">Horário de Funcionamento</label>
-                        <input type="radio" id="Horário1" name="Horario" />
-
-                        <label for="Horário2">Horário Definido:</label>
-                        <input type="radio" id="Horário2" name="Horario" onchange="exibir()" />
-                        <div>
-                            <div class="col-md-10 mt-3 d-none" id="tempo">
-                                <input id="inicio" name="inicio" type="text" value="" class="timepicker" /> <span class="ms-2 me-2"> Até</span>
-                                <input id="fim" name="fim" type="text" value="" class="timepicker" />
-                            </div>
-                        </div>
-                    </div>
-                }
-                @Html.HiddenFor(m => m.Id)
                 <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                        <button type="submit" class="btn btn-default" value="12" name="Operação">Aceitar</button>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <button type="submit" class="btn btn-default" value="11" name="Operação">Recusar</button>
+
+                    <label for="Horário1">Horário de Funcionamento</label>
+                    <input type="radio" id="Horário1" name="Horario" />
+
+                    <label for="Horário2">Horário Definido:</label>
+                    <input type="radio" id="Horário2" name="Horario" onchange="exibir()" />
+                    <div>
+                        <div class="col-md-10 mt-3 d-none" id="tempo">
+                            <input id="inicio" name="inicio" type="text" value="" class="timepicker" /> <span class="ms-2 me-2"> Até</span>
+                            <input id="fim" name="fim" type="text" value="" class="timepicker" />
+                        </div>
                     </div>
                 </div>
             }
-        </div>
-    }
+            @Html.HiddenFor(m => m.Id)
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <button type="submit" class="btn btn-default" value="12" name="Operação">Aceitar</button>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <button type="submit" class="btn btn-default" value="11" name="Operação">Recusar</button>
+                </div>
+            </div>
+        }
+    </div>
+}
 
-    @if (ViewBag.éPessoa == true)
-    {
-        <div class="card-body">
-            <h1>Aguardando Oficina...</h1>
-        </div>
-    }
+@if (ViewBag.éPessoa == true)
+{
+    <div class="card-body">
+        <h4 class="smallHeader">Status</h4>
+        <h1>Aguardando Oficina...</h1>
+    </div>
+}
 
-</div>
+
 
 <script>
     $('.timepicker').timepicker({

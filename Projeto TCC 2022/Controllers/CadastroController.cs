@@ -1,4 +1,6 @@
 ﻿using Projeto_TCC_2022.Models;
+using Projeto_TCC_2022.Models.ViewModels;
+using System.ComponentModel.Design;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -30,32 +32,59 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CadastrarPessoa(string Nome, string Sobrenome, string Estado, string Cidade, string Rua, int Número, string Complemento, int Tipo)
+        public ActionResult CadastrarPessoa(Cadastro cadastro, int Tipo)
         {
+            Pessoa pessoa = cadastro.Pessoa;
+            CelularTelefone numero = cadastro.CelularTelefone;
+
             string CPF, CNPJ;
-            if (Request["CPF"] != null)
+
+            if (pessoa.CPF != null)
             {
-                CPF = Request["CPF"].Replace(".", "").Replace("-", "");
+                CPF = pessoa.CPF.Replace(".", "").Replace("-", "");
             }
             else { CPF = null; }
 
-            if (Request["CNPJ"] != null)
+            if (pessoa.CNPJ != null)
             {
-                CNPJ = Request["CNPJ"].Replace(".", "").Replace("-", "").Replace("/", "");
+                CNPJ = pessoa.CNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
             }
             else { CNPJ = null; }
 
+            if (pessoa.CPF != null && pessoa.CNPJ != null)
+            {
+                if (Tipo == 1)
+                {
+                    CNPJ = null;
+                }
+                else if (Tipo == 2)
+                {
+                    CPF = null;
+                }
+
+                else
+                    RedirectToAction("Index", "Home");
+            }
+
+
+            if (numero.CelularTelefone1.StartsWith("0"))
+            {
+                numero.CelularTelefone1 = numero.CelularTelefone1.Split('0')[1];
+            }
+
             if (Model1.GetPessoaByCPForCNPJ(CPF, CNPJ) == false)
             {
-                Model1.InsertPessoa(UserID, Nome, Sobrenome, Estado,
-                Cidade, Rua, Número, Complemento,
+                Model1.InsertPessoa(UserID, pessoa.Nome, pessoa.Sobrenome, pessoa.CEP, pessoa.Estado,
+                pessoa.Cidade, pessoa.Rua, pessoa.Número, pessoa.Complemento,
                 Model1.GetEmail(UserID), CPF, CNPJ, Tipo);
+                Model1.InsertCelular(numero.CelularTelefone1, UserID);
                 Response.Clear();
-                return RedirectToAction("CadastroNúmero", "Numero");
+                return RedirectToAction("VisualizarCarros", "Carro");
             }
 
             Response.Clear();
-            return RedirectToAction("Erro", "Erro", new { Erro = "Erro no Cadastro, CNPJ ou CPF já foi cadastrado." });
+            string Erro = "Erro no Cadastro, CNPJ ou CPF já foi cadastrado.";
+            return RedirectToAction("Erro", "Erro", new { Erro });
         }
 
         public ActionResult CadastroOficina()
@@ -65,15 +94,26 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CadastrarOficina(string CNPJ, string Nome, string CEP, string Estado, string Cidade, string Bairro, string Rua, int Número, string Complemento, string Descrição, bool AceitaImportado, string inicio, string fim)
+        public ActionResult CadastrarOficina(Cadastro cadastro, string inicio, string fim)
         {
-            var novoCNPJ = CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
+            Oficina oficina = cadastro.Oficina;
+            CelularTelefone numero = cadastro.CelularTelefone;
+
+            var novoCNPJ = oficina.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
             string HorarioFuncionamento = inicio + "/" + fim;
-            if (Model1.GetOficinaByCNPJ(CNPJ) == false)
+
+            if (numero.CelularTelefone1.StartsWith("0"))
             {
-                Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, Nome, CEP,
-                Estado, Cidade, Bairro, Rua, Número,
-                Complemento, Descrição, false, AceitaImportado, false, HorarioFuncionamento);
+               numero.CelularTelefone1 = numero.CelularTelefone1.Split('0')[1];
+            }
+
+            if (Model1.GetOficinaByCNPJ(oficina.CNPJ) == false)
+            {
+                Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, oficina.Nome, oficina.CEP,
+                oficina.Estado, oficina.Cidade, oficina.Bairro, oficina.Rua, oficina.Número,
+                oficina.Complemento, oficina.Descrição, false, oficina.AceitaImportado, false, HorarioFuncionamento);
+
+                Model1.InsertCelular(numero.CelularTelefone1, UserID);
                 Response.Clear();
                 return RedirectToAction("AdicionarImagem", "Imagem");
             }

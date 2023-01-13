@@ -1149,7 +1149,7 @@ namespace Projeto_TCC_2022.Models
                 return Email;
             }
         }
-        public static void InsertPessoa(int Id, string Nome, string Sobrenome, string Estado, string Cidade, string Rua,
+        public static void InsertPessoa(int Id, string Nome, string Sobrenome, string CEP, string Estado, string Cidade, string Rua,
             int Número, string Complemento, string Email, string CPF, string CNPJ, int Tipo)
         {
             using (var context = new Model1())
@@ -1159,6 +1159,7 @@ namespace Projeto_TCC_2022.Models
                     Id = Id,
                     Nome = Nome,
                     Sobrenome = Sobrenome,
+                    CEP = CEP,
                     Estado = Estado,
                     Cidade = Cidade,
                     Rua = Rua,

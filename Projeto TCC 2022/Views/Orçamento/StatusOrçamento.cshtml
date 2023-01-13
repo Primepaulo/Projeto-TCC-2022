@@ -1,10 +1,13 @@
 ﻿@model Projeto_TCC_2022.Models.Orçamento
 
-<div id="Div" class="card mx-auto">
-    <div class="card-header">
-        <i class="bi bi-clipboard2-fill me-2"></i> Orçamento:
+<div id="Div" class="card">
+    <div class="card-header cardHeader">
+        <i class="bi bi-clipboard2-fill me-2"></i> <h6 class="d-inline-block smallHeader">Orçamento</h6>
     </div>
     <div class="card-body">
+
+        <h6 class="smallHeader">Status</h6>
+
         @if (Model.Status == 11) //Recusado pela Oficina
         {
             <h2 class="text-center">Pedido recusado pela Oficina.</h2>

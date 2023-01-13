@@ -6,7 +6,7 @@ namespace Projeto_TCC_2022.Models
     [Table("CelularTelefone")]
     public partial class CelularTelefone
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(11)]

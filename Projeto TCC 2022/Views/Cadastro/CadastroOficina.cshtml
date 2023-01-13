@@ -1,4 +1,4 @@
-﻿@model Projeto_TCC_2022.Models.Oficina
+﻿@model Projeto_TCC_2022.Models.ViewModels.Cadastro
 
 <h2>Cadastrar Oficina:</h2>
 
@@ -6,114 +6,123 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="text" class="form-control" id="CNPJ" name="CNPJ" maxlength="18" autocomplete="off" required="required" />
-                @Html.ValidationMessageFor(model => model.CNPJ, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*Razão Social*@
-        <div class="form-group">
-            <label for="Nome" class="control-label col-md-2">Nome da Oficina</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="cep">CEP:</label>
-            <div class="col-md-10">
-                <input name="cep" id="cep" class="form-control" maxlength="9" />
-                <p class="d-none" id="valCep">Cep Inválido</p>
-            </div>
-         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Cidade, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Cidade, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                @Html.ValidationMessageFor(model => model.Cidade, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Bairro, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Bairro, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                @Html.ValidationMessageFor(model => model.Bairro, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Rua, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Rua, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                @Html.ValidationMessageFor(model => model.Rua, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Número, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Número, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Número, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Complemento, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Complemento, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Complemento, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Descrição, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Descrição, new { @class = "form-control", @rows = "4" })
-                @Html.ValidationMessageFor(model => model.Descrição, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="AceitaImportado" class="control-label col-md-2">Aceita Importado?</label>
-            <div class="col-md-10">
-                @Html.CheckBoxFor(model => model.AceitaImportado)
-                @Html.ValidationMessageFor(model => model.AceitaImportado, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="intervalo" class="control-label col-md-2">Horário de Funcionamento: </label>
-            <div class="col-md-10 mt-3">
-                <input id="inicio" name="inicio" type="text" value="" class="timepicker" /> <span class="ms-2 me-2"> Até</span>
-                <input id="fim" name="fim" type="text" value="" class="timepicker" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="Oficina_CNPJ" name="Oficina.CNPJ" maxlength="18" autocomplete="off" required="required" />
+            @Html.ValidationMessageFor(model => model.Oficina.CNPJ, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    @*Razão Social*@
+    <div class="form-group">
+        <label for="Oficina_Nome" class="control-label col-md-2">Nome da Oficina</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Nome, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Nome, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Oficina_cep">CEP:</label>
+        <div class="col-md-10">
+            <input name="Oficina.cep" id="Oficina_cep" class="form-control" maxlength="9" />
+            <p class="d-none" id="valCep">Cep Inválido</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Estado, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Estado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Cidade, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Cidade, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Cidade, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Bairro, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Bairro, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Bairro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Rua, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Rua, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Rua, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Número, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Número, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Número, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Complemento, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Complemento, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Complemento, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Descrição, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Oficina.Descrição, new { @class = "form-control", @rows = "4" })
+            @Html.ValidationMessageFor(model => model.Oficina.Descrição, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Oficina_AceitaImportado" class="control-label col-md-2">Aceita Importado?</label>
+        <div class="col-md-10">
+            @Html.CheckBoxFor(model => model.Oficina.AceitaImportado)
+            @Html.ValidationMessageFor(model => model.Oficina.AceitaImportado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="intervalo" class="control-label col-md-2">Horário de Funcionamento: </label>
+        <div class="col-md-10 mt-3">
+            <input id="inicio" name="inicio" type="text" value="" class="timepicker" /> <span class="ms-2 me-2"> Até</span>
+            <input id="fim" name="fim" type="text" value="" class="timepicker" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="CelularTelefone_CelularTelefone1" class="control-label col-md-2">Telefone ou Celular:</label>
+        <div class="col-md-10">
+            <input class="form-control text-box single-line mt-3" name="CelularTelefone.CelularTelefone1" , id="CelularTelefone_CelularTelefone" data-val="true" data-val-length="O campo Telefone ou Celular deve ser uma cadeia de caracteres com um comprimento máximo de 12."
+                   data-val-length-max="12" data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="(\d{1}){10,12}" data-val-regex="Número Inválido" />
+            @Html.ValidationMessageFor(model => model.CelularTelefone.CelularTelefone1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 @section scripts
@@ -151,7 +160,7 @@
             });
 
             //Trecho adaptado do exemplo da API do https://viacep.com.br/exemplo/jquery/
-            $("#cep").blur(function () {
+            $("#Oficina_cep").blur(function () {
 
                 if (!$("#valCep").hasClass("d-none")) {
                     $("#valCep").addClass("d-none");
@@ -162,19 +171,19 @@
                 var validacep = /^[0-9]{8}$/;
                 if (validacep.test(cep)) {
 
-                    $("#Rua").val("...");
-                    $("#Bairro").val("...");
-                    $("#Cidade").val("...");
-                    $("#Estado").val("...");
+                    $("#Oficina_Rua").val("...");
+                    $("#Oficina_Bairro").val("...");
+                    $("#Oficina_Cidade").val("...");
+                    $("#Oficina_Estado").val("...");
 
                     $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
 
                         if (!("erro" in dados)) {
 
-                            $("#Rua").val(dados.logradouro);
-                            $("#Bairro").val(dados.bairro);
-                            $("#Cidade").val(dados.localidade);
-                            $("#Estado").val(dados.uf);
+                            $("#Oficina_Rua").val(dados.logradouro);
+                            $("#Oficina_Bairro").val(dados.bairro);
+                            $("#Oficina_Cidade").val(dados.localidade);
+                            $("#Oficina_Estado").val(dados.uf);
                         }
                         else {
                             limpa_formulário_cep();
@@ -183,10 +192,10 @@
                     });
 
                     function limpa_formulário_cep() {
-                        $("#Rua").val("");
-                        $("#Bairro").val("");
-                        $("#Cidade").val("");
-                        $("#Estado").val("");
+                        $("#Oficina_Rua").val("");
+                        $("#Oficina_Bairro").val("");
+                        $("#Oficina_Cidade").val("");
+                        $("#Oficina_Estado").val("");
                     }
                 }
             });

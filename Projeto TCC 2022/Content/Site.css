@@ -20,6 +20,10 @@
     src: url("fonts/Montserrat-VariableFont_wght.ttf");
 }
 
+a{
+    color:inherit !important;
+}
+
 .smallHeader {
     color: #3f3f3f;
     font-family: 'Fira Sans';
@@ -31,6 +35,10 @@
 
 .text {
     font-family: Merryweather;
+}
+
+.cardHeader {
+    background-color: #FEFEFE !important;
 }
 
 

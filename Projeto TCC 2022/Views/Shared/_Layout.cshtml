@@ -91,6 +91,14 @@
                 </div>
             </form>
 
+            <ul>
+                @if (ViewBag.éPessoa == false && ViewBag.éOficina == false)
+                {
+                    <li style="visibility: hidden">Espaçamento</li>
+                    <li style="visibility: hidden">Espaçamento</li>
+                }
+            </ul>
+
             <div class="me-2" id="notificações">
 
             </div>
