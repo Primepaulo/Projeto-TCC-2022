@@ -1,15 +1,9 @@
-﻿using System;
+﻿using Projeto_TCC_2022.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Razor.Generator;
-using System.Web.Routing;
 using System.Web.WebPages;
-using Microsoft.AspNet.Identity;
-using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -39,7 +33,7 @@ namespace Projeto_TCC_2022.Controllers
             searchData.filtro = Request.QueryString["filter"];
             searchData.categoria = Request.QueryString["categoria"];
             searchData.importado = Convert.ToBoolean(Request.QueryString["importado"]);
-            
+
             Session["searchData"] = searchData;
             return RedirectToAction("Search");
         }
@@ -47,6 +41,7 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult Search()
         {
             var searchData = Session["searchData"] as SearchData;
+            List<Oficina> oficinas = new List<Oficina>();
 
             if (HttpContext.Session["searchData"] != null)
             {
@@ -54,28 +49,46 @@ namespace Projeto_TCC_2022.Controllers
                 {
                     if (!searchData.filtro.IsEmpty())
                     {
-                        if (searchData.filtro == "OficinaNome")
+                        if (searchData.filtro == "Oficina")
                         {
                             if (searchData.importado == true)
                             {
-                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
+                                oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
                                 Debug.WriteLine("Filtro 1 Importado");
                             }
 
                             else
                             {
-                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDesc(searchData.searchTerm);
+                                oficinas = Model1.GetOficinaByNameOrDesc(searchData.searchTerm);
                                 Debug.WriteLine("Filtro 1 Normal");
                             }
 
                         }
 
-                        else if (searchData.filtro == "ServiçoCategoria")
+                        else if (searchData.filtro == "Serviço")
                         {
-                            var Serviços = Model1.GetServiçosFilterByCategoria(searchData.categoria, searchData.searchTerm);
+                            List<Serviço> Serviços = new List<Serviço>();
+
+                            if (searchData.categoria == "Categoria")
+                            {
+                                Serviços = Model1.GetServiçosByInput(searchData.searchTerm);
+                                Debug.WriteLine("Filtro 2 N Cat");
+                            }
+
+                            else if (searchData.importado == true)
+                            {
+                                Serviços = Model1.GetServiçosFilterByCategoriaImp(searchData.categoria, searchData.searchTerm);
+                                Debug.WriteLine("Filtro 2 Imp");
+                            }
+
+                            else if (searchData.importado == false)
+                            {
+                                Serviços = Model1.GetServiçosFilterByCategoria(searchData.categoria, searchData.searchTerm);
+                                Debug.WriteLine("Filtro 2");
+                            }
+
                             ViewBag.Serviços = Serviços;
 
-                            List<Oficina> oficinas = new List<Oficina>();
 
                             if (ViewBag.Serviços != null)
                             {
@@ -84,51 +97,61 @@ namespace Projeto_TCC_2022.Controllers
                                     var oficina = Model1.GetOficinaById(item.Fk_Oficina_Id);
                                     oficinas.Add(oficina);
                                 }
-
-                                ViewBag.Oficinas = oficinas;
-                                Debug.WriteLine("Filtro 2");
                             }
                         }
 
-                        else if (searchData.filtro == "OficinaBairro")
+                        else if (searchData.filtro == "Bairro")
                         {
                             if (searchData.importado == true)
                             {
-                                ViewBag.Oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
+                                oficinas = Model1.GetOficinaByNameOrDescImp(searchData.importado, searchData.searchTerm);
                                 Debug.WriteLine("Filtro 3 Importado");
                             }
 
                             else
                             {
-                                ViewBag.Oficinas = Model1.GetOficinaByBairro(searchData.searchTerm);
+                                oficinas = Model1.GetOficinaByBairro(searchData.searchTerm);
                                 Debug.WriteLine("Filtro 3 Normal");
 
                             }
                         }
                     }
-                    List<Imagem> Imagens = new List<Imagem>();
-
-                    if (ViewBag.Oficinas != null)
-                    {
-                        foreach (var oficina in ViewBag.Oficinas)
-                        {
-                            Imagens.Add(Model1.GetImagem(oficina.Id));
-                        }
-                    }
-
-                    List<Avaliação> Avaliações = new List<Avaliação>();
-
-                    if (ViewBag.Oficinas != null)
-                    {
-                        foreach (var oficina in ViewBag.Oficinas)
-                        {
-                            //Avaliações.Add(Model1.GetAvaliações(oficina.Id));
-                        }
-                    }
-
-                    ViewBag.Imagens = Imagens;
-                    ViewBag.Avaliações = Avaliações;
                 }
+
+                else if (searchData.searchTerm.IsEmpty() && searchData.filtro == "Serviço")
+                {
+                    if (searchData.categoria != "Categoria")
+                    {
+                        var Serviços = Model1.GetServiçosByCategoria(searchData.categoria);
+                        foreach (var serviço in Serviços)
+                        {
+                            oficinas.Add(Model1.GetOficinaById(serviço.Fk_Oficina_Id));
+                        }
+                    }
+                }
+
+                List<Imagem> Imagens = new List<Imagem>();
+
+                if (oficinas != null)
+                {
+                    foreach (var oficina in oficinas)
+                    {
+                        Imagens.Add(Model1.GetImagem(oficina.Id));
+                    }
+                }
+
+                List<Avaliação> Avaliações = new List<Avaliação>();
+
+                if (ViewBag.Oficinas != null)
+                {
+                    foreach (var oficina in oficinas)
+                    {
+                        //Avaliações.Add(Model1.GetAvaliações(oficina.Id));
+                    }
+                }
+                ViewBag.Oficinas = oficinas;
+                ViewBag.Imagens = Imagens;
+                ViewBag.Avaliações = Avaliações;
             }
 
             return View();

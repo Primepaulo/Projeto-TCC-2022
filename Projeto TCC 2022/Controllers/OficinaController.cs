@@ -1,13 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
-using Projeto_TCC_2022.Models;
-using System;
+﻿using Projeto_TCC_2022.Models;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Web;
-using System.Web.Management;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -19,8 +11,8 @@ namespace Projeto_TCC_2022.Controllers
             Oficina oficina = Model1.GetOficinaById(Id);
             if (oficina == null)
             {
-             return RedirectToAction("Index", "Home");
-          
+                return RedirectToAction("Index", "Home");
+
             }
             ViewBag.Oficina = oficina;
             ViewBag.Imagem = Model1.GetImagem(Id);
@@ -30,22 +22,22 @@ namespace Projeto_TCC_2022.Controllers
 
             List<float> médias = new List<float>();
 
-            if (ViewBag.Serviços != null) {
-                foreach (var item in ViewBag.Serviços)
-                {
-                    float soma = 0;
+            //if (ViewBag.Serviços != null) {
+            //    foreach (var item in ViewBag.Serviços)
+            //    {
+            //        float soma = 0;
 
-                    List<Avaliação> av1 = Model1.GetAvaliaçõesByServiçoId(item.Id);
-                    foreach (var avaliação in av1)
-                    {
-                        soma += avaliação.Estrelas;
-                    }
+            //        List<Avaliação> av1 = Model1.GetAvaliaçõesByServiçoId(item.Id);
+            //        foreach (var avaliação in av1)
+            //        {
+            //            soma += avaliação.Estrelas;
+            //        }
 
-                    float média = soma / av1.Count;
+            //        float média = soma / av1.Count;
 
-                    médias.Add(média);
-                }
-            }
+            //        médias.Add(média);
+            //    }
+            //}
 
             ViewBag.Médias = médias;
 

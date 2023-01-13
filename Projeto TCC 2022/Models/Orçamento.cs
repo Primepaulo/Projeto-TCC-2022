@@ -4,7 +4,6 @@ namespace Projeto_TCC_2022.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     public partial class Orçamento
     {
@@ -13,6 +12,7 @@ namespace Projeto_TCC_2022.Models
         {
             ItemOrçamento = new HashSet<ItemOrçamento>();
             Notificação = new HashSet<Notificação>();
+            Avaliação = new HashSet<Avaliação>();
         }
 
         [Column(TypeName = "money")]
@@ -45,6 +45,9 @@ namespace Projeto_TCC_2022.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notificação> Notificação { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Avaliação> Avaliação { get; set; }
 
         public virtual Oficina Oficina { get; set; }
 

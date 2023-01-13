@@ -1,11 +1,7 @@
 ﻿using Projeto_TCC_2022.Models;
-using Projeto_TCC_2022.Models.Classes;
-using System;
+using Projeto_TCC_2022.Models.ViewModels;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -27,112 +23,206 @@ namespace Projeto_TCC_2022.Controllers
             }
         }
 
-        public ActionResult VisualizarAvaliações()
+        public ActionResult Avaliar(int Id)
         {
-            List<Avaliação> avaliações = Model1.GetAvaliaçõesByUserId(UserID);
-            List<Serviço> serviços = new List<Serviço>();
-            List<Oficina> oficinas = new List<Oficina>();
+            Orçamento orçamento = Model1.GetOrçamento(Id);
 
-            foreach (var item in avaliações)
+            if (orçamento.fk_Pessoa_Id == UserID)
             {
-                serviços.Add(Model1.GetServiço(item.fk_Serviços_Id));
+                List<Serviço> serviços = new List<Serviço>();
+                List<ItemOrçamento> Itens = Model1.GetItems(Id);
+                foreach (var item in Itens)
+                {
+                    Serviço serviço = Model1.GetServiçoByNomeId(orçamento.fk_Oficina_Id, item.Nome);
+
+                    //Resolução que pode ocasionar bugs caso uma oficina tenha um serviço com o mesmo nome e descrição da peça, o que
+                    //é possível.
+
+                    if (serviço != null)
+                    {
+                        if (item.Descrição == serviço.Descrição)
+                        {
+                            if (serviços.Contains(serviço) != true)
+                            {
+                                serviços.Add(serviço);
+                            }
+                        }
+                    }
+                }
+
+                Avaliar avaliar = new Avaliar
+                {
+                    Serviços = serviços,
+                    Itens = Itens,
+                    OrçamentoId = orçamento.Id
+                };
+                return View(avaliar);
             }
 
-            foreach (var item in serviços)
-            {
-                oficinas.Add(Model1.GetOficinaById(item.Fk_Oficina_Id));
-            }
-
-            ViewBag.Avaliações = avaliações;
-            ViewBag.Serviços = serviços;
-            ViewBag.Oficinas = oficinas;
-
-            return View();
-        }
-
-        public ActionResult AvaliarServiço(int Id, int OrçamentoId)
-        {
-            Serviço serviço = Model1.GetServiço(Id);
-            Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
-
-            ServiçoAvaliaçãoOrçamento serviçoAvaliação = new ServiçoAvaliaçãoOrçamento();
-            serviçoAvaliação.serviço = serviço;
-            serviçoAvaliação.orçamento = orçamento;
-
-            return View(serviçoAvaliação);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        public ActionResult AvaliarServiço(int Estrelas, string Texto, int serviçoId, int OrçamentoId)
+        public ActionResult Avaliar(Avaliar avaliar)
         {
-            Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
-
-            ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(OrçamentoId, serviçoId);
-
-            if (orçamento.fk_Pessoa_Id == UserID && orçamento.Status == 3)
+            Orçamento orçamento = Model1.GetOrçamento(avaliar.OrçamentoId);
+            if (orçamento.fk_Pessoa_Id == UserID)
             {
-                Model1.Avaliar(Estrelas, Texto, serviçoId, UserID, OrçamentoId);
-                Model1.Avaliado(itemOrçamento);
+                int estrelas = 0;
+                foreach (var item in avaliar.AvItem)
+                {
+                    estrelas += item.Estrelas;
+                }
+
+                float média = estrelas / avaliar.AvItem.Count();
+
+                Avaliação avaliação = new Avaliação
+                {
+                    Estrelas = média,
+                    Texto = avaliar.Texto,
+                    fk_Pessoa_Id = UserID,
+                    Fk_Orçamento_Id = orçamento.Id
+                };
+
+                Model1.GerarAvaliação(avaliação, avaliar.AvItem);
             }
-            return RedirectToAction("VisualizarAvaliações"); 
+            return RedirectToAction("Index", "Home"); //Mudar
+        }
+
+        public ActionResult HistoricoAvaliações()
+        {
+            if (Pessoa == true)
+            {
+                List<Avaliação> Av = Model1.GetAvaliações(UserID);
+
+                List<ItemAvaliação> Itens = new List<ItemAvaliação>();
+                List<Oficina> oficinas = new List<Oficina>();
+                List<Imagem> imagens = new List<Imagem>();
+                List<Serviço> serviços = new List<Serviço>();
+                List<Orçamento> orçamentos = new List<Orçamento>();
+
+                foreach (var item in Av)
+                {
+                    Orçamento orçamento = Model1.GetOrçamento(item.Fk_Orçamento_Id);
+                    Oficina oficina = Model1.GetOficinaById(orçamento.fk_Oficina_Id);
+
+                    oficinas.Add(oficina);
+                    orçamentos.Add(orçamento);
+                    imagens.Add(Model1.GetImagem(oficina.Id));
+
+
+                    var x = Model1.GetItensAvaliação(item.Id);
+                    foreach (var item2 in x)
+                    {
+
+                        Itens.Add(item2);
+                        serviços.Add(Model1.GetServiço(item2.Fk_Serviço_Id));
+                    }
+                }
+
+
+
+                HistoricoAvaliação Hav = new HistoricoAvaliação
+                {
+                    Av = Av,
+                    Itens = Itens,
+                    Oficinas = oficinas,
+                    Imagens = imagens,
+                    Orçamentos = orçamentos,
+                    Serviços = serviços
+                };
+
+                return View(Hav);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult EditarAvaliação(int Id)
         {
             Avaliação avaliação = Model1.GetAvaliação(Id);
-            if (UserID == avaliação.fk_Pessoa_Id)
+            List<ItemAvaliação> Itens = avaliação.ItemAvaliação.ToList();
+            List<Serviço> serviços = new List<Serviço>();
+            List<ItemOrçamento> Or = Model1.GetItems(avaliação.Fk_Orçamento_Id);
+
+            foreach (var item in Itens)
             {
-                return View(avaliação);
+                serviços.Add(Model1.GetServiço(item.Fk_Serviço_Id));
             }
 
-            return RedirectToAction("VisualizarAvaliações", "Avaliação");
+            EditarAvaliação editarAvaliação = new EditarAvaliação
+            {
+                Avaliação = avaliação,
+                Serviços = serviços,
+                AvItem = Itens,
+                Itens = Or
+            };
+
+            return View(editarAvaliação);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditarAvaliação([Bind(Include = "Id,Estrelas,Texto,fk_Serviços_Id,, fk_Pessoa_Id, Fk_Orçamento_Id")] Avaliação avaliação)
+        public ActionResult Editar(EditarAvaliação editarAvaliação)
         {
+            Avaliação avaliação = Model1.GetAvaliação(editarAvaliação.Id);
+            List<ItemAvaliação> Itens = Model1.GetItensAvaliação(editarAvaliação.Id);
+            int estrelas = 0;
+
             if (avaliação.fk_Pessoa_Id == UserID)
             {
-                if (ModelState.IsValid)
+
+                for (int i = 0; i < editarAvaliação.AvItem.Count(); i++)
                 {
-                    Model1.UpdateAvaliação(avaliação);
-                    return RedirectToAction("VisualizarAvaliações");
+                    Itens[i].Estrelas = editarAvaliação.Estrelas[i];
+
+                    estrelas += editarAvaliação.Estrelas[i];
+
                 }
-                return View(avaliação);
-            }
 
+                float média = estrelas / editarAvaliação.AvItem.Count();
+
+                avaliação.Texto = editarAvaliação.Texto;
+                avaliação.Estrelas = média;
+
+                Model1.UpdateAvaliação(avaliação, Itens);
+
+                return RedirectToAction("HistoricoAvaliações", "Avaliação");
+            }
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult DeletarAvaliação(int Id)
+        public ActionResult ExcluirAvaliação(int Id)
         {
             Avaliação avaliação = Model1.GetAvaliação(Id);
-            Serviço serviço = Model1.GetServiço(avaliação.fk_Serviços_Id);
-            Oficina oficina = Model1.GetOficinaById(serviço.Fk_Oficina_Id);
+            List<ItemAvaliação> Itens = avaliação.ItemAvaliação.ToList();
+            List<Serviço> serviços = new List<Serviço>();
+            Oficina oficina = Model1.GetOficinaById(Model1.GetOrçamento(avaliação.Fk_Orçamento_Id).fk_Oficina_Id);
 
-            if (avaliação.fk_Pessoa_Id == UserID)
+            foreach (var item in Itens)
             {
-                ViewBag.Serviço = serviço;
-                ViewBag.Oficina = oficina;
-                return View(avaliação);
+                serviços.Add(Model1.GetServiço(item.Fk_Serviço_Id));
             }
 
-            return RedirectToAction("Index", "Home");
+            ExcluirAvaliação ex = new ExcluirAvaliação
+            {
+                Avaliação = avaliação,
+                Serviços = serviços,
+                Itens = Itens,
+                Oficina = oficina
+            };
+
+            return View(ex);
         }
 
-        [HttpPost, ActionName("DeletarAvaliação")]
-        [ValidateAntiForgeryToken]
-        public ActionResult Deletar(int Id)
+        [HttpPost]
+        public ActionResult Excluir(int Id)
         {
-            Avaliação avaliação = Model1.GetAvaliação(Id);
-            if (avaliação.fk_Pessoa_Id == UserID)
+            Avaliação av = Model1.GetAvaliação(Id);
+            if (av.fk_Pessoa_Id == UserID)
             {
-                Model1.DeleteAvaliação(Id);
-                return RedirectToAction("VisualizarAvaliações");
+                Model1.DeleteAvaliação(av);
             }
-
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("HistoricoAvaliações", "Avaliação");
         }
     }
 }

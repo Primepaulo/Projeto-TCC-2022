@@ -1,11 +1,7 @@
 ﻿using Projeto_TCC_2022.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -164,7 +160,7 @@ namespace Projeto_TCC_2022.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult DeletarServiço (int Id)
+        public ActionResult DeletarServiço(int Id)
         {
             Serviço serviço = Model1.GetServiço(Id);
 

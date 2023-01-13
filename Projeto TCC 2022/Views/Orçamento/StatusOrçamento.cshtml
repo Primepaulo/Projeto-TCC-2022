@@ -68,33 +68,12 @@
 
 </div>
 
-
-@if (Model.Status != 32)
-{
-    <div class="text-center mt-3">
-        <a href="@Url.Action("HistoricoOrçamento", "Orçamento")">Retornar</a>
-    </div>
-
-}
-
 <div class="row mt-3 text-center">
     <div class="col-md-3 offset-md-2">
 
     </div>
-    <a href="@Url.Action("HistoricoOrçamento", "Orçamento")">Retornar</a>
+    <a href="@Url.Action("HistoricoOrçamentos", "Orçamento")">Retornar</a>
 </div>
-
-@if (Model.Status == 32 && ViewBag.éPessoa == true)
-{
-    <div class="row mt-3 text-center">
-        <div class="col-md-4 offset-md-2">
-            <a href="@Url.Action("HistoricoOrçamento", "Orçamento")">Retornar</a>
-        </div>
-        <div class="col-md-4 offset-md-2">
-            <a href="">Avaliar Serviços</a>
-        </div>
-    </div>
-}
 
 
 @section scripts{
@@ -117,6 +96,13 @@
                         console.log("Erro");
                     }
                 });
+
+                $('.timepicker').timepicker({
+                    timeFormat: 'HH:mm',
+                    dynamic: false,
+                    dropdown: false,
+                    scrollbar: false
+                });
             };
 
             function exibir() {
@@ -127,7 +113,7 @@
                 }
                 else if ($("#Horário2").is(":checked")) {
                     $("#tempo").removeClass("d-none");
-                    $("#tempo").addAttr("data-val");
+                    $("#tempo").attr("data-val", "true");
 
                     var attrCNPJ = $("#tempo").attr("data-val");
 
@@ -201,7 +187,7 @@
         }
 
         $(document).ready(function () {
-            @if (Model.Status != 10 && Model.Status != 24 && Model.Status != 32 && Model.Status != 31) {
+            @if (Model.Status != 24 && Model.Status != 32 && Model.Status != 31 || Model.Status != 10 && ViewBag.éPessoa == false) {
                 <text>
                     setInterval(function() {
                         Update();

@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Projeto_TCC_2022.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -32,9 +31,9 @@ namespace Projeto_TCC_2022.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -333,7 +332,7 @@ namespace Projeto_TCC_2022.Controllers
             base.Dispose(disposing);
         }
 
-#region Auxiliares
+        #region Auxiliares
         // Usado para proteção XSRF ao adicionar logons externos
         private const string XsrfKey = "XsrfId";
 
@@ -384,6 +383,6 @@ namespace Projeto_TCC_2022.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

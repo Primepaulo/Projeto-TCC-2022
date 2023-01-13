@@ -1,10 +1,7 @@
 namespace Projeto_TCC_2022.Models
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     public partial class ItemOrçamento
     {
@@ -23,6 +20,8 @@ namespace Projeto_TCC_2022.Models
         public double Quantidade { get; set; }
 
         public bool? Avaliado { get; set; }
+
+        public int Tipo { get; set; }
 
         public virtual Orçamento Orçamento { get; set; }
     }

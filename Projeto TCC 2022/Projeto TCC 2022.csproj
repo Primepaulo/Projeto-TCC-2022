@@ -177,6 +177,7 @@
     <Compile Include="Controllers\AvaliaçãoController.cs" />
     <Compile Include="Controllers\CadastroController.cs" />
     <Compile Include="Controllers\CarrosController.cs" />
+    <Compile Include="Controllers\ErroController.cs" />
     <Compile Include="Controllers\GenericController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -195,8 +196,14 @@
     <Compile Include="Models\Carro.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
+    <Compile Include="Models\ItemAvaliação.cs" />
     <Compile Include="Models\ViewModels\AddItemOrçamento2View.cs" />
+    <Compile Include="Models\ViewModels\Avaliar.cs" />
+    <Compile Include="Models\ViewModels\AvaliarItem.cs" />
     <Compile Include="Models\ViewModels\DetalhesOrçamento.cs" />
+    <Compile Include="Models\ViewModels\EditarAvaliação.cs" />
+    <Compile Include="Models\ViewModels\ExcluirAvaliação.cs" />
+    <Compile Include="Models\ViewModels\HistoricoAvaliação.cs" />
     <Compile Include="Models\ViewModels\HistoricoOrçamento.cs" />
     <Compile Include="Models\ViewModels\ItemViewModel.cs" />
     <Compile Include="Models\ViewModels\ListItemViewModel.cs" />
@@ -241,10 +248,26 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.js" />
     <Content Include="Content\fonts\bootstrap-icons.woff" />
     <Content Include="Content\fonts\bootstrap-icons.woff2" />
+    <Content Include="Scripts\Avaliação.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\fonts\FiraSans-Regular.ttf" />
+    <Content Include="Content\fonts\Merriweather-Regular.ttf" />
+    <Content Include="Content\fonts\Montserrat-VariableFont_wght.ttf" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -316,10 +339,6 @@
     <Content Include="Views\Peças\DeletarPeça.cshtml" />
     <Content Include="Views\Peças\VisualizarPeças.cshtml" />
     <Content Include="Views\Home\NotificaçõesPartial.cshtml" />
-    <Content Include="Views\Avaliação\VisualizarAvaliações.cshtml" />
-    <Content Include="Views\Avaliação\AvaliarServiço.cshtml" />
-    <Content Include="Views\Avaliação\EditarAvaliação.cshtml" />
-    <Content Include="Views\Avaliação\DeletarAvaliação.cshtml" />
     <Content Include="Views\Orçamento\EscolhaCarro.cshtml" />
     <Content Include="Views\Orçamento\AgendarServiço.cshtml" />
     <Content Include="Views\Orçamento\StatusOrçamento.cshtml" />
@@ -337,17 +356,18 @@
     <Content Include="Views\Cadastro\Cadastro.cshtml" />
     <Content Include="Views\Orçamento\HistoricoOrçamentos.cshtml" />
     <Content Include="Views\Orçamento\DetalhesOrçamentoPartial.cshtml" />
+    <Content Include="Views\Avaliação\Avaliar.cshtml" />
+    <Content Include="Views\Avaliação\HistoricoAvaliações.cshtml" />
+    <Content Include="Views\Avaliação\EditarAvaliação.cshtml" />
+    <Content Include="Views\Erro\Erro.cshtml" />
+    <Content Include="Views\Avaliação\ExcluirAvaliação.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap.rtl.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

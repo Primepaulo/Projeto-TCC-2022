@@ -5,10 +5,7 @@ using Projeto_TCC_2022.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 
 namespace Projeto_TCC_2022.Controllers
 {
@@ -166,7 +163,7 @@ namespace Projeto_TCC_2022.Controllers
                     ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(orçamento.Id, ServiçoId);
                     if (itemOrçamento == null)
                     {
-                        Model1.AddItemOrçamento(orçamento.Id, serviço.Nome, null, serviço.Descrição, 1, false);
+                        Model1.AddItemOrçamento(orçamento.Id, serviço.Nome, null, serviço.Descrição, 1, false, 1);
                     }
                     else
                     {
@@ -252,9 +249,7 @@ namespace Projeto_TCC_2022.Controllers
         [HttpPost]
         public ActionResult AprovarRecusar(int Id, int Operação, string fim, string inicio)
         {
-            // Operação é 12(aprovado) ou 11(recusado)
             string HorarioFuncionamento = null;
-            Debug.WriteLine(Id);
             if (fim != null && inicio != null)
             {
                 HorarioFuncionamento = inicio + "/" + fim;
@@ -273,6 +268,7 @@ namespace Projeto_TCC_2022.Controllers
                     Model1.AprovarFinalizarOrçamento(Id, Operação, null, HorarioFuncionamento);
                 }
 
+                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
                 return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });
             }
 
@@ -299,6 +295,8 @@ namespace Projeto_TCC_2022.Controllers
                 orçamento.Status = 24;
                 Model1.UpdateOrçamento(orçamento);
             }
+
+            Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });
         }
         public ActionResult FormularPromptPartial(int Id)
@@ -317,6 +315,7 @@ namespace Projeto_TCC_2022.Controllers
             Orçamento orçamento = Model1.GetOrçamento(Id);
             orçamento.Status = 22;
             Model1.UpdateOrçamento(orçamento);
+            Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
             return RedirectToAction("AddItemOrçamento2", "Orçamento", new { Id });
         }
 
@@ -474,7 +473,7 @@ namespace Projeto_TCC_2022.Controllers
 
                     if (itemOrçamento == null)
                     {
-                        Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, item.Val, serviço.Descrição, 1, false);
+                        Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, item.Val, serviço.Descrição, 1, false, 1);
                     }
                     else
                     {
@@ -490,7 +489,7 @@ namespace Projeto_TCC_2022.Controllers
                     ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(OrçamentoId, item.Id);
                     if (itemOrçamento == null)
                     {
-                       Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Val, peça.Descrição, 1, null);
+                        Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Val, peça.Descrição, 1, null, 2);
                     }
                     else
                     {
@@ -501,20 +500,26 @@ namespace Projeto_TCC_2022.Controllers
                             Model1.AdicionarPreço(itemOrçamento, item.Val);
                         }
                     }
+
                 }
+
+                Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
+
+                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
                 Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, Decimal.Parse(ItensOrçamento.Final), null);
             }
-            return RedirectToAction("StatusOrçamento", "Orçamento", new { OrçamentoId });
+            return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = OrçamentoId });
         }
 
         [HttpPost]
         public ActionResult AprovarOrçamento(int Id, int Operação)
         {
             Orçamento orçamento = Model1.GetOrçamento(Id);
-            
+
             if (orçamento.fk_Pessoa_Id == UserID)
             {
                 Model1.AprovarFinalizarOrçamento(Id, Operação, null, Convert.ToString(DateTime.Now.Date.ToString("dd/MM/yyyy")));
+                Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id);
             }
 
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });

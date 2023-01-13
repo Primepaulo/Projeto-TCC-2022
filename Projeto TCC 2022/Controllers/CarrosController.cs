@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Diagnostics;
-using System.Linq;
+﻿using Projeto_TCC_2022.Models;
 using System.Net;
-using System.Web;
-using System.Web.Management;
 using System.Web.Mvc;
-using System.Web.Services.Description;
-using Microsoft.AspNet.Identity;
-using Projeto_TCC_2022.Controllers;
-using Projeto_TCC_2022.Models;
 
 namespace Projeto_TCC_2022.Controllers
 {

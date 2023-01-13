@@ -1,10 +1,7 @@
 ﻿namespace Projeto_TCC_2022.Models
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Imagem")]
     public partial class Imagem
@@ -17,6 +14,6 @@
         public int Fk_Oficina_Id { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual Oficina Oficina{ get; set; }
+        public virtual Oficina Oficina { get; set; }
     }
 }

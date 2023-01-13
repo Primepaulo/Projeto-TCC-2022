@@ -1,16 +1,70 @@
-﻿@using (Html.BeginForm("MudarImagem", "Imagem", FormMethod.Post, new
+﻿<div class="mt-5">
+    @using (Html.BeginForm("MudarImagem", "Imagem", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="upload text-center">
+
+            <div id="seletor2">
+                <i class="bi bi-file-earmark-arrow-up" style="font-size: 50px"></i>
+            </div>
+
+            <div class="text-center mt-2">
+                <header class="h3" id="seletor">
+                    Arraste ou pressione aqui para fazer o upload.
+                </header>
+            </div>
+
+            <div class="mt-4 mb-4">
+                <input style="margin-left: 35%;" id="img" name="img" type="file" accept="image/*">
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <input type="submit" value="Upload" />
+        </div>
+
+    }
+</div>
+
+@section scripts
 {
-    enctype = "multipart/form-data"
-}))
-{
-    <div>
-        @Html.TextBox("img", "", new { type = "file" }) <br />
+    <script>
+        const area = $('.upload');
+        const seletor = $('#seletor');
+        const seletor2 = $('#seletor2');
+        const fileInput = document.querySelector('input[type="file"]');
 
-        <input type="submit" value="Upload" />
+        area.on("dragover", function(e){
+            e.preventDefault();
+            area.addClass("active");
+        });
 
-    </div>
+        area.on("dragleave", function(e){
+            e.preventDefault();
+            area.removeClass("active");
+        });
 
-    <div>
-        @Html.ActionLink("Retornar", "Page/", "Oficina", new { id = (int)ViewBag.userID }, new { @class = "" })
-    </div>
+        area.on("drop", function(e){
+            area.removeClass("active");
+            e.preventDefault();
+            var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
+            var files = e.target.files || (dt && dt.files);
+            if (files && files[0].type.includes('image/')) {
+                fileInput.files = files;
+            }
+            else{
+                console.log("Erro");
+            }
+        })
+
+        seletor.click(function(){
+            fileInput.click();
+        });
+        seletor2.click(function () {
+            fileInput.click();
+        })
+    </script>
 }

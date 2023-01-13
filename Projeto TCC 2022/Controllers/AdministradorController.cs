@@ -1,10 +1,5 @@
 ﻿using Projeto_TCC_2022.Models;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -139,7 +134,7 @@ namespace Projeto_TCC_2022.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateCategoria([Bind(Include = "Id, Nome")]Categoria categoria)
+        public ActionResult UpdateCategoria([Bind(Include = "Id, Nome")] Categoria categoria)
         {
             Model1.UpdateCategoria(categoria);
             return RedirectToAction("VisualizarCategorias");

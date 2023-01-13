@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
 using Owin;
 using Projeto_TCC_2022.Models;
+using System;
 
 namespace Projeto_TCC_2022
 {
@@ -30,14 +29,14 @@ namespace Projeto_TCC_2022
                 {
                     // Permite que o aplicativo valide o carimbo de segurança quando o usuário efetuar login.
                     // Este é um recurso de segurança que é usado quando você altera uma senha ou adiciona um login externo à sua conta.  
-                   OnValidateIdentity = SecurityStampValidator
+                    OnValidateIdentity = SecurityStampValidator
                 .OnValidateIdentity<ApplicationUserManager, ApplicationUser, int>(
                     validateInterval: TimeSpan.FromMinutes(30),
                     regenerateIdentityCallback: (manager, user) =>
                         user.GenerateUserIdentityAsync(manager),
                     getUserIdCallback: (id) => (id.GetUserId<int>()))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Permite que o aplicativo armazene temporariamente as informações do usuário quando ele estiver verificando o segundo fator no processo de autenticação de dois fatores.

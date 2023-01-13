@@ -2,10 +2,68 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    padding-top:120px;
+    padding-top: 20px;
 }
 
-.upload > input {
+@font-face {
+    font-family:"Fira Sans";
+    src: url("fonts/FiraSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Merryweather";
+    src: url("fonts/Merriweather-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("fonts/Montserrat-VariableFont_wght.ttf");
+}
+
+.smallHeader {
+    color: #3f3f3f;
+    font-family: 'Fira Sans';
+}
+
+.bigHeader{
+    font-family: 'Fira Sans';
+}
+
+.text {
+    font-family: Merryweather;
+}
+
+
+.dashed {
+    border-right: 1px dashed #3f3f3f;
+}
+
+.upload {
+    border: 2px dashed black;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.upload button {
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    background: #ff9900;
+    color: inherit;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload.active {
+    border: 2px solid black;
+}
+
+::file-selector-button {
     display: none;
 }
 
@@ -22,7 +80,12 @@ select {
     max-width: 280px;
 }
 
-textarea {
+.textareaAv {
+    padding-left:5px;
+    padding-top:5px;
+}
+
+#textarea {
     max-width: 480px;
 }
 
@@ -34,7 +97,7 @@ textarea {
 
 /*Search*/
 
-textarea {
+#textarea {
     resize: none;
 }
 

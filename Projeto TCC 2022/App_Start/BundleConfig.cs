@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace Projeto_TCC_2022
 {
@@ -20,7 +19,7 @@ namespace Projeto_TCC_2022
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/jqueryui").Include(
-                "~/Scripts/jquery-ui.js", 
+                "~/Scripts/jquery-ui.js",
                 "~/Scripts/selectize.js",
                 "~/Scripts/jquery.timepicker.min.js"));
 

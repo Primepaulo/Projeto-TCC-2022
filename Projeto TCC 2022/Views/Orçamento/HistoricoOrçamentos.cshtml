@@ -1,6 +1,9 @@
 ﻿@model Projeto_TCC_2022.Models.ViewModels.HistoricoOrçamento
 @{ string Status = "";}
-<h1 class="text-center">Orçamentos:</h1>
+
+<div class="w-75 ms-auto mb-5">
+    <h3 style="color:#2c2c2c">Meus Orçamentos</h3>
+</div>
 
 
 @for (int i = 0; i < Model.Orçamentos.Count; i++)
@@ -11,7 +14,7 @@
             Status = "Aguardando Aprovação da Oficina.";
             break;
         case 11:
-            Status = "Finaliazdo. Rejeitado pela Oficina.";
+            Status = "Finalizado. Rejeitado pela Oficina.";
             break;
         case 12:
             Status = "Aceito pela Oficina.";
@@ -39,36 +42,78 @@
             break;
     }
 
+    <div class="d-flex justify-content-center mb-5">
+        <div class="card w-50">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-4">
+                        Data do Orçamento
+                    </div>
+                    <div class="col-md-2">
+                        Total
+                    </div>
+                    <div class="col-md-6">
+                        Status
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>@Model.Orçamentos[i].Data_Orçamento</h6>
+                    </div>
+                    <div class="col-md-2">
+                        <h6>@Convert.ToDecimal(Model.Orçamentos[i].Valor).ToString("F")</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>@Status</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2 col-sm-12">
+                        <img class="rounded-circle w-100" 
+                        @{ 
+                        if (Model.Imagens[i] != null)
+                        {
+                            <text>src="@Model.Imagens[i].Url"</text>
+                        }
+                        else {
+                            <text>src = "../../UploadedFiles\TesteImg.png"</text> 
+                        }
+                        }
+                        />
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <span class="card-text">Oficina</span>
+                        <h6 class="card-title">@Model.Oficinas[i].Nome</h6>
+                        <div class="d-grid mx-auto">
+                            <a href="@Url.Action("Page", "Oficina", new { Model.Oficinas[i].Id})" class="btn btn-outline-primary mt-4">@if (ViewBag.éPessoa == true)
+                            {<text>Pág.da Oficina</text>}@if (ViewBag.éOficina == true) {<text>Minha Pág.</text>}</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <span class="card-text">Carro</span>
+                        <h6>@Model.Carros[i].Marca @Model.Carros[i].Modelo</h6>
 
-
-    <div class="row">
-        <div class="col-md-3">
-            @if (Model.Imagens != null && Model.Imagens[i] != null)
-            {
-            <img src="@Model.Imagens[i].Url" />
-            }
-            <p>@Model.Oficinas[i].Nome</p>
-        </div>
-        <div class="col-md-2">
-            <p>@Model.Carros[i].Placa</p>
-        </div>
-        <div class="col-md-2">
-            @if (Model.Orçamentos[i].Valor == null)
-            {
-                <p>A definir.</p>
-            }
-            else if (Model.Orçamentos[i].Valor != null)
-            {
-                decimal valor = (decimal)Model.Orçamentos[i].Valor;
-                <p>@valor.ToString("F")</p>
-            }
-        </div>
-        <div class="col-md-3">
-            <p>@Status</p>
-        </div>
-        <div class="col-md-2">
-            @Html.ActionLink("Ver Detalhes", "StatusOrçamento", "Orçamento", new { Model.Orçamentos[i].Id }, null)
+                        <div class="d-grid mx-auto">
+                            <a href="@Url.Action("StatusOrçamento", "Orçamento", new { Model.Orçamentos[i].Id })" class="btn btn-primary mt-4">Ver Detalhes</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <span class="card-text">Placa</span>
+                        <h6>@Model.Carros[i].Placa</h6>
+                        @if (Model.Orçamentos[i].Status == 32 && ViewBag.éPessoa == true)
+                        {
+                            <div class="d-grid mx-auto">
+                                <a href="@Url.Action("Avaliar", "Avaliação", new { Model.Orçamentos[i].Id })" class="btn btn-success mt-4">Avaliar Serviços</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+
 
 }

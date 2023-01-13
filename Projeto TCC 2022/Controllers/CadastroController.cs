@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-using Projeto_TCC_2022.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
+﻿using Projeto_TCC_2022.Models;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -43,24 +37,25 @@ namespace Projeto_TCC_2022.Controllers
             {
                 CPF = Request["CPF"].Replace(".", "").Replace("-", "");
             }
-            else{ CPF = null; }
+            else { CPF = null; }
 
-            if (Request["CNPJ"] != null) 
+            if (Request["CNPJ"] != null)
             {
                 CNPJ = Request["CNPJ"].Replace(".", "").Replace("-", "").Replace("/", "");
             }
-            else{ CNPJ = null; }
+            else { CNPJ = null; }
 
-            Model1.InsertPessoa(UserID, Nome, Sobrenome, Estado,
-            Cidade, Rua, Número, Complemento,
-            Model1.GetEmail(UserID), CPF, CNPJ, Tipo);
-            if (!Response.IsRequestBeingRedirected)
+            if (Model1.GetPessoaByCPForCNPJ(CPF, CNPJ) == false)
             {
+                Model1.InsertPessoa(UserID, Nome, Sobrenome, Estado,
+                Cidade, Rua, Número, Complemento,
+                Model1.GetEmail(UserID), CPF, CNPJ, Tipo);
                 Response.Clear();
                 return RedirectToAction("CadastroNúmero", "Numero");
             }
-            else
-                return View();
+
+            Response.Clear();
+            return RedirectToAction("Erro", "Erro", new { Erro = "Erro no Cadastro, CNPJ ou CPF já foi cadastrado." });
         }
 
         public ActionResult CadastroOficina()
@@ -74,12 +69,17 @@ namespace Projeto_TCC_2022.Controllers
         {
             var novoCNPJ = CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
             string HorarioFuncionamento = inicio + "/" + fim;
+            if (Model1.GetOficinaByCNPJ(CNPJ) == false)
+            {
+                Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, Nome, CEP,
+                Estado, Cidade, Bairro, Rua, Número,
+                Complemento, Descrição, false, AceitaImportado, false, HorarioFuncionamento);
+                Response.Clear();
+                return RedirectToAction("AdicionarImagem", "Imagem");
+            }
 
-            Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, Nome, CEP,
-            Estado, Cidade, Bairro, Rua, Número,
-            Complemento, Descrição, false, AceitaImportado, false, HorarioFuncionamento);
             Response.Clear();
-            return RedirectToAction("AdicionarImagem", "Imagem");
+            return RedirectToAction("Erro", "Erro", new { Erro = "Erro no Cadastro, CNPJ já foi cadastrado." });
         }
     }
 }

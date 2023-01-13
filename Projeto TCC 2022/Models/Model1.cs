@@ -1,32 +1,14 @@
-﻿using Microsoft.Ajax.Utilities;
+﻿using Projeto_TCC_2022.Models.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web.UI;
-using Microsoft.AspNet.Identity;
-using System.Security.Claims;
-using System.Data.SqlTypes;
-using System.Data.Entity.Validation;
-using System.IO;
-using System.Drawing;
-using Projeto_TCC_2022.Models;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Permissions;
-using System.Web;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Web.DynamicData;
-using System.Web.Services.Description;
-using System.Web.Mvc;
-using Microsoft.SqlServer.Server;
 
 namespace Projeto_TCC_2022.Models
 {
-    
+
     public partial class Model1 : DbContext
     {
         public Model1()
@@ -37,6 +19,7 @@ namespace Projeto_TCC_2022.Models
 
         public virtual DbSet<Administrador> Administrador { get; set; }
         public virtual DbSet<Avaliação> Avaliação { get; set; }
+        public virtual DbSet<ItemAvaliação> ItemAvaliação { get; set; }
         public virtual DbSet<Carro> Carro { get; set; }
         public virtual DbSet<CelularTelefone> CelularTelefone { get; set; }
         public virtual DbSet<Oficina> Oficina { get; set; }
@@ -102,6 +85,12 @@ namespace Projeto_TCC_2022.Models
                 .HasForeignKey(e => e.Fk_Orçamento_Id)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Orçamento>()
+                .HasMany(e => e.Avaliação)
+                .WithRequired(e => e.Orçamento)
+                .HasForeignKey(e => e.Fk_Orçamento_Id)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Peça>()
                 .Property(e => e.PreçoMin)
                 .HasPrecision(19, 4);
@@ -138,10 +127,15 @@ namespace Projeto_TCC_2022.Models
                 .HasPrecision(19, 4);
 
             modelBuilder.Entity<Serviço>()
-                .HasMany(e => e.Avaliação)
-                .WithRequired(e => e.Serviços)
-                .HasForeignKey(e => e.fk_Serviços_Id)
+                .HasMany(e => e.ItemAvaliação)
+                .WithRequired(e => e.Serviço)
+                .HasForeignKey(e => e.Fk_Serviço_Id)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Avaliação>()
+                .HasMany(e => e.ItemAvaliação)
+                .WithRequired(e => e.Avaliação)
+                .HasForeignKey(e => e.Fk_Avaliação_Id);
 
             modelBuilder.Entity<Categoria>()
                 .HasMany(e => e.Serviço)
@@ -197,6 +191,55 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+
+        // ----------------------------------------------------------------------------------------------------
+        //Validação Cadastro
+
+        public static bool GetOficinaByCNPJ(string CNPJ)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Oficina in context.Oficina
+                            where Oficina.CNPJ == CNPJ
+                            select Oficina;
+                var oficina = query.SingleOrDefault();
+
+                if (oficina != null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public static bool GetPessoaByCPForCNPJ(string CPF, string CNPJ)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Pessoa in context.Pessoa
+                            where Pessoa.CPF == CPF
+                            select Pessoa;
+                var cpf = query.SingleOrDefault();
+
+                var query2 = from Pessoa in context.Pessoa
+                             where Pessoa.CNPJ == CNPJ
+                             select Pessoa;
+                var cnpj = query2.SingleOrDefault();
+
+                if (cpf != null && CPF != "")
+                {
+                    return true;
+                }
+                else if (cnpj != null && CNPJ != "")
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         // ----------------------------------------------------------------------------------------------------
         //Filters
 
@@ -235,10 +278,59 @@ namespace Projeto_TCC_2022.Models
                 var categoriaId = GetCategoriaByName(categoriaNome).Id;
 
                 var query = from Serviço in context.Serviços
-                            where Serviço.Fk_Categoria_Id == categoriaId  && 
+                            where Serviço.Fk_Categoria_Id == categoriaId &&
                             (Serviço.Nome.Contains(input) || Serviço.Descrição.Contains(input))
                             select Serviço;
                 var serviços = query.ToList();
+                return serviços;
+            }
+        }
+
+        public static List<Serviço> GetServiçosByInput(string input)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Serviço in context.Serviços
+                            where Serviço.Nome.Contains(input) || Serviço.Descrição.Contains(input)
+                            select Serviço;
+                var serviços = query.ToList();
+                return serviços;
+            }
+        }
+
+        public static List<Serviço> GetServiçosByCategoria(string Categoria)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Serviço in context.Serviços
+                            where Serviço.Categoria.Nome == Categoria
+                            select Serviço;
+                var serviços = query.ToList();
+                return serviços;
+            }
+        }
+
+        public static List<Serviço> GetServiçosFilterByCategoriaImp(string categoriaNome, string input)
+        {
+            using (var context = new Model1())
+            {
+                List<Serviço> serviços = new List<Serviço>();
+                var categoriaId = GetCategoriaByName(categoriaNome).Id;
+
+                var query = from Serviço in context.Serviços
+                            where Serviço.Fk_Categoria_Id == categoriaId &&
+                            (Serviço.Nome.Contains(input) || Serviço.Descrição.Contains(input))
+                            select Serviço;
+
+                var serviçosNI = query.ToList();
+
+                foreach (var item in serviçosNI)
+                {
+                    if (item.Oficina.AceitaImportado == true)
+                    {
+                        serviços.Add(item);
+                    }
+                }
                 return serviços;
             }
         }
@@ -260,7 +352,7 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 var query = from Oficina in context.Oficina
-                            where Oficina.AceitaImportado == imp && 
+                            where Oficina.AceitaImportado == imp &&
                             Oficina.Bairro.Contains(x)
                             select Oficina;
                 var oficinas = query.ToList();
@@ -310,20 +402,7 @@ namespace Projeto_TCC_2022.Models
 
                 context.Entry(oficina).State = EntityState.Modified;
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -333,8 +412,8 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 var query = from Messages in context.Messages
-                             where Messages.Lido == false
-                             select Messages;
+                            where Messages.Lido == false
+                            select Messages;
                 var messages = query.ToList();
                 return messages;
             }
@@ -395,20 +474,7 @@ namespace Projeto_TCC_2022.Models
                     Lido = Lido
                 });
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -421,20 +487,7 @@ namespace Projeto_TCC_2022.Models
                     Nome = Nome
                 });
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -465,7 +518,7 @@ namespace Projeto_TCC_2022.Models
                     context.SaveChanges();
                 }
 
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -486,20 +539,7 @@ namespace Projeto_TCC_2022.Models
                     Lido = false
                 }); ;
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -551,13 +591,13 @@ namespace Projeto_TCC_2022.Models
         // OFICINA
         public static Oficina GetOficinaById(int Id)
         {
-                var context = new Model1();
-                var query = from Oficina in context.Oficina
-                            where Oficina.Id == Id
-                            select Oficina;
-                var oficina = query.SingleOrDefault();
-                return oficina;
-            
+            var context = new Model1();
+            var query = from Oficina in context.Oficina
+                        where Oficina.Id == Id
+                        select Oficina;
+            var oficina = query.SingleOrDefault();
+            return oficina;
+
         }
 
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string CEP, string Estado, string Cidade, string Bairro,
@@ -584,20 +624,7 @@ namespace Projeto_TCC_2022.Models
                     Finalizada = Finalizada,
                     HorarioFuncionamento = HorarioFuncionamento
                 });
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -606,14 +633,7 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 context.Entry(oficina).State = EntityState.Modified;
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
+                context.SaveChanges();
             }
         }
 
@@ -637,12 +657,12 @@ namespace Projeto_TCC_2022.Models
             {
                 var query = from Serviço in context.Serviços
                             where Serviço.Id == Id
+
                             select Serviço;
-                var serviços = query.SingleOrDefault();
+                var serviços = query.Include(serviço => serviço.Categoria).SingleOrDefault();
                 return serviços;
             }
         }
-
         public static List<Serviço> GetServiçosByOficinaFilterByCategoria(int categoriaId, int oficinaId)
         {
             using (var context = new Model1())
@@ -655,7 +675,6 @@ namespace Projeto_TCC_2022.Models
                 return serviços;
             }
         }
-
         public static Serviço GetServiçoByNomeId(int UserId, string Nome)
         {
             using (var context = new Model1())
@@ -668,8 +687,6 @@ namespace Projeto_TCC_2022.Models
                 return serviço;
             }
         }
-
-
         public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal? PreçoMin, decimal? PreçoMax, bool NecessitaAvaliarVeiculo)
         {
             using (var context = new Model1())
@@ -685,71 +702,29 @@ namespace Projeto_TCC_2022.Models
                     NecessitaAvaliarVeiculo = NecessitaAvaliarVeiculo
                 });
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
-
         public static void UpdateServiço(Serviço serviço)
         {
             using (var context = new Model1())
             {
                 context.Entry(serviço).State = EntityState.Modified;
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
-
         public static void DeleteServiço(int Id)
         {
             using (var context = new Model1())
             {
                 Serviço serviço = context.Serviços.Find(Id);
                 context.Serviços.Remove(serviço);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
         // ----------------------------------------------------------------------------------------------------
         //Peça
-
         public static List<Peça> GetPeças(int Id)
         {
             using (var context = new Model1())
@@ -802,20 +777,7 @@ namespace Projeto_TCC_2022.Models
                     PreçoMax = PreçoMax
                 });
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -824,20 +786,7 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 context.Entry(peça).State = EntityState.Modified;
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -847,20 +796,7 @@ namespace Projeto_TCC_2022.Models
             {
                 Peça peça = context.Peça.Find(Id);
                 context.Peça.Remove(peça);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -911,7 +847,8 @@ namespace Projeto_TCC_2022.Models
         {
             using (var context = new Model1())
             {
-                Orçamento orçamento = new Orçamento {
+                Orçamento orçamento = new Orçamento
+                {
                     fk_Pessoa_Id = uID,
                     fk_Carro_Placa = Placa,
                     fk_Oficina_Id = OficinaId,
@@ -922,21 +859,8 @@ namespace Projeto_TCC_2022.Models
                 };
 
                 context.Orçamento.Add(orçamento);
-               
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+
+                context.SaveChanges();
 
                 return orçamento;
             }
@@ -962,20 +886,7 @@ namespace Projeto_TCC_2022.Models
                 }
 
                 context.Entry(orçamento).State = EntityState.Modified;
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -1006,7 +917,7 @@ namespace Projeto_TCC_2022.Models
 
         //Pensar em fundir e passar nome no controller
 
-        public static ItemOrçamento GetItemOrçamentoServiço (int OrçamentoId, int ServiçoId)
+        public static ItemOrçamento GetItemOrçamentoServiço(int OrçamentoId, int ServiçoId)
         {
             using (var context = new Model1())
             {
@@ -1058,7 +969,7 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AddItemOrçamento(int Orçamento_Id, string Nome, decimal? Preço, string Descrição, double Quantidade, bool? Avaliado)
+        public static void AddItemOrçamento(int Orçamento_Id, string Nome, decimal? Preço, string Descrição, double Quantidade, bool? Avaliado, int Tipo)
         {
             using (var context = new Model1())
             {
@@ -1069,27 +980,15 @@ namespace Projeto_TCC_2022.Models
                     Preço = Preço,
                     Descrição = Descrição,
                     Quantidade = Quantidade,
-                    Avaliado = Avaliado
+                    Avaliado = Avaliado,
+                    Tipo = Tipo
                 });
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
-        public static void AddQuantidade (ItemOrçamento itemOrçamento)
+        public static void AddQuantidade(ItemOrçamento itemOrçamento)
         {
             using (var context = new Model1())
             {
@@ -1131,20 +1030,7 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 context.Entry(item).State = EntityState.Modified;
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -1189,20 +1075,7 @@ namespace Projeto_TCC_2022.Models
                     fk_Pessoa_Id = uID
 
                 });
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
         public static void UpdateCarro(Carro carro)
@@ -1210,20 +1083,8 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 context.Entry(carro).State = EntityState.Modified;
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
+
             }
         }
         public static void DeleteCarro(string Placa)
@@ -1232,25 +1093,12 @@ namespace Projeto_TCC_2022.Models
             {
                 Carro carro = context.Carro.Find(Placa);
                 context.Carro.Remove(carro);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
         // ----------------------------------------------------------------------------------------------------
         // CELULAR
-        public static List<CelularTelefone> GetCelularTelefones (int Id)
+        public static List<CelularTelefone> GetCelularTelefones(int Id)
         {
             using (var context = new Model1())
             {
@@ -1271,20 +1119,9 @@ namespace Projeto_TCC_2022.Models
                     Fk_User_Id = uID
 
                 });
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+
+                context.SaveChanges();
+
             }
         }
         // ----------------------------------------------------------------------------------------------------
@@ -1332,20 +1169,8 @@ namespace Projeto_TCC_2022.Models
                     CNPJ = CNPJ,
                     Pessoa_TIPO = Tipo
                 });
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+
+                context.SaveChanges();
             }
         }
         //---------------------------------------------------------------------------------------------------
@@ -1373,20 +1198,7 @@ namespace Projeto_TCC_2022.Models
                     Fk_Oficina_Id = Fk_Oficina_Id
                 });
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
 
@@ -1395,47 +1207,46 @@ namespace Projeto_TCC_2022.Models
             using (var context = new Model1())
             {
                 context.Entry(imagem).State = EntityState.Modified;
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
+
             }
         }
 
-        public static List<Avaliação> GetAvaliaçõesByUserId(int Id)
+        //Avaliação
+
+        public static void GerarAvaliação(Avaliação avaliação, List<AvaliarItem> AvItem)
+        {
+            using (var context = new Model1())
+            {
+                context.Avaliação.Add(avaliação);
+
+                foreach (var item in AvItem)
+                {
+                    context.ItemAvaliação.Add(new ItemAvaliação
+                    {
+                        Estrelas = item.Estrelas,
+                        Fk_Avaliação_Id = avaliação.Id,
+                        Fk_Serviço_Id = item.Fk_Serviço_Id
+                    });
+                }
+                context.SaveChanges();
+            }
+        }
+
+        public static List<Avaliação> GetAvaliações(int Id)
         {
             using (var context = new Model1())
             {
                 var query = from Avaliação in context.Avaliação
                             where Avaliação.fk_Pessoa_Id == Id
                             select Avaliação;
-                var avaliações = query.ToList();
-                return avaliações;
+
+                var Avaliações = query.Include(x => x.ItemAvaliação).ToList();
+                return Avaliações;
             }
         }
 
-        public static List<Avaliação> GetAvaliaçõesByServiçoId(int Id)
-        {
-            using (var context = new Model1())
-            {
-                var query = from Avaliação in context.Avaliação
-                            where Avaliação.fk_Serviços_Id == Id
-                            select Avaliação;
-                var avaliações = query.ToList();
-                return avaliações;
-            }
-        }
-        
+
         public static Avaliação GetAvaliação(int Id)
         {
             using (var context = new Model1())
@@ -1443,86 +1254,91 @@ namespace Projeto_TCC_2022.Models
                 var query = from Avaliação in context.Avaliação
                             where Avaliação.Id == Id
                             select Avaliação;
-                var avaliação = query.SingleOrDefault();
-                return avaliação;
+
+                var Avaliação1 = query.Include(x => x.ItemAvaliação).SingleOrDefault();
+                return Avaliação1;
             }
         }
 
-        public static void Avaliar(int Estrelas, string Texto, int Fk_Serviços_id, int Fk_Pessoa_Id, int Fk_Orçamento_Id)
+        public static List<ItemAvaliação> GetItensAvaliação(int Id)
         {
             using (var context = new Model1())
             {
-                context.Avaliação.Add(new Avaliação 
-                { 
-                    Estrelas = Estrelas,
-                    Texto = Texto,
-                    fk_Serviços_Id = Fk_Serviços_id,
-                    fk_Pessoa_Id = Fk_Pessoa_Id,
-                    Fk_Orçamento_Id = Fk_Orçamento_Id
-                });
+                var query = from ItemAvaliação in context.ItemAvaliação
+                            where ItemAvaliação.Fk_Avaliação_Id == Id
+                            select ItemAvaliação;
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                var ItensAvaliação = query.ToList();
+
+                return ItensAvaliação;
             }
         }
 
-        public static void UpdateAvaliação(Avaliação avaliação)
+        public static ItemAvaliação GetItemAvaliação(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from ItemAvaliação in context.ItemAvaliação
+                            where ItemAvaliação.Id == Id
+                            select ItemAvaliação;
+
+                var Item = query.SingleOrDefault();
+
+                return Item;
+            }
+        }
+
+        public static void UpdateAvaliação(Avaliação avaliação, List<ItemAvaliação> Itens)
         {
             using (var context = new Model1())
             {
                 context.Entry(avaliação).State = EntityState.Modified;
-                try
+
+                foreach (var item in Itens)
                 {
-                    context.SaveChanges();
+
+                    UpdateItemAv(item);
                 }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+                context.SaveChanges();
             }
         }
-
-        public static void DeleteAvaliação(int Id)
+        public static void UpdateItemAv(ItemAvaliação item)
         {
             using (var context = new Model1())
             {
-                Avaliação avaliação = context.Avaliação.Find(Id);
-                context.Avaliação.Remove(avaliação);
-                try
+                context.Entry(item).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
+        public static void DeleteAvaliação(Avaliação avaliação)
+        {
+            using (var context = new Model1())
+            {
+                Avaliação Av = context.Avaliação.Find(avaliação.Id);
+                context.Avaliação.Remove(Av);
+                List<ItemAvaliação> Itens = Model1.GetItensAvaliação(avaliação.Id);
+                foreach (var item in Itens)
                 {
-                    context.SaveChanges();
+                    Model1.DeleteItemAv(item);
                 }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                        {
-                            Debug.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                        }
-                    }
-                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public static void DeleteItemAv(ItemAvaliação item)
+        {
+            using (var context = new Model1())
+            {
+                ItemAvaliação I = context.ItemAvaliação.Find(item.Id);
+                context.ItemAvaliação.Remove(I);
+                context.SaveChanges();
             }
         }
 
     }
 }
+
+
 

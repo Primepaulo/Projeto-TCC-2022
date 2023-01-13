@@ -1,10 +1,7 @@
 ﻿using Projeto_TCC_2022.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -69,7 +66,7 @@ namespace Projeto_TCC_2022.Controllers
                 }
                 return RedirectToAction("Page", "Oficina", UserID);
             }
-                return View();
+            return View();
         }
 
         [HttpPost]

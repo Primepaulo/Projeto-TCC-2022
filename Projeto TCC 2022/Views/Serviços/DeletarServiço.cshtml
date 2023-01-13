@@ -11,8 +11,6 @@
     <h4>Serviço</h4>
     <hr />
     <dl class="dl-horizontal">
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
@@ -30,15 +28,23 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Preço)
+            @Html.DisplayNameFor(model => model.PreçoMin)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Preço)
+            @Html.DisplayFor(model => model.PreçoMin)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Categoria.Nome)
+            @Html.DisplayNameFor(model => model.PreçoMax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PreçoMax)
+        </dd>
+
+        <dt>
+            Categoria
         </dt>
 
         <dd>

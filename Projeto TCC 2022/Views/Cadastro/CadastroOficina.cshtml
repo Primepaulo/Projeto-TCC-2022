@@ -7,7 +7,6 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Oficina</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -28,7 +27,6 @@
             </div>
         </div>
 
-
         <div class="form-group">
             <label for="cep">CEP:</label>
             <div class="col-md-10">
@@ -36,7 +34,6 @@
                 <p class="d-none" id="valCep">Cep Inválido</p>
             </div>
          </div>
-
 
         <div class="form-group">
             @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -206,8 +203,6 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-
-
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retornar", "Cadastro")
 </div>
