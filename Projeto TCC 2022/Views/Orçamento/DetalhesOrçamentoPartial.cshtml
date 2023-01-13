@@ -3,23 +3,90 @@
 <div id="Status" class="row mt-2">
     <div class="col-md-4 pe-0">
         <div class="card h-100">
+
+            <div class="card-header cardHeader">
+                <i class="bi bi-clipboard2-fill me-2"></i> <h6 class="d-inline-block smallHeader">Orçamento</h6>
+            </div>
             <div class="card-body">
-                <h4 class="smallHeader mt-5">
+
+                <h5 class="smallHeader">Status</h5>
+
+                <div id="Div">
+                    @if (Model.Orçamento.Status == 11) //Recusado pela Oficina
+                    {
+                        <h2 class="text-center">Pedido recusado pela Oficina.</h2>
+                        <i class="bi bi-x-circle-fill" style="color: darkred"></i>
+                    }
+
+                    @if (Model.Orçamento.Status == 12 && ViewBag.éPessoa == true) //Aceito pela Oficina, aguardando formulação do orçamento
+                    {
+                        <h2 class="text-center">Aceito pela Oficina, aguardando formulação do Orçamento.</h2>
+                    }
+
+                    @if (Model.Orçamento.Status == 22 && ViewBag.éPessoa == true) // Em Formulação
+                    {
+                        <h2 class="text-center">Em Formulação</h2>
+                    }
+
+                    @if (Model.Orçamento.Status == 23 && ViewBag.éPessoa == true) //Aguardando Aprovação Cliente
+                    {
+                        using (Html.BeginForm("AprovarOrçamento", "Orçamento", FormMethod.Post))
+                        {
+                            <input name="Id" id="Id" value="@Model.Orçamento.Id" type="hidden" class="d-none" />
+
+                            <div class="row text-center">
+                                <div class="col-md-6 col-sm-12">
+                                    <button type="submit" class="btn btn-success" value="32" name="Operação">Aceitar</button>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <button type="submit" class="btn btn-danger" value="31" name="Operação">
+                                        Recusar
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    @if (Model.Orçamento.Status == 23 && ViewBag.éOficina == true) //Aguardando Aprovação Cliente
+                    {
+                        <h2 class="text-center">Aguardando aprovação do cliente...</h2>
+                    }
+
+                    @if (Model.Orçamento.Status == 24) //Cliente nunca levou o carro
+                    {
+                        <h2 class="text-center">Finalizado. Cliente nunca levou o veículo para ser analisado.</h2>
+                        <i class="bi bi-exclamation-circle-fill" style="color:darkred"></i>
+                    }
+
+                    @if (Model.Orçamento.Status == 32) //Finalizado com sucesso
+                    {
+                        <h2 class="text-center">Finalizado com sucesso.</h2>
+                        <i class="bi bi-check-circle-fill" style="color:green"></i>
+                    }
+
+                    @if (Model.Orçamento.Status == 31) //Reprovado pelo Cliente
+                    {
+                        <h2 class="text-center">Finalizado. Orçamento reprovado pelo Cliente.</h2>
+                        <i class="bi bi-x-circle-fill" style="color: darkred"></i>
+                    }
+                </div>
+
+                <h5 class="smallHeader mt-4">
                     Nome da Oficina
+                </h5>
+                <h4 class="bigHeader mt-3">
+                    <a class="text-decoration-none a" href="@Url.Action("Page", "Oficina", Model.Oficina.Id)"> @Model.Oficina.Nome</a>
                 </h4>
-                <h3 class="bigHeader mt-3">
-                    <a class="text-decoration-none" href="@Url.Action("Page", "Oficina", Model.Oficina.Id)"> @Model.Oficina.Nome</a>
-                </h3>
                 @if (Model.Imagem != null)
                 {
                     <img src="@Model.Imagem.Url" class="rounded-circle w-25" />
                 }
-                <h4 class="smallHeader mt-5">
+                <h5 class="smallHeader mt-4">
                     Placa do Veículo:
-                </h4>
-                <h3 class="bigHeader mt-3">
+                </h5>
+                <h4 class="bigHeader mt-3">
                     @Model.Carro.Placa
-                </h3>
+                </h4>
             </div>
         </div>
     </div>
@@ -40,59 +107,59 @@
                 }
             </div>
 
-         @if (Model.ItensOrçamento != null)
-          {
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3"><h6 class="smallHeader">Nome do Item:</h6></div>
-                    <div class="col-md-2"><h6 class="smallHeader">Tipo do Item:</h6></div>
-                    <div class="col-md-2"><h6 class="smallHeader">Valor Mínimo:</h6></div>
-                    <div class="col-md-2"><h6 class="smallHeader">Valor Máximo:</h6></div>
-                    <div class="col-md-2"><h6 class="smallHeader">Valor Definido:</h6></div>
-                </div>
-
-                @foreach (var item in Model.ItensOrçamento)
-                {
-                    <div class="row mt-4">
-                        @{
-                            var count = 1;
-                            Projeto_TCC_2022.Models.Serviço x = Model.Serviços.Where(i => i.Nome == item.Nome).SingleOrDefault();
-                            Projeto_TCC_2022.Models.Peça y = Model.Peças.Where(i => i.Nome == item.Nome).SingleOrDefault();
-
-                            <div class="col-md-3"><h5 class="bigHeader">@item.Nome</h5></div>
-                            if (x != null)
-                            {
-                                <div class="col-md-2"><h5 class="bigHeader">Serviço</h5></div>
-                                <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(x.PreçoMin).ToString("F")</h5></div>
-                                <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(x.PreçoMax).ToString("F")</h5></div>
-                            }
-                            if (y != null)
-                            {
-                                <div class="col-md-2"><h5 class="bigHeader">Peça</h5></div>
-                                <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(y.PreçoMin).ToString("F")</h5></div>
-                                <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(y.PreçoMax).ToString("F")</h5></div>
-                            }
-                            count++;
-
-                        }
+            @if (Model.ItensOrçamento != null)
+            {
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3"><h6 class="smallHeader">Nome do Item:</h6></div>
+                        <div class="col-md-2"><h6 class="smallHeader">Tipo do Item:</h6></div>
+                        <div class="col-md-2"><h6 class="smallHeader">Valor Mínimo:</h6></div>
+                        <div class="col-md-2"><h6 class="smallHeader">Valor Máximo:</h6></div>
+                        <div class="col-md-2"><h6 class="smallHeader">Valor Definido:</h6></div>
                     </div>
-                }
 
-                <div class="mt-5 bigHeader">
-                    <h3>Total: @Convert.ToDecimal(Model.Orçamento.Valor).ToString("F")</h3>
+                    @foreach (var item in Model.ItensOrçamento)
+                    {
+                        <div class="row mt-4">
+                            @{
+                                var count = 1;
+                                Projeto_TCC_2022.Models.Serviço x = Model.Serviços.Where(i => i.Nome == item.Nome).SingleOrDefault();
+                                Projeto_TCC_2022.Models.Peça y = Model.Peças.Where(i => i.Nome == item.Nome).SingleOrDefault();
+
+                                <div class="col-md-3"><h5 class="bigHeader">@item.Nome</h5></div>
+                                if (x != null)
+                                {
+                                    <div class="col-md-2"><h5 class="bigHeader">Serviço</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(x.PreçoMin).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(x.PreçoMax).ToString("F")</h5></div>
+                                }
+                                if (y != null)
+                                {
+                                    <div class="col-md-2"><h5 class="bigHeader">Peça</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(y.PreçoMin).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(y.PreçoMax).ToString("F")</h5></div>
+                                }
+                                count++;
+
+                            }
+                        </div>
+                    }
+
+                    <div class="mt-5 bigHeader">
+                        <h3>Total: @Convert.ToDecimal(Model.Orçamento.Valor).ToString("F")</h3>
+                    </div>
+
                 </div>
+            }
 
-            </div>
-          }
-
-         @if (Model.ItensOrçamento == null)
-          {
-             <div class="card-body">
-                 <div class="text-center">
-                     <h3>Sem itens até o momento.</h3>
-                 </div>
-             </div>
-          }
-    </div>
+            @if (Model.ItensOrçamento == null)
+            {
+                <div class="card-body">
+                    <div class="text-center">
+                        <h3>Sem itens até o momento.</h3>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
