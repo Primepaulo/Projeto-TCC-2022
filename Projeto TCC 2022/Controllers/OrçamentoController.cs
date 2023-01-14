@@ -154,7 +154,7 @@ namespace Projeto_TCC_2022.Controllers
                 DateTime data = DateTime.Now;
 
                 Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, 1);
-                Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id);
+                Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Nova solicitação de Orçamento!");
 
                 for (int i = 0; i < serviçoTotal.serviços.Length; i++)
                 {
@@ -194,7 +194,7 @@ namespace Projeto_TCC_2022.Controllers
             int oficinaId = (int)Session["OficinaId"];
             DateTime data = DateTime.Now;
             Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, 2);
-            Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id);
+            Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Nova solicitação de Orçamento!");
             return RedirectToAction("StatusOrçamento", "Orçamento", new { orçamento.Id });
         }
 
@@ -268,7 +268,15 @@ namespace Projeto_TCC_2022.Controllers
                     Model1.AprovarFinalizarOrçamento(Id, Operação, null, HorarioFuncionamento);
                 }
 
-                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
+                if (Operação == 12)
+                {
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Solicitação de orçamento aprovada pela oficina!");
+                }
+
+                else if (Operação == 11)
+                {
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Solicitação de orçamento recusada pela oficina.");
+                }
                 return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });
             }
 
@@ -289,14 +297,15 @@ namespace Projeto_TCC_2022.Controllers
             {
                 orçamento.Status = 22;
                 Model1.UpdateOrçamento(orçamento);
+                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Avaliação do Veículo confirmada!");
             }
             if (Operação == 24)
             {
                 orçamento.Status = 24;
                 Model1.UpdateOrçamento(orçamento);
+                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Veículo não foi levado para análise.");
             }
 
-            Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });
         }
         public ActionResult FormularPromptPartial(int Id)
@@ -315,7 +324,7 @@ namespace Projeto_TCC_2022.Controllers
             Orçamento orçamento = Model1.GetOrçamento(Id);
             orçamento.Status = 22;
             Model1.UpdateOrçamento(orçamento);
-            Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
+            Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "A Oficina já está trabalhando no seu orçamento!");
             return RedirectToAction("AddItemOrçamento2", "Orçamento", new { Id });
         }
 
@@ -505,7 +514,7 @@ namespace Projeto_TCC_2022.Controllers
 
                 Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
 
-                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id);
+                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Orçamento finalizado, agora só falta aprovar!");
                 Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, Decimal.Parse(ItensOrçamento.Final), null);
             }
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = OrçamentoId });
@@ -519,7 +528,17 @@ namespace Projeto_TCC_2022.Controllers
             if (orçamento.fk_Pessoa_Id == UserID)
             {
                 Model1.AprovarFinalizarOrçamento(Id, Operação, null, Convert.ToString(DateTime.Now.Date.ToString("dd/MM/yyyy")));
-                Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id);
+
+                if (Operação == 32)
+                {
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Cliente aprovou o Orçamento!");
+                }
+
+                else if (Operação == 31)
+                {
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Cliente recusou o Orçamento.");
+                }
+                
             }
 
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });

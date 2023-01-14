@@ -6,6 +6,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Notificação
     {
         public int Id { get; set; }
+        public string Texto { get; set; }
         public int Fk_Orçamento_Id { get; set; }
         public int Fk_User_Id { get; set; }
         public bool Lido { get; set; }

@@ -1,6 +1,5 @@
 ﻿using Projeto_TCC_2022.Models;
 using Projeto_TCC_2022.Models.ViewModels;
-using System.ComponentModel.Design;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -104,7 +103,7 @@ namespace Projeto_TCC_2022.Controllers
 
             if (numero.CelularTelefone1.StartsWith("0"))
             {
-               numero.CelularTelefone1 = numero.CelularTelefone1.Split('0')[1];
+                numero.CelularTelefone1 = numero.CelularTelefone1.Split('0')[1];
             }
 
             if (Model1.GetOficinaByCNPJ(oficina.CNPJ) == false)

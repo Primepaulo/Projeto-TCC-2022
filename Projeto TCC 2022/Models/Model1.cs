@@ -528,12 +528,13 @@ namespace Projeto_TCC_2022.Models
 
         // ----------------------------------------------------------------------------------------------------
         // Notificações
-        public static void GerarNotificações(Orçamento orçamento, int userId)
+        public static void GerarNotificações(Orçamento orçamento, int userId, string Texto)
         {
             using (var context = new Model1())
             {
                 context.Notificação.Add(new Notificação
                 {
+                    Texto = Texto,
                     Fk_Orçamento_Id = orçamento.Id,
                     Fk_User_Id = userId,
                     Lido = false

@@ -159,8 +159,8 @@ namespace Projeto_TCC_2022.Controllers
 
         public PartialViewResult NotificaçõesPartial()
         {
-            ViewBag.Notificações = Model1.GetNotificações(UserID);
-            return PartialView();
+            List<Notificação> notificações = Model1.GetNotificações(UserID);
+            return PartialView(notificações);
         }
 
         public ActionResult MarkAsRead(int Id)

@@ -152,13 +152,11 @@ a.deco-none:hover {
     padding-left: 0 !important;
 }
 
-.notificação {
+.notificação1 {
     left: 50% !important;
     transform: translateX(-50%) !important;
-    top: 100% !important;
-    width: 300px;
-    height: auto;
 }
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
