@@ -31,7 +31,7 @@
                     }
                     @if (ViewBag.éOficina == true)
                     {
-                        <li class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
+                        <li  class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
                     }
                     @if (ViewBag.éOficina == true && ViewBag.éAprovada == true)
                     {
@@ -91,15 +91,15 @@
                 </div>
             </form>
 
-            <ul>
                 @if (ViewBag.éPessoa == false && ViewBag.éOficina == false)
                 {
-                    <li style="visibility: hidden">Espaçamento</li>
-                    <li style="visibility: hidden">Espaçamento</li>
+                    <ul>
+                        <li style="visibility: hidden">Espaçamento</li>
+                        <li style="visibility: hidden">Espaçamento</li>
+                    </ul>
                 }
-            </ul>
 
-            <div class="me-2" id="notificações">
+            <div id="notificações">
 
             </div>
 

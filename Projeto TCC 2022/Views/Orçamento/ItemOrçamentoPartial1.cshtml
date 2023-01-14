@@ -9,21 +9,38 @@
     decimal PreçoMax = 0;
 }
 
-<div class="row itemOrçamento">
-    <div class="col">
-        <p>@Model.Serviço.Nome</p>
+<div class="row rotulo">
+    <div class="col-md-3">
+        <h4 class="bigHeader">Nome do Item</h4>
+    </div>
+    <div class="col-md-3">
+        <h4 class="bigHeader">Preço Min.</h4>
+    </div>
+    <div class="col-md-3">
+        <h4 class="bigHeader">Preço Max.</h4>
+    </div>
+    <div class="col-md-3">
+        <h4 class="bigHeader">Valor Final</h4>
+    </div>
+</div>
+
+<div class="row itemOrçamento mb-4">
+    <div class="col-md-3 col-sm-12">
+        <p>Serviço - @Model.Serviço.Nome</p>
         <input @if(ViewBag.Tipo == "Serviço"){<text>name = "Itens[@Model.Quant].Id" </text>} class="d-none serviçosId" value="@Model.Serviço.Id" />
     </div>
-    <div class="col">
+    <div class="col-md-3 col-sm-12">
         @if (Model.Serviço.PreçoMin != null)
         {
             PreçoMin = (decimal)Model.Serviço.PreçoMin;
-            <p class="preço">@PreçoMin.ToString("F")</p>
+            <p class="preço ms-2">@PreçoMin.ToString("F")</p>
         }
+    </div>
+    <div class="col-md-3 col-sm-12">
         @if (Model.Serviço.PreçoMax != null)
         {
             PreçoMax = (decimal)Model.Serviço.PreçoMax;
-            <p class="preço">@PreçoMax.ToString("F")</p>
+            <p class="preço ms-2">@PreçoMax.ToString("F")</p>
         }
     </div>
 
@@ -32,7 +49,7 @@
 
         var x = System.Globalization.CultureInfo.GetCultureInfo("en-US");
 
-        <div class="col">
+        <div class="col-md-3 col-sm-12">
             <input name="Itens[@Model.Quant].Val" class="form-control itemOrçamentoValue" oninput="Valor()" data-val="true" data-val-number="Valor precisa ser um número."
                    data-val-range="Preencha um valor que esteja entre o valor mínimo ou máximo."
                    @if (Model.Serviço.PreçoMin != null) { <text> data-val-range-min="@PreçoMin.ToString("F", x)" </text> }

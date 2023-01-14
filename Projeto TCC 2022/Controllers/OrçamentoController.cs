@@ -250,7 +250,7 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult AprovarRecusar(int Id, int Operação, string fim, string inicio)
         {
             string HorarioFuncionamento = null;
-            if (fim != null && inicio != null)
+            if (fim != "" && inicio != "")
             {
                 HorarioFuncionamento = inicio + "/" + fim;
             }

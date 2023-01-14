@@ -5,7 +5,7 @@
         {
             foreach (var item in ViewBag.ServiçoOficina)
             {
-                <option value="@item.Id">@item.Nome - @item.PreçoMin/@item.PreçoMax</option>
+                <option value="@item.Id">@item.Nome - @item.PreçoMin.ToString("F")/@item.PreçoMax.ToString("F")</option>
             }
         }
     </select>

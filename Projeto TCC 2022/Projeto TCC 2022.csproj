@@ -200,6 +200,7 @@
     <Compile Include="Models\ViewModels\AddItemOrçamento2View.cs" />
     <Compile Include="Models\ViewModels\Avaliar.cs" />
     <Compile Include="Models\ViewModels\AvaliarItem.cs" />
+    <Compile Include="Models\ViewModels\AvItemMédia.cs" />
     <Compile Include="Models\ViewModels\Cadastro.cs" />
     <Compile Include="Models\ViewModels\DetalhesOrçamento.cs" />
     <Compile Include="Models\ViewModels\EditarAvaliação.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Models\ViewModels\ItemViewModel.cs" />
     <Compile Include="Models\ViewModels\ListItemViewModel.cs" />
     <Compile Include="Models\ViewModels\OficinaApprovePartial.cs" />
+    <Compile Include="Models\ViewModels\Page.cs" />
     <Compile Include="Models\ViewModels\PeçaQuant.cs" />
     <Compile Include="Models\ViewModels\ServiçoAvaliação.cs" />
     <Compile Include="Models\ViewModels\ServiçoCategoria.cs" />

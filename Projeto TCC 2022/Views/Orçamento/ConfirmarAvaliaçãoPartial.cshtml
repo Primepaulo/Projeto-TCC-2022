@@ -1,19 +1,15 @@
-﻿<div id="Div" class="mt-5 card mx-auto">
-    <div class="card-header">
-        <i class="bi bi-clipboard2-fill me-2"></i> " Orçamento: "
-    </div>
-    <div class="card-body">
-        @using (Html.BeginForm("ConfirmarAvaliação", "Orçamento", FormMethod.Post))
-        {
-            <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
-            <div class="row">
-                <div class="col-md-6 col-sm-12">
-                    <button type="submit" class="btn btn-success" value="22" name="Operação" id="Operação">Confirmar Avaliação</button>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <button type="submit" class="btn btn-secondary" value="24" name="Operação" id="Operação">Cliente Ausente</button>
-                </div>
+﻿<div class="card-body">
+    @using (Html.BeginForm("ConfirmarAvaliação", "Orçamento", FormMethod.Post))
+    {
+        <h5 class="smallHeader">Aguardando avaliação do Veículo...</h5>
+        <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
+        <div class="row mb-2">
+            <div class="col-md-6 col-sm-12">
+                <button type="submit" class="btn btn-success" value="22" name="Operação" id="Operação">Confirmar Avaliação</button>
             </div>
-        }
-    </div>
+            <div class="col-md-6 col-sm-12">
+                <button type="submit" class="btn btn-secondary" value="24" name="Operação" id="Operação">Cliente Ausente</button>
+            </div>
+        </div>
+    }
 </div>

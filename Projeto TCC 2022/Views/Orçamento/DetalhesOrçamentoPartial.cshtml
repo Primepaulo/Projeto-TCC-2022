@@ -14,18 +14,18 @@
                 <div id="Div">
                     @if (Model.Orçamento.Status == 11) //Recusado pela Oficina
                     {
-                        <h2 class="text-center">Pedido recusado pela Oficina.</h2>
+                        <h4 class="text-center">Pedido recusado pela Oficina.</h4>
                         <i class="bi bi-x-circle-fill" style="color: darkred"></i>
                     }
 
                     @if (Model.Orçamento.Status == 12 && ViewBag.éPessoa == true) //Aceito pela Oficina, aguardando formulação do orçamento
                     {
-                        <h2 class="text-center">Aceito pela Oficina, aguardando formulação do Orçamento.</h2>
+                        <h4 class="text-center">Aceito pela Oficina, aguardando formulação do Orçamento.</h4>
                     }
 
                     @if (Model.Orçamento.Status == 22 && ViewBag.éPessoa == true) // Em Formulação
                     {
-                        <h2 class="text-center">Em Formulação</h2>
+                        <h4 class="text-center">Em Formulação</h4>
                     }
 
                     @if (Model.Orçamento.Status == 23 && ViewBag.éPessoa == true) //Aguardando Aprovação Cliente
@@ -49,24 +49,24 @@
 
                     @if (Model.Orçamento.Status == 23 && ViewBag.éOficina == true) //Aguardando Aprovação Cliente
                     {
-                        <h2 class="text-center">Aguardando aprovação do cliente...</h2>
+                        <h4 class="text-center">Aguardando aprovação do cliente...</h4>
                     }
 
                     @if (Model.Orçamento.Status == 24) //Cliente nunca levou o carro
                     {
-                        <h2 class="text-center">Finalizado. Cliente nunca levou o veículo para ser analisado.</h2>
+                        <h4 class="text-center">Finalizado. Cliente nunca levou o veículo para ser analisado.</h4>
                         <i class="bi bi-exclamation-circle-fill" style="color:darkred"></i>
                     }
 
                     @if (Model.Orçamento.Status == 32) //Finalizado com sucesso
                     {
-                        <h2 class="text-center">Finalizado com sucesso.</h2>
+                        <h4 class="text-center">Finalizado com sucesso.</h4>
                         <i class="bi bi-check-circle-fill" style="color:green"></i>
                     }
 
                     @if (Model.Orçamento.Status == 31) //Reprovado pelo Cliente
                     {
-                        <h2 class="text-center">Finalizado. Orçamento reprovado pelo Cliente.</h2>
+                        <h4 class="text-center">Finalizado. Orçamento reprovado pelo Cliente.</h4>
                         <i class="bi bi-x-circle-fill" style="color: darkred"></i>
                     }
                 </div>
@@ -132,12 +132,14 @@
                                     <div class="col-md-2"><h5 class="bigHeader">Serviço</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(x.PreçoMin).ToString("F")</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(x.PreçoMax).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(item.Preço).ToString("F")</h5></div>
                                 }
                                 if (y != null)
                                 {
                                     <div class="col-md-2"><h5 class="bigHeader">Peça</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(y.PreçoMin).ToString("F")</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(y.PreçoMax).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@Convert.ToDecimal(item.Preço).ToString("F")</h5></div>
                                 }
                                 count++;
 

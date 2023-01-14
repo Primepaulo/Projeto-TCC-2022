@@ -874,14 +874,14 @@ namespace Projeto_TCC_2022.Models
                 Orçamento orçamento = GetOrçamento(Id);
                 Oficina oficina = GetOficinaById(orçamento.fk_Oficina_Id);
                 orçamento.Status = Operação;
-                orçamento.Data_Aprovação = DateT;
+                orçamento.Data_Aprovação = oficina.HorarioFuncionamento;
 
                 if (Valor != null)
                 {
                     orçamento.Valor = Valor;
                 }
 
-                if (DateT != null)
+                if (DateT != null && DateT != "" && DateT != "/")
                 {
                     orçamento.Data_Aprovação = DateT;
                 }
@@ -1262,6 +1262,19 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static List<Avaliação> GetAvaliaçãoByOficinaId(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Avaliação in context.Avaliação
+                            where Avaliação.Fk_Oficina_Id == Id
+                            select Avaliação;
+
+                var Avaliação1 = query.ToList();
+                return Avaliação1;
+            }
+        }
+
         public static List<ItemAvaliação> GetItensAvaliação(int Id)
         {
             using (var context = new Model1())
@@ -1285,6 +1298,20 @@ namespace Projeto_TCC_2022.Models
                             select ItemAvaliação;
 
                 var Item = query.SingleOrDefault();
+
+                return Item;
+            }
+        }
+
+        public static List<ItemAvaliação> GetItemAvaliaçãoByServiçoId(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from ItemAvaliação in context.ItemAvaliação
+                            where ItemAvaliação.Fk_Serviço_Id == Id
+                            select ItemAvaliação;
+
+                var Item = query.ToList();
 
                 return Item;
             }

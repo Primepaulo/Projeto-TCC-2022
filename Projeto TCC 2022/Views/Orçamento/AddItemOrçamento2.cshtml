@@ -7,6 +7,7 @@
 }
 
 <div class="container mt-5">
+    <h5 class="smallHeader mb-4">Serviços</h5>
     <div class="row">
         <div class="col">
             <select id="Categorias" placeholder="Escolha uma Categoria">
@@ -27,12 +28,14 @@
 
 
         <div class="col">
-            <button onclick="AddItem('Serviço')">Adicionar Serviço</button>
+            <button class="btn" onclick="AddItem('Serviço')">Adicionar Serviço</button>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6 col-sm-12" id="DivPeça">
+    <h5 class="smallHeader mt-3">Peças</h5>
+
+    <div class="row mt-3">
+        <div class="col-md-4 col-sm-12" id="DivPeça">
             <select id="Peças" placeholder="Escolha uma Peça">
                 <option value="">Escolha uma Peça</option>
                 @foreach (var item in Model.Peças)
@@ -41,10 +44,12 @@
                 }
             </select>
         </div>
-        <div class="col-md-6 col-sm-12">
-            <button onclick="AddItem('Peça')">Adicionar Peça</button>
+        <div class="col-md-4 col-sm-12">
+            <button class="btn" onclick="AddItem('Peça')">Adicionar Peça</button>
         </div>
     </div>
+
+    <h5 class="smallHeader mt-5 mb-2">Itens do Orçamento</h5>
 
     @using (Html.BeginForm("FormularOrçamento", "Orçamento", FormMethod.Post))
     {
@@ -53,27 +58,44 @@
             @foreach (var item in Model.Padrão)
             {
 
-                <div class="row itemOrçamento">
-                    <div class="col">
-                        <p>@item.Nome</p>
+                <div class="row especial">
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Nome do Item</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Preço Min.</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Preço Max.</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Valor Final</h4>
+                    </div>
+                </div>
+
+                <div class="row especial mb-4">
+                    <div class="col-md-3 col-sm-12">
+                        <p>Serviço - @item.Nome</p>
                     </div>
                     <input class="d-none serviçosId" value="@item.Id" name="Itens[@Count].Id" />
                     <input class="d-none tipo" value="1" name="Itens[@Count].Tipo" />
-                    <div class="col">
+                    <div class="col-md-3 col-sm-12">
                         @if (item.PreçoMin != null)
                         {
                             Min = (decimal)item.PreçoMin;
-                            <p class="preço">@Min.ToString("F")</p>
-                        }
-                        @if (item.PreçoMax != null)
-                        {
-                            Max = (decimal)item.PreçoMax;
-                            <p class="preço">@Max.ToString("F")</p>
+                            <p class="preço ms-2">@Min.ToString("F")</p>
                         }
 
                     </div>
+                    <div class="col-md-3 col-sm-12">
+                        @if (item.PreçoMax != null)
+                        {
+                            Max = (decimal)item.PreçoMax;
+                            <p class="preço ms-2">@Max.ToString("F")</p>
+                        }
+                    </div>
 
-                    <div class="col">
+                    <div class="col-md-3 col-sm-12">
                         <input name="Itens[@Count].Val" class="form-control itemOrçamentoValue" oninput="Valor()" data-val="true" data-val-number="Valor precisa ser um número."
                                data-val-range="Preencha um valor que esteja entre o valor mínimo ou máximo."
                                @if (item.PreçoMin != null) { <text> data-val-range-min="@Min.ToString("F", x)" </text> }
@@ -85,8 +107,12 @@
                 Count++;
             }
         </div>
-        <div class="text-center"><button onclick="LimparOrçamento()">Limpar Escolhas</button></div>
-        <div class="container mt-5" id="total"></div>
+        <div class="text-center"><button class="btn btn-danger mt-4" type="button" onclick="LimparOrçamento()">Limpar Minhas Escolhas</button></div>
+        if (Model.Padrão.Count() != 0)
+        {
+            <div class="text-center"><button class="btn btn-danger mt-4" type="button" onclick="LimparEspecial()">Limpar Seleção do Cliente</button></div>
+        }
+        <div class="container mt-3" id="total"></div>
         <div class="text-center"><button type="submit" class="btn btn-default">Confirmar</button></div>
     }
 </div>
@@ -221,6 +247,7 @@
 
         function LimparOrçamento() {
             $(".itemOrçamento").empty();
+            $(".rotulo").empty();
             $("#total").empty();
 
             $.ajax
@@ -234,6 +261,11 @@
                 }
             });
         }
+
+        function LimparEspecial() {
+            $(".especial").empty();
+        }
+
     </script>
 
     @Scripts.Render("~/bundles/jqueryval")

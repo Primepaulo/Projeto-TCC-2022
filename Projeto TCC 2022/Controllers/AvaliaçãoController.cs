@@ -81,6 +81,7 @@ namespace Projeto_TCC_2022.Controllers
                     Estrelas = média,
                     Texto = avaliar.Texto,
                     fk_Pessoa_Id = UserID,
+                    Fk_Oficina_Id = orçamento.fk_Oficina_Id,
                     Fk_Orçamento_Id = orçamento.Id
                 };
 

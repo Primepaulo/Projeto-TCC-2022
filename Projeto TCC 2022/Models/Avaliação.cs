@@ -20,6 +20,8 @@ namespace Projeto_TCC_2022.Models
 
         public int Fk_Orçamento_Id { get; set; }
 
+        public int Fk_Oficina_Id { get; set; }
+
         public virtual ICollection<ItemAvaliação> ItemAvaliação { get; set; }
 
         public virtual Orçamento Orçamento { get; set; }

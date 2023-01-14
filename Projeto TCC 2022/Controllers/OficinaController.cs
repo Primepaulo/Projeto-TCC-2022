@@ -1,5 +1,7 @@
 ﻿using Projeto_TCC_2022.Models;
+using Projeto_TCC_2022.Models.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -9,39 +11,63 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult Page(int Id)
         {
             Oficina oficina = Model1.GetOficinaById(Id);
+            Page page = new Page();
             if (oficina == null)
             {
                 return RedirectToAction("Index", "Home");
 
             }
-            ViewBag.Oficina = oficina;
-            ViewBag.Imagem = Model1.GetImagem(Id);
-            ViewBag.CelularTelefone = Model1.GetCelularTelefones(Id);
-            ViewBag.Email = Model1.GetEmail(Id);
-            ViewBag.Serviços = Model1.GetServiços(Id);
+            page.Oficina = oficina;
+            page.Imagem = Model1.GetImagem(Id);
+            page.Cel = Model1.GetCelularTelefones(Id);
+            page.Email = Model1.GetEmail(Id);
+            page.Serviços = Model1.GetServiços(Id);
+            List<AvItemMédia> Itens = new List<AvItemMédia>();
+            double MédiaGeral = 0;
 
-            List<float> médias = new List<float>();
+            if (page.Serviços != null) {
 
-            //if (ViewBag.Serviços != null) {
-            //    foreach (var item in ViewBag.Serviços)
-            //    {
-            //        float soma = 0;
+                List<Avaliação> Av = Model1.GetAvaliaçãoByOficinaId(Id);
 
-            //        List<Avaliação> av1 = Model1.GetAvaliaçõesByServiçoId(item.Id);
-            //        foreach (var avaliação in av1)
-            //        {
-            //            soma += avaliação.Estrelas;
-            //        }
+                if (Av != null)
+                {
+                    foreach (var item in Av)
+                    {
+                        MédiaGeral += item.Estrelas; 
+                    }
 
-            //        float média = soma / av1.Count;
+                    MédiaGeral /= Av.Count();
+                }
 
-            //        médias.Add(média);
-            //    }
-            //}
+                foreach (var item in page.Serviços)
+                {
+                    List<ItemAvaliação> AvItem = Model1.GetItemAvaliaçãoByServiçoId(item.Id);
 
-            ViewBag.Médias = médias;
+                    if (AvItem != null)
+                    {
+                        double média = 0;
+                        foreach (var item2 in AvItem)
+                        { 
+                            média += item2.Estrelas;
+                        }
 
-            return View();
+                        média /= AvItem.Count();
+
+                        AvItemMédia avItemMédia = new AvItemMédia
+                        {
+                            Média = média,
+                            Fk_Serviço_Id = item.Id
+                        };
+
+                        Itens.Add(avItemMédia);
+                    }
+                }
+            }
+
+            page.Média_Geral = MédiaGeral;
+            page.Av = Itens;
+
+            return View(page);
         }
 
         public ActionResult EditarOficina(int Id)

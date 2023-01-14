@@ -671,7 +671,7 @@ GO
 USE [TBN(IN305)]
 GO
 Insert into [dbo].[Categoria] values ('Revisão')
-Insert into [dbo].[Categoria] values ('Geometria e Balanceamento')
+Insert into [dbo].[Categoria] values ('Geometria e Bal.')
 Insert into [dbo].[Categoria] values ('Suspensão')
 Insert into [dbo].[Categoria] values ('Pneus')
 Insert into [dbo].[Categoria] values ('Freios')
