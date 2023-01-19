@@ -9,10 +9,10 @@
             @Html.HiddenFor(m => m.Id)
             <div class="row mt-2">
                 <div class="col-md-6 col-sm-12">
-                    <button type="submit" class="btn btn-default" value="12" name="Operação">Aceitar Solicitação <i class="bi bi-check-lg" style="color:green"></i></button>
+                    <button type="submit" class="btn btn-success" value="12" name="Operação">Aceitar Solicitação <i class="bi bi-check-lg"></i></button>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <button type="submit" class="btn btn-default" value="11" name="Operação">Recusar Solicitação<i class="bi bi-x-lg" style="color:red; font-size: 13px"></i></button>
+                    <button type="submit" class="btn btn-danger" value="11" name="Operação">Recusar Solicitação <i class="bi bi-x-lg" style="font-size: 14px"></i></button>
                 </div>
             </div>
         }
@@ -23,14 +23,3 @@
 {
     <h4 class="bigHeader ">Aguardando Oficina...</h4>
 }
-
-
-
-<script>
-    $('.timepicker').timepicker({
-        timeFormat: 'HH:mm',
-        dynamic: false,
-        dropdown: false,
-        scrollbar: false
-    });
-</script>

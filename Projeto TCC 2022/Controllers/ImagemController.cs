@@ -15,6 +15,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.éOficina = Oficina;
             ViewBag.éAdmin = Admin;
             ViewBag.userID = UserID;
+            ViewBag.éAprovada = Aprovada;
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
 

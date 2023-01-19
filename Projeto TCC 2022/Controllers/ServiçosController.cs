@@ -13,6 +13,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.éOficina = Oficina;
             ViewBag.éAdmin = Admin;
             ViewBag.userID = UserID;
+            ViewBag.éAprovada = Aprovada;
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
 
@@ -62,8 +63,7 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AdicionarServiço(string Nome, string Descrição, string PreçoMin, string PreçoMax, bool NecessitaAvaliarVeiculo)
+        public ActionResult AdicionarServiço(string Nome, string Descrição, string PreçoMin, string PreçoMax)
         {
             decimal? PreçoMn = null, PreçoMx = null;
             if (PreçoMax.Contains("."))
@@ -91,7 +91,7 @@ namespace Projeto_TCC_2022.Controllers
 
             if (Model1.GetServiçoByNomeId(UserID, Nome) == null)
             {
-                Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, PreçoMn, PreçoMx, NecessitaAvaliarVeiculo);
+                Model1.InsertServiços(UserID, Nome, categoriaId, Descrição, PreçoMn, PreçoMx);
             }
 
             return RedirectToAction("VisualizarServiços");
@@ -114,14 +114,12 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, Fk_Oficina_Id, NecessitaAvaliarVeiculo")] Serviço serviço, string Categoria, string PreçoMin, string PreçoMax)
+        public ActionResult EditarServiço([Bind(Include = "Id, Nome, Descrição, Fk_Oficina_Id")] Serviço serviço, string Categoria, string PreçoMin, string PreçoMax)
         {
 
             if (serviço.Fk_Oficina_Id == UserID)
             {
                 Categoria categoria = Model1.GetCategoriaByName(Categoria);
-                ViewBag.sCategoria = categoria;
 
                 serviço.Fk_Categoria_Id = categoria.Id;
 
@@ -152,7 +150,7 @@ namespace Projeto_TCC_2022.Controllers
                 if (ModelState.IsValid)
                 {
                     Model1.UpdateServiço(serviço);
-                    return RedirectToAction("VisualizarServiços/" + serviço.Fk_Oficina_Id);
+                    return RedirectToAction("VisualizarServiços/");
                 }
                 return View(serviço);
             }
@@ -172,15 +170,14 @@ namespace Projeto_TCC_2022.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost, ActionName("DeletarServiço")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult Deletar(int Id)
         {
             Serviço serviço = Model1.GetServiço(Id);
             if (serviço.Fk_Oficina_Id == UserID)
             {
                 Model1.DeleteServiço(Id);
-                return RedirectToAction("VisualizarServiços" + serviço.Fk_Oficina_Id);
+                return RedirectToAction("VisualizarServiços");
             }
             return RedirectToAction("Index", "Home");
         }

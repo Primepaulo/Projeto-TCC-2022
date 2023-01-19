@@ -30,8 +30,6 @@ namespace Projeto_TCC_2022.Models
         [Column(TypeName = "money")]
         public decimal? PreçoMax { get; set; }
 
-        public bool NecessitaAvaliarVeiculo { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemAvaliação> ItemAvaliação { get; set; }
 

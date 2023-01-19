@@ -7,7 +7,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Carro</h4>
+        <h4>Oficina</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -107,19 +107,15 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-4 mb-4">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Confimar" class="btn btn-success me-2" />  |
+                @Html.ActionLink("Retornar", "Page/", "Oficina", new { id = (int)ViewBag.userID }, new { @class = "btn" })
             </div>
         </div>
 
     </div>
 }
-
-<div>
-    @Html.ActionLink("Retornar", "Page/", "Oficina", new { id = (int)ViewBag.userID }, new { @class = "" })
-</div>
-
 @section scripts
 {
 

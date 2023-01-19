@@ -214,9 +214,11 @@
     <Compile Include="Models\ViewModels\HistoricoOrçamento.cs" />
     <Compile Include="Models\ViewModels\ItemViewModel.cs" />
     <Compile Include="Models\ViewModels\ListItemViewModel.cs" />
+    <Compile Include="Models\ViewModels\MédiasId.cs" />
     <Compile Include="Models\ViewModels\OficinaApprovePartial.cs" />
     <Compile Include="Models\ViewModels\Page.cs" />
     <Compile Include="Models\ViewModels\PeçaQuant.cs" />
+    <Compile Include="Models\ViewModels\Search.cs" />
     <Compile Include="Models\ViewModels\ServiçoAvaliação.cs" />
     <Compile Include="Models\ViewModels\ServiçoCategoria.cs" />
     <Compile Include="Models\ViewModels\ServiçoTotal.cs" />
@@ -347,7 +349,6 @@
     <Content Include="Views\Serviços\EditarServiço.cshtml" />
     <Content Include="Views\Serviços\DeletarServiço.cshtml" />
     <Content Include="Views\Peças\AdicionarPeça.cshtml" />
-    <Content Include="Views\Peças\EditarPeça.cshtml" />
     <Content Include="Views\Peças\DeletarPeça.cshtml" />
     <Content Include="Views\Peças\VisualizarPeças.cshtml" />
     <Content Include="Views\Home\NotificaçõesPartial.cshtml" />
@@ -380,6 +381,10 @@
     <Content Include="Views\Oficina\AgendamentosModalPartial.cshtml" />
     <Content Include="Views\Orçamento\ConfirmarAgendamentoPartial.cshtml" />
     <Content Include="Views\Shared\_OrçamentoPartial.cshtml" />
+    <Content Include="Views\Numero\VisualizarNúmeros.cshtml" />
+    <Content Include="Views\Numero\ExcluirNúmero.cshtml" />
+    <Content Include="Views\Peças\EditarPeça.cshtml" />
+    <Content Include="Views\Numero\EditarNúmero.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

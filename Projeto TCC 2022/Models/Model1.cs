@@ -702,7 +702,7 @@ namespace Projeto_TCC_2022.Models
                 return serviço;
             }
         }
-        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal? PreçoMin, decimal? PreçoMax, bool NecessitaAvaliarVeiculo)
+        public static void InsertServiços(int uID, string Nome, int Categoria, string Descrição, decimal? PreçoMin, decimal? PreçoMax)
         {
             using (var context = new Model1())
             {
@@ -713,8 +713,7 @@ namespace Projeto_TCC_2022.Models
                     Fk_Categoria_Id = Categoria,
                     Descrição = Descrição,
                     PreçoMin = PreçoMin,
-                    PreçoMax = PreçoMax,
-                    NecessitaAvaliarVeiculo = NecessitaAvaliarVeiculo
+                    PreçoMax = PreçoMax
                 });
 
                 context.SaveChanges();
@@ -1105,6 +1104,19 @@ namespace Projeto_TCC_2022.Models
         }
         // ----------------------------------------------------------------------------------------------------
         // CELULAR
+
+        public static CelularTelefone GetCelularTelefone(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from CelularTelefone in context.CelularTelefone
+                            where CelularTelefone.Id == Id
+                            select CelularTelefone;
+                var celularTelefones = query.SingleOrDefault();
+                return celularTelefones;
+            }
+        }
+
         public static List<CelularTelefone> GetCelularTelefones(int Id)
         {
             using (var context = new Model1())
@@ -1131,6 +1143,26 @@ namespace Projeto_TCC_2022.Models
 
             }
         }
+
+        public static void UpdateCelularTelefone(CelularTelefone cel)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(cel).State = EntityState.Modified;
+                context.SaveChanges();
+
+            }
+        }
+        public static void DeletarNúmero(int Id)
+        {
+            using (var context = new Model1())
+            {
+                CelularTelefone Cel = context.CelularTelefone.Find(Id);
+                context.CelularTelefone.Remove(Cel);
+                context.SaveChanges();
+            }
+        }
+
         // ----------------------------------------------------------------------------------------------------
         // PESSOA
         public static Pessoa GetPessoa(int uID)
@@ -1419,7 +1451,8 @@ namespace Projeto_TCC_2022.Models
                     Data = Data,
                     Fk_Oficina_Id = OficinaId,
                     Fk_Pessoa_Id = PessoaId,
-                    Fk_Orçamento_Id = null
+                    Fk_Orçamento_Id = null,
+                    Finalizado = false
                 };
 
                 context.Agendamento.Add(agendamento);
@@ -1436,6 +1469,24 @@ namespace Projeto_TCC_2022.Models
                 context.Entry(agendamento).State = EntityState.Modified;
                 context.SaveChanges();
             }
+        }
+
+        public static void FinalizarAgendamento(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Agendamento in context.Agendamento
+                            where Agendamento.Fk_Orçamento_Id == Id
+                            select Agendamento;
+
+                var item = query.SingleOrDefault();
+
+                item.Finalizado = true;
+
+                context.Entry(item).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+
         }
 
     }

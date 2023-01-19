@@ -1,11 +1,12 @@
 ﻿@model Projeto_TCC_2022.Models.CelularTelefone
 
-<h2>Insira seu número:</h2>
 
+<h2>Editar Número</h2>
 
-@using (Html.BeginForm("CadastrarNúmero", "Numero", FormMethod.Post))
+@using (Html.BeginForm("Editar", "Numero", FormMethod.Post))
 {
-
+    @Html.HiddenFor(e => e.Id)
+    @Html.HiddenFor(e => e.Fk_User_Id)
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,19 +15,20 @@
             </div>
             <div class="modal-body pt-0">
                 <div class="form-horizontal">
-                    
+
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                     <h5 class="smallHeader mt-4">Telefone ou Celular:</h5>
                     <div class="mt-2">
-                        <input class="form-control text-box single-line mt-3" name="CelularTelefone1" , id="CelularTelefone" data-val="true"  data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="[1-9]\d9?\d{4}\d{4}" data-val-regex="Número Inválido" />
+                        <input class="form-control text-box single-line mt-3" name="CelularTelefone1" , id="CelularTelefone" data-val="true" 
+                               data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="[1-9]\d9?\d{4}\d{4}" data-val-regex="Número Inválido" value="@Model.CelularTelefone1" />
                         @Html.ValidationMessageFor(model => model.CelularTelefone1, "", new { @class = "text-danger mt-2" })
                     </div>
 
                     <div class="text-center">
-                        <input type="submit" value="Create" class="btn btn-primary mt-4" />
+                        <input type="submit" value="Editar" class="btn btn-primary mt-4" />
                     </div>
-                    
+
                 </div>
             </div>
         </div>

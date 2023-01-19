@@ -34,13 +34,14 @@
 
                 var valConv = DateTime.ParseExact(val, "HH:mm", System.Globalization.CultureInfo.CurrentCulture).TimeOfDay;
 
-                var item = Model.Agendamentos.Where(e => e.Data.Hour == Start).SingleOrDefault();
+                var item = Model.Agendamentos
+                    .Where(e => e.Data.Hour == Start && (e.Finalizado == false || e.Finalizado == null)).SingleOrDefault();
 
                 if (item != null)
                 {
                     <div class="row mt-1 text-center">
                         <div class="card" style="height: 40px">
-                            <a class="disabled h6 my-auto" style="text-decoration: none; color: black" href="#">@val<span class="badge text-bg-warning">Ocupado</span></a>
+                            <a class="disabled h6 my-auto" style="text-decoration: none; color: black" href="#">@val<span class=" ms-2 badge text-bg-warning">Ocupado</span></a>
                         </div>
                     </div>
                 }

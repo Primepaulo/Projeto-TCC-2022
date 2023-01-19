@@ -1,40 +1,32 @@
-﻿<div class="card">
-    <div class="card-header border-0">
-        <h3 class="smallHeader">Serviços</h3>
-    </div>
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr class="text-center">
-                    <th scope="col">Nome</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Preço Min.</th>
-                    <th scope="col">Preço Max.</th>
-                    <th scope="col">Categoria</th>
-                    <th scope="col">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < ViewBag.Lista.Count; i++)
-                {
-                    <tr class="text-center">
-                        <td>@ViewBag.Lista[i].Nome</td>
-                        <td>@ViewBag.Lista[i].Descrição</td>
-                        <td>R$ @ViewBag.Lista[i].PreçoMin.ToString("F")</td>
-                        <td>R$ @ViewBag.Lista[i].PreçoMax.ToString("F")</td>
-                        <td>@ViewBag.Categorias[i].Nome</td>
-                        <td>
-                            <a class="edit btn btn-primary" data-id="@ViewBag.Lista[i].Id" href="#">Editar</a>
-                            <a class="excluir btn btn-danger" data-id="@ViewBag.Lista[i].Id" href="#">Excluír</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div class="text-center mt-4 mb-3">
-            <a class="btn btn-primary btn-lg" href="#" id="add">Adicionar Serviços</a>
+﻿@model List<Projeto_TCC_2022.Models.CelularTelefone>
+@{
+    ViewBag.Title = "Visualizar Números";
+}
+
+<h2 class="mb-4">Números</h2>
+
+@foreach (var item in Model)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="smallHeader">Número</h5>
+                    <h4>@item.CelularTelefone1</h4>
+                </div>
+                <div class="offset-md-6 col-md-1 my-auto">
+                    <a class="btn btn-outline-primary editar" href="#" data-id="@item.Id">Editar</a>
+                </div>
+                <div class="col-md-1 my-auto">
+                    <a class="btn btn-danger excluir" data-id="@item.Id" href="#">Excluir</a>
+                </div>
+            </div>
         </div>
     </div>
+}
+
+<div class="text-center mt-5">
+    <a class="btn btn-primary w-25" id="num">Cadastrar Número</a>
 </div>
 
 <div class="modal fade" id="Modal" tabindex="-1">
@@ -44,15 +36,14 @@
 
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script>
+<script>
         $(document).ready(function () {
 
-            $('#add').click(function () {
+            $("#num").click(function () {
 
-                $.ajax
-                ({
+                $.ajax({
                     type: 'GET',
-                    url: '@Url.Action("AdicionarServiços", "Serviços")',
+                    url: '@Url.Action("CadastroNúmero", "Numero")',
                     dataType: 'html',
                     cache: false,
                     success: function (data) {
@@ -67,17 +58,15 @@
                         $.validator.unobtrusive.parse("form");
                     }
                 });
-
             });
 
-            $('.edit').click(function () {
+            $('.editar').click(function () {
 
                 var a = $(this).data("id");
-
                 $.ajax
                 ({
                     type: 'GET',
-                    url: '@Url.Action("EditarServiço", "Serviços")/' + a,
+                    url: '@Url.Action("EditarNúmero", "Numero")/' + a,
                     dataType: 'html',
                     cache: false,
                     success: function (data) {
@@ -92,6 +81,7 @@
                         $.validator.unobtrusive.parse("form");
                     }
                 });
+
             });
 
             $('.excluir').click(function () {
@@ -101,7 +91,7 @@
                 $.ajax
                 ({
                     type: 'GET',
-                    url: '@Url.Action("DeletarServiço", "Serviços")/' + a,
+                    url: '@Url.Action("ExcluirNúmero", "Numero")/' + a,
                     dataType: 'html',
                     cache: false,
                     success: function (data) {
@@ -112,8 +102,7 @@
                         console.log("Erro");
                     }
                 });
-            });
-
+            })
         });
-    </script>
+</script>
 }

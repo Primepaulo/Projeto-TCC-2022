@@ -12,6 +12,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.éOficina = Oficina;
             ViewBag.éAdmin = Admin;
             ViewBag.userID = UserID;
+            ViewBag.éAprovada = Aprovada;
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
 
@@ -36,14 +37,13 @@ namespace Projeto_TCC_2022.Controllers
         {
             if (Pessoa == true)
             {
-                return View();
+                return PartialView();
             }
 
             return RedirectToAction("Home", "Index");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult CadastrarVeículos(string Placa, string Cor, string Modelo, string Motorização, string Marca)
         {
             if (Pessoa == true)
@@ -69,15 +69,14 @@ namespace Projeto_TCC_2022.Controllers
 
             if (carro.fk_Pessoa_Id == UserID)
             {
-                return View(carro);
+                return PartialView(carro);
             }
 
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditarVeículo([Bind(Include = "Placa,Cor,Modelo,Motorização,Marca, fk_Pessoa_Id")] Carro carro)
+        public ActionResult Editar([Bind(Include = "Placa,Cor,Modelo,Motorização,Marca, fk_Pessoa_Id")] Carro carro)
         {
             if (carro.fk_Pessoa_Id == UserID)
             {
@@ -105,14 +104,13 @@ namespace Projeto_TCC_2022.Controllers
             }
             if (carro.fk_Pessoa_Id == UserID)
             {
-                return View(carro);
+                return PartialView(carro);
             }
 
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost, ActionName("DeletarVeículo")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult Deletar(string Placa)
         {
             Carro carro = Model1.GetCarro(Placa);

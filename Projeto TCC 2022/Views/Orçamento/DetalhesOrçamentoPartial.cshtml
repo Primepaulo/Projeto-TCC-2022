@@ -200,8 +200,9 @@
                     <div id="Div">
                         @if (Model.Orçamento.Status == 11) //Recusado pela Oficina
                         {
-                            <h4 class="text-center">Pedido recusado pela Oficina.</h4>
-                            <i class="bi bi-x-circle-fill" style="color: darkred"></i>
+                            <i class="bi bi-x-circle-fill me-2" style="color: darkred"></i>
+                            <h4 class="text-center d-inline-block">Pedido recusado pela Oficina</h4>
+                            <i class="bi bi-x-circle-fill ms-2" style="color: darkred"></i>
                         }
 
                         @if (Model.Orçamento.Status == 12 && ViewBag.éPessoa == true) //Aceito pela Oficina, aguardando formulação do orçamento
@@ -321,8 +322,8 @@
                         <div class="row mt-4">
                             @{
                                 var count = 1;
-                                Projeto_TCC_2022.Models.Serviço x = Model.Serviços.Where(i => i.Nome == item.Nome).SingleOrDefault();
-                                Projeto_TCC_2022.Models.Peça y = Model.Peças.Where(i => i.Nome == item.Nome).SingleOrDefault();
+                                Projeto_TCC_2022.Models.Serviço x = Model.Serviços.Where(i => i.Nome == item.Nome).FirstOrDefault();
+                                Projeto_TCC_2022.Models.Peça y = Model.Peças.Where(i => i.Nome == item.Nome).FirstOrDefault();
 
                                 <div class="col-md-3"><h5 class="bigHeader">@item.Nome</h5></div>
                                 if (x != null)
@@ -337,6 +338,13 @@
                                     <div class="col-md-2"><h5 class="bigHeader">Peça</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(y.PreçoMin).ToString("F")</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(y.PreçoMax).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(item.Preço).ToString("F")</h5></div>
+                                }
+                                if (x == null && y == null)
+                                {
+                                    <div class="col-md-2"><h5 class="bigHeader">Removido</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">Removido</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">Removido</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(item.Preço).ToString("F")</h5></div>
                                 }
                                 count++;

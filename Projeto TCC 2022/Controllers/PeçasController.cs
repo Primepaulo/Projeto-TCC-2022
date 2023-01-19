@@ -12,6 +12,7 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.éOficina = Oficina;
             ViewBag.éAdmin = Admin;
             ViewBag.userID = UserID;
+            ViewBag.éAprovada = Aprovada;
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
 
@@ -38,14 +39,13 @@ namespace Projeto_TCC_2022.Controllers
         {
             if (Oficina == true)
             {
-                return View();
+                return PartialView();
             }
 
             return RedirectToAction("Home", "Index");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult AdicionarPeça(string Nome, string Marca, string Código, string Descrição, string PreçoMin, string PreçoMax)
         {
             decimal? PreçoMn = null, PreçoMx = null;
@@ -82,16 +82,16 @@ namespace Projeto_TCC_2022.Controllers
             Peça peça = Model1.GetPeça(Id);
             if (UserID == peça.Fk_Oficina_Id)
             {
-                return View(peça);
+                return PartialView(peça);
             }
-            return RedirectToAction("Home", "Index");
+
+            return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditarPeça([Bind(Include = "Id, Nome, Descrição, Fk_Oficina_Id, Marca, Código")] Peça peça, string PreçoMin, string PreçoMax)
+        public ActionResult Edit([Bind(Include = "Id, Nome, Descrição, Fk_Oficina_Id, Marca, Código")] Peça peça, string PreçoMin, string PreçoMax)
         {
-            if (peça.Fk_Oficina_Id == UserID)
+            if (UserID == peça.Fk_Oficina_Id)
             {
                 decimal? PreçoMn = null, PreçoMx = null;
                 if (PreçoMax.Contains("."))
@@ -124,7 +124,8 @@ namespace Projeto_TCC_2022.Controllers
                 }
                 return View(peça);
             }
-            return RedirectToAction("Index", "Home");
+
+            return View();
         }
 
         public ActionResult DeletarPeça(int Id)
@@ -132,20 +133,19 @@ namespace Projeto_TCC_2022.Controllers
             Peça peça = Model1.GetPeça(Id);
             if (UserID == peça.Fk_Oficina_Id)
             {
-                return View(peça);
+                return PartialView(peça);
             }
-            return RedirectToAction("Home", "Index");
+            return View();
         }
 
-        [HttpPost, ActionName("DeletarPeça")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult Deletar(int Id)
         {
             Peça peça = Model1.GetPeça(Id);
             if (peça.Fk_Oficina_Id == UserID)
             {
                 Model1.DeletePeça(Id);
-                return RedirectToAction("VisualizarPeças" + peça.Id);
+                return RedirectToAction("VisualizarPeças");
             }
             return RedirectToAction("Home", "Index");
         }

@@ -312,6 +312,7 @@ namespace Projeto_TCC_2022.Controllers
                 {
                     Model1.AprovarFinalizarOrçamento(Id, Operação, null);
                     Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Solicitação de orçamento recusada pela oficina.");
+                    Model1.FinalizarAgendamento(Id);
                 }
 
                 else if (Operação == 12)
@@ -363,6 +364,7 @@ namespace Projeto_TCC_2022.Controllers
                 if (Operação == 41)
                 {
                     Model1.AprovarFinalizarOrçamento(orçamento.Id, 13, null);
+                    Model1.FinalizarAgendamento(orçamento.Id);
                     Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Agendamento Recusado. Remarcar?");
                 }
                 if (Operação == 42)
@@ -374,6 +376,7 @@ namespace Projeto_TCC_2022.Controllers
                 if (Operação == 43)
                 {
                     Model1.AprovarFinalizarOrçamento(orçamento.Id, Operação, null);
+                    Model1.FinalizarAgendamento(orçamento.Id);
                     Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id,"Orçamento Cancelado.");
                     Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Orçamento Cancelado.");
                 }

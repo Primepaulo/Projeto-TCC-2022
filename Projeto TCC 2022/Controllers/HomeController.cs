@@ -1,4 +1,5 @@
 ﻿using Projeto_TCC_2022.Models;
+using Projeto_TCC_2022.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -130,7 +131,7 @@ namespace Projeto_TCC_2022.Controllers
 
                 List<Imagem> Imagens = new List<Imagem>();
                 
-                List<double> Médias = new List<double>();
+                List<MédiasId> Médias = new List<MédiasId>();
 
                 if (oficinas != null)
                 {
@@ -150,16 +151,24 @@ namespace Projeto_TCC_2022.Controllers
 
                             MédiaGeral /= Av.Count();
 
-                            Médias.Add(MédiaGeral);
+                            MédiasId média = new MédiasId
+                            {
+                                Média = MédiaGeral,
+                                Oficina = oficina
+                            };
+
+                            Médias.Add(média);
                         }
-
-
                     }
                 }
 
-                ViewBag.Oficinas = oficinas;
-                ViewBag.Imagens = Imagens;
-                ViewBag.Médias = Médias;
+                Search search = new Search
+                {
+                    Oficinas = Médias.OrderByDescending(e => e.Média).ToList(),
+                    Imagens = Imagens
+                };
+
+                return View(search);
             }
 
             return View();

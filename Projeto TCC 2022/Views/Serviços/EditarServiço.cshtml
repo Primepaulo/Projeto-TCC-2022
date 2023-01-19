@@ -1,86 +1,54 @@
 ﻿@model Projeto_TCC_2022.Models.Serviço
 
-@{
-    ViewBag.Title = "EditarServiço";
-}
-
-<h2>EditarServiço</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-<div class="form-horizontal">
-    <h4>Serviço</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.Fk_Oficina_Id)
-    @Html.HiddenFor(model => model.Fk_Categoria_Id)
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5">Editar Serviço</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-    </div>
+        @using (Html.BeginForm("EditarServiço", "Serviços", FormMethod.Post))
+        {
+            <div class="modal-body pt-0">
+                <h5 class="smallHeader mt-3">Nome</h5>
+                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Descrição, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Descrição, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Descrição, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2" for="PreçoMin">Preço Min.:</label>
-        <div class="col-md-10">
-            <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMin" name="PreçoMin" type="text" value="@Model.PreçoMin">
-            @Html.ValidationMessageFor(model => model.PreçoMin, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                @Html.LabelFor(model => model.Categoria, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div>
+                    <select for="categoria" name="categoria" id="categoria">
+                        @foreach (var item in ViewBag.Categorias)
+                        {
+                            <option value="@item.Nome"
+                                    @if (item.Id == ViewBag.sCategoria.Id) { @: selected="selected"
+                                    }>
+                                @item.Nome
+                            </option>
+                        }
+                    </select>
+                </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2" for="PreçoMax">Preço Max.:</label>
-        <div class="col-md-10">
-            <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMax" name="PreçoMax" type="text" value="@Model.PreçoMax">
-            @Html.ValidationMessageFor(model => model.PreçoMax, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                <h5 class="smallHeader mt-3">Preço Mínimo</h5>
+                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMin" name="PreçoMin" type="text" value="@Convert.ToDecimal(Model.PreçoMin).ToString("F")">
+                @Html.ValidationMessageFor(model => model.PreçoMin, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        <label for="NecessitaAvaliarVeiculo" class="control-label col-md-2">Necessita avaliação do veículo?</label>
-        <div class="col-md-10">
-            @Html.CheckBoxFor(model => model.NecessitaAvaliarVeiculo, new { htmlAttributes = new { @class = "form-control", name = "NecessitaAvaliarVeiculo", @id = "NecessitaAvaliarVeiculo" } })
-        </div>
-    </div>
+                <h5 class="smallHeader mt-3">Preço Máximo</h5>
+                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMax" name="PreçoMax" type="text" value="@Convert.ToDecimal(Model.PreçoMax).ToString("F")">
+                @Html.ValidationMessageFor(model => model.PreçoMax, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Categoria, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div>
-            <select for="categoria" name="categoria" id="categoria">
-                @foreach (var item in ViewBag.Categorias)
-                {
-                    <option value="@item.Nome"
-                            @if (item.Id == ViewBag.sCategoria.Id) { @: selected="selected"
-                            }>
-                        @item.Nome
-                    </option>
-                }
-            </select>
-        </div>
-    </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
-}
+                <h5 class="smallHeader mt-3">Descrição</h5>
+                <textarea class="form-control" id="Descrição" name="Descrição" style="height: 100px">@Model.Descrição</textarea>
+                @Html.ValidationMessageFor(model => model.Descrição, "", new { @class = "text-danger" })
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+
+                @Html.HiddenFor(e => e.Id)
+                @Html.HiddenFor(model => model.Fk_Oficina_Id)
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        }
+    </div>
 </div>

@@ -1,31 +1,122 @@
-﻿
+﻿<div class="card">
+    <div class="card-header border-0">
+        <h3 class="smallHeader">Peças</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">Nome</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Preço Min.</th>
+                    <th scope="col">Preço Max.</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.Lista)
+                {
+                    <tr class="text-center">
+                        <td>@item.Nome</td>
+                        <td>@item.Marca</td>
+                        <td>R$ @item.PreçoMin.ToString("F")</td>
+                        <td>R$ @item.PreçoMax.ToString("F")</td>
+                        <td>@item.Código</td>
+                        <td>@item.Descrição</td>
+                        <td>
+                            <a class="edit btn btn-primary" data-id="@item.Id" href="#">Editar</a>
+                            <a class="excluir btn btn-danger" data-id="@item.Id" href="#">Excluír</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-center mt-4 mb-3">
+            <a class="btn btn-primary btn-lg" href="#" id="add">Adicionar Peças</a>
+        </div>
+    </div>
+</div>
 
-<p><a class="btn btn-info btn-lg mt-4" href="/Peças/AdicionarPeça">Adicionar Peças</a></p>
-<br />
+<div class="modal fade" id="Modal" tabindex="-1">
+</div>
 
-<table class="table table-bordered table-hover table-responsive">
-    <tr>
-        <th>Nome</th>
-        <th>Marca</th>
-        <th>Preço Min.</th>
-        <th>Preço Max.</th>
-        <th>Código</th>
-        <th>Descrição</th>
-    </tr>
+@section scripts {
 
-    @foreach (var item in ViewBag.Lista)
-    {
-        <tr>
-            <td>@item.Nome</td>
-            <td>@item.Marca</td>
-            <td>@item.PreçoMin.ToString("F")</td>
-            <td>@item.PreçoMax.ToString("F")</td>
-            <td>@item.Código</td>
-            <td>@item.Descrição</td>
-            <td>
-                @Html.ActionLink("Editar", "EditarPeça", new { Id = item.Id }) |
-                @Html.ActionLink("Excluir", "DeletarPeça", new { Id = item.Id })
-            </td>
-        </tr>
-    }
-</table>
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+        $(document).ready(function () {
+
+            $('#add').click(function () {
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("AdicionarPeça", "Peças")',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    },
+                    complete: function () {
+                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                        $.validator.unobtrusive.parse("form");
+                    }
+                });
+
+            });
+
+            $('.edit').click(function () {
+
+                var a = $(this).data("id");
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("EditarPeça", "Peças")/' + a,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    },
+                    complete: function () {
+                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                        $.validator.unobtrusive.parse("form");
+                    }
+                });
+            });
+
+            $('.excluir').click(function () {
+
+                var a = $(this).data("id");
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("DeletarPeça", "Peças")/' + a,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            });
+
+        });
+</script>
+}
+

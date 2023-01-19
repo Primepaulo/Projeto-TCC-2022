@@ -17,6 +17,8 @@ namespace Projeto_TCC_2022.Models
 
         public int? Fk_Orçamento_Id { get; set; }
 
+        public bool? Finalizado { get; set; }
+
         public DateTime Data { get; set; }
 
         public virtual Oficina Oficina { get; set; }
