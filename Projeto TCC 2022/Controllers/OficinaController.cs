@@ -1,5 +1,6 @@
 ﻿using Projeto_TCC_2022.Models;
 using Projeto_TCC_2022.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -129,6 +130,61 @@ namespace Projeto_TCC_2022.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        public ActionResult Agendamentos()
+        {
+            Oficina oficina = Model1.GetOficinaById(UserID);
+            DateTime Hoje = DateTime.Today;
+            var range = new List<DateTime>();
+
+            for (int i = 0; i < 30; i++)
+            {
+                range.Add(Hoje.AddDays(i));
+            }
+
+            List<Agendamento> agendamentos = Model1.GetAgendamentos(UserID);
+
+            var result = from Agendamento in agendamentos
+                         join Data in range
+                         on Agendamento.Data.Date equals Data.Date
+                         select Agendamento;
+
+            var x = result.ToList();
+
+            Calendario calendario = new Calendario
+            {
+                Oficina = oficina,
+                Agendamentos = x
+            };
+
+            return View(calendario);
+        }
+
+        public ActionResult AgendamentosModalPartial(string Date)
+        {
+            DateTime x = DateTime.Parse(Date);
+            CalendarioOficina calendario = new CalendarioOficina();
+
+            List<Agendamento> agendamentos = Model1.GetAgendamentoByDate(x);
+            if (agendamentos.Count > 0)
+            {
+                List<Orçamento> orçamentos = new List<Orçamento>();
+                List<Pessoa> pessoas = new List<Pessoa>();
+
+                foreach (var item in agendamentos)
+                {
+                    orçamentos.Add(Model1.GetOrçamento((int)item.Fk_Orçamento_Id));
+                    pessoas.Add(Model1.GetPessoa(item.Fk_Pessoa_Id));
+                }
+
+                calendario.Agendamentos = agendamentos;
+                calendario.Pessoas = pessoas;
+                calendario.Orçamentos = orçamentos;
+            }
+
+
+            return PartialView(calendario);
         }
     }
 }

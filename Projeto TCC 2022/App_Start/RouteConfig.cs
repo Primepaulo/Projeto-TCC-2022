@@ -34,9 +34,9 @@ namespace Projeto_TCC_2022
                 );
 
             routes.MapRoute(
-                name: "Carros",
-                url: "Carros/{action}/{id}",
-                new { controller = "Carros", action = "VisualizarCarros", id = UrlParameter.Optional }
+                name: "Veículos",
+                url: "Veículos/{action}/{id}",
+                new { controller = "Veículos", action = "VisualizarVeículos", id = UrlParameter.Optional }
                 );
 
             routes.MapRoute(

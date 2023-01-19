@@ -1,10 +1,12 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json.Linq;
 using Projeto_TCC_2022.Models;
 using Projeto_TCC_2022.Models.Classes;
 using Projeto_TCC_2022.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -30,6 +32,72 @@ namespace Projeto_TCC_2022.Controllers
 
             Carro carro = Model1.GetCarro(Placa);
             Session["carro"] = carro;
+            return RedirectToAction("Marcar", "Orçamento", new { Id, Value });
+        }
+
+        //Fase 0-2:
+        public ActionResult Marcar(int Id, bool Value, int? Skip)
+        {
+            Oficina oficina = Model1.GetOficinaById(Id);
+            List<Agendamento> agendamentos = Model1.GetAgendamentos(Id);
+
+            Calendario calendario = new Calendario
+            {
+                Oficina = oficina,
+                Agendamentos = agendamentos,
+                Value = Value,
+                Skip = Skip
+            };
+
+            return View(calendario);
+        }
+
+        public ActionResult MarcarModalPartial(int Id, string Dia, string Month)
+        {
+            Oficina oficina = Model1.GetOficinaById(Id);
+            List<Agendamento> agendamentos = Model1.GetAgendamentos(Id);
+            List<Agendamento> Datas = new List<Agendamento>();
+            var x = DateTime.Today;
+
+            int intDia = Convert.ToInt32(Dia);
+            int intMonth = Convert.ToInt32(Month);
+
+            Datas = agendamentos
+                    .Where(e => e.Data.Day == intDia && e.Data.Month == intMonth && e.Data.Year == x.Year).ToList();
+
+            Calendario calendario = new Calendario
+            {
+                Agendamentos = Datas,
+                Oficina = oficina,
+                Dia = intDia
+                
+            };
+
+            return PartialView(calendario);
+        }
+
+        [HttpPost]
+        public ActionResult EscolherHorario(bool Value, string Date, string Time, int Id, int? Skip)
+        {
+            var Actual = DateTime.Today.AddDays(Convert.ToInt32(Date));
+            var ActualDate = Actual.Date.ToString().Split(' ')[0];
+
+            DateTime Data = DateTime.Parse(ActualDate + " " + Time);
+
+            if (Skip != null)
+            {
+                Orçamento orçamento = Model1.GetOrçamento((int)Skip);
+                Agendamento agendamento = Model1.GetAgendamentoByOrçamento(orçamento.Id);
+                agendamento.Data = Data;
+                Model1.UpdateAgendamento(agendamento);
+                Model1.AprovarFinalizarOrçamento((int)Skip, 40, null);
+                Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Orçamento Remarcado!");
+                return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = (int)Skip });
+            }
+
+            Session["Agendamento"] = Model1.Agendar(Data, Id, UserID);
+
+
 
             if (Value == false)
             {
@@ -155,21 +223,15 @@ namespace Projeto_TCC_2022.Controllers
 
                 Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, 1);
                 Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Nova solicitação de Orçamento!");
+                Agendamento agendamento = (Agendamento)Session["Agendamento"];
+                agendamento.Fk_Orçamento_Id = orçamento.Id;
+                Model1.UpdateAgendamento(agendamento);
 
                 for (int i = 0; i < serviçoTotal.serviços.Length; i++)
                 {
                     int ServiçoId = Convert.ToInt32(serviçoTotal.serviços[i]);
                     Serviço serviço = Model1.GetServiço(ServiçoId);
-                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(orçamento.Id, ServiçoId);
-                    if (itemOrçamento == null)
-                    {
-                        Model1.AddItemOrçamento(orçamento.Id, serviço.Nome, null, serviço.Descrição, 1, false, 1);
-                    }
-                    else
-                    {
-                        itemOrçamento.Quantidade += 1;
-                        Model1.AddQuantidade(itemOrçamento);
-                    }
+                    Model1.AddItemOrçamento(orçamento.Id, serviço.Nome, null, serviço.Descrição, 1, false, 1);
                 }
                 return JavaScript($"window.location='/Orçamento/StatusOrçamento/" + orçamento.Id + "'");
             }
@@ -195,6 +257,9 @@ namespace Projeto_TCC_2022.Controllers
             DateTime data = DateTime.Now;
             Orçamento orçamento = Model1.CreateOrçamento(UserID, carro.Placa, oficinaId, data, 2);
             Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Nova solicitação de Orçamento!");
+            Agendamento agendamento = (Agendamento)Session["Agendamento"];
+            agendamento.Fk_Orçamento_Id = orçamento.Id;
+            Model1.UpdateAgendamento(agendamento);
             return RedirectToAction("StatusOrçamento", "Orçamento", new { orçamento.Id });
         }
 
@@ -206,9 +271,12 @@ namespace Projeto_TCC_2022.Controllers
             Session.Clear();
             Orçamento orçamento = Model1.GetOrçamento(Id);
 
-            if (orçamento.fk_Pessoa_Id == UserID || orçamento.fk_Oficina_Id == UserID)
+            if (orçamento != null)
             {
-                return View(orçamento);
+                if (orçamento.fk_Pessoa_Id == UserID || orçamento.fk_Oficina_Id == UserID)
+                {
+                    return View(orçamento);
+                }
             }
             return RedirectToAction("Index", "Home");
         }
@@ -220,24 +288,11 @@ namespace Projeto_TCC_2022.Controllers
             List<ItemOrçamento> itens = Model1.GetItems(Id);
             Orçamento orçamento = Model1.GetOrçamento(Id);
             if (orçamento.fk_Oficina_Id == UserID || orçamento.fk_Pessoa_Id == UserID)
-            {
-                bool Marcado = false;
-                foreach (var item in itens)
-                {
-                    if (orçamento.Tipo == 1 && Model1.GetServiçoByNomeId(orçamento.fk_Oficina_Id, item.Nome).NecessitaAvaliarVeiculo == true)
-                    {
-                        Marcado = true;
-                    }
-                }
-
-                if (orçamento.Tipo == 2)
-                {
-                    Marcado = true;
-                }
+            { 
 
                 OficinaApprovePartial oficinaApprovePartial = new OficinaApprovePartial
                 {
-                    Marcar = Marcado,
+                    Orçamento = orçamento,
                     Id = Id
                 };
 
@@ -247,41 +302,86 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
-        public ActionResult AprovarRecusar(int Id, int Operação, string fim, string inicio)
+        public ActionResult AprovarRecusar(int Id, int Operação)
         {
-            string HorarioFuncionamento = null;
-            if (fim != "" && inicio != "")
-            {
-                HorarioFuncionamento = inicio + "/" + fim;
-            }
+
             Orçamento orçamento = Model1.GetOrçamento(Id);
             if (orçamento.fk_Oficina_Id == UserID)
             {
-                if (HorarioFuncionamento == null || Operação == 11)
+                if (Operação == 11)
                 {
-                    Model1.AprovarFinalizarOrçamento(Id, Operação, null, null);
+                    Model1.AprovarFinalizarOrçamento(Id, Operação, null);
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Solicitação de orçamento recusada pela oficina.");
                 }
 
-                if (HorarioFuncionamento != null && Operação == 12)
+                else if (Operação == 12)
                 {
-                    Operação = 21; //Aguardando Avaliação do Veículo;
-                    Model1.AprovarFinalizarOrçamento(Id, Operação, null, HorarioFuncionamento);
-                }
-
-                if (Operação == 12)
-                {
+                    Operação = 40;
+                    Model1.AprovarFinalizarOrçamento(Id, Operação, null);
                     Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Solicitação de orçamento aprovada pela oficina!");
                 }
 
-                else if (Operação == 11)
-                {
-                    Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Solicitação de orçamento recusada pela oficina.");
-                }
                 return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });
             }
 
             return RedirectToAction("Index", "Home");
         }
+
+        //Fase 1.5-x:
+
+        public ActionResult ConfirmarAgendamentoPartial(int OrçamentoId)
+        {
+            Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
+            Agendamento agendamento = Model1.GetAgendamentoByOrçamento(OrçamentoId);
+            ConfirmarAgendamentoPartialModel model = new ConfirmarAgendamentoPartialModel
+            {
+                Orçamento = orçamento,
+                Agendamento = agendamento
+            };
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult AgendamentoPOST(ConfirmarAgendamentoPartialModel model, int Operação)
+        {
+            Orçamento orçamento = Model1.GetOrçamento(model.Orçamento.Id);
+            if (orçamento.fk_Pessoa_Id == UserID || orçamento.fk_Oficina_Id == UserID)
+            {
+                if (Operação == 13)
+                {
+                    bool val;
+                    if (orçamento.Tipo == 1)
+                    {
+                        val = false;
+                    }
+                    else
+                        val = true;
+                    return RedirectToAction("Marcar", "Orçamento", new { Id = orçamento.fk_Oficina_Id, Value = val, Skip = orçamento.Id });
+                }
+
+                if (Operação == 41)
+                {
+                    Model1.AprovarFinalizarOrçamento(orçamento.Id, 13, null);
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Agendamento Recusado. Remarcar?");
+                }
+                if (Operação == 42)
+                {
+                    Model1.AprovarFinalizarOrçamento(orçamento.Id, 21, null);
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, 
+                        "Agendamento Aprovado. Leve o veículo até a Oficina na data agendada");
+                }
+                if (Operação == 43)
+                {
+                    Model1.AprovarFinalizarOrçamento(orçamento.Id, Operação, null);
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id,"Orçamento Cancelado.");
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Orçamento Cancelado.");
+                }
+            }
+
+            return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = orçamento.Id });
+        }
+
 
         //Fase 2-x:
         public ActionResult ConfirmarAvaliaçãoPartial(int Id)
@@ -475,47 +575,31 @@ namespace Projeto_TCC_2022.Controllers
 
             foreach (ItemViewModel item in ItensOrçamento.Itens)
             {
-                if (item.Tipo == 1)
+                if (item.Val.Contains(".") == true)
                 {
-                    Serviço serviço = Model1.GetServiço(item.Id);
-                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoServiço(OrçamentoId, item.Id);
-
-                    if (itemOrçamento == null)
-                    {
-                        Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, item.Val, serviço.Descrição, 1, false, 1);
-                    }
-                    else
-                    {
-                        itemOrçamento.Quantidade += 1;
-                        Model1.AddQuantidade(itemOrçamento);
-                        Model1.AdicionarPreço(itemOrçamento, item.Val);
-                    }
+                    item.Val = item.Val.Replace(".", ",");
                 }
 
-                if (item.Tipo == 2)
+                if (Decimal.TryParse(item.Val, out decimal x) == true)
                 {
-                    Peça peça = Model1.GetPeça(item.Id);
-                    ItemOrçamento itemOrçamento = Model1.GetItemOrçamentoPeça(OrçamentoId, item.Id);
-                    if (itemOrçamento == null)
+
+                    if (item.Tipo == 1)
                     {
-                        Model1.AddItemOrçamento(OrçamentoId, peça.Nome, item.Val, peça.Descrição, 1, null, 2);
-                    }
-                    else
-                    {
-                        itemOrçamento.Quantidade += 1;
-                        Model1.AddQuantidade(itemOrçamento);
-                        if (itemOrçamento.Preço == null)
-                        {
-                            Model1.AdicionarPreço(itemOrçamento, item.Val);
-                        }
+                        Serviço serviço = Model1.GetServiço(item.Id);
+                        Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, x, serviço.Descrição, 1, false, 1);
                     }
 
+                    else if (item.Tipo == 2)
+                    {
+                        Peça peça = Model1.GetPeça(item.Id);
+                        Model1.AddItemOrçamento(OrçamentoId, peça.Nome, x, peça.Descrição, 1, null, 2);
+                    }
                 }
 
                 Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
 
                 Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Orçamento finalizado, agora só falta aprovar!");
-                Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, Decimal.Parse(ItensOrçamento.Final), null);
+                Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, Decimal.Parse(ItensOrçamento.Final));
             }
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = OrçamentoId });
         }
@@ -527,7 +611,7 @@ namespace Projeto_TCC_2022.Controllers
 
             if (orçamento.fk_Pessoa_Id == UserID)
             {
-                Model1.AprovarFinalizarOrçamento(Id, Operação, null, Convert.ToString(DateTime.Now.Date.ToString("dd/MM/yyyy")));
+                Model1.AprovarFinalizarOrçamento(Id, Operação, null);
 
                 if (Operação == 32)
                 {
@@ -550,6 +634,7 @@ namespace Projeto_TCC_2022.Controllers
             List<Carro> carros = new List<Carro>();
             List<Oficina> oficinas = new List<Oficina>();
             List<Imagem> imagens = new List<Imagem>();
+            List<Agendamento> agendamentos = new List<Agendamento>();
 
 
             foreach (var orçamento in orçamentos)
@@ -557,6 +642,7 @@ namespace Projeto_TCC_2022.Controllers
                 carros.Add(Model1.GetCarro(orçamento.fk_Carro_Placa));
                 oficinas.Add(Model1.GetOficinaById(orçamento.fk_Oficina_Id));
                 imagens.Add(Model1.GetImagem(orçamento.fk_Oficina_Id));
+                agendamentos.Add(Model1.GetAgendamentoByOrçamento(orçamento.Id));
             }
 
             HistoricoOrçamento historicoOrçamento = new HistoricoOrçamento
@@ -564,7 +650,8 @@ namespace Projeto_TCC_2022.Controllers
                 Orçamentos = orçamentos,
                 Carros = carros,
                 Oficinas = oficinas,
-                Imagens = imagens
+                Imagens = imagens,
+                Agendamentos = agendamentos
             };
             return View(historicoOrçamento);
         }
@@ -582,6 +669,10 @@ namespace Projeto_TCC_2022.Controllers
                 Imagem imagem = Model1.GetImagem(orçamento.fk_Oficina_Id);
                 List<Peça> peças = new List<Peça>();
                 List<Serviço> serviços = new List<Serviço>();
+                Agendamento agendamento = Model1.GetAgendamentoByOrçamento(orçamento.Id);
+                Pessoa pessoa = Model1.GetPessoa(orçamento.fk_Pessoa_Id);
+                List<CelularTelefone> Num1 = Model1.GetCelularTelefones(oficina.Id);
+                List<CelularTelefone> Num2 = Model1.GetCelularTelefones(pessoa.Id);
                 foreach (ItemOrçamento item in itens)
                 {
                     Serviço serviço = Model1.GetServiçoByNomeId(oficina.Id, item.Nome);
@@ -604,6 +695,10 @@ namespace Projeto_TCC_2022.Controllers
                 detalhes.Oficina = oficina;
                 detalhes.Carro = carro;
                 detalhes.Imagem = imagem;
+                detalhes.Agendamento = agendamento;
+                detalhes.Pessoa = pessoa;
+                detalhes.CelOficina = Num1;
+                detalhes.CelPessoa = Num2;
 
                 return PartialView(detalhes);
             }

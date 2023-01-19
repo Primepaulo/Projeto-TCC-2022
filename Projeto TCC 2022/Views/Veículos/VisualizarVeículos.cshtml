@@ -1,6 +1,6 @@
 ﻿
 
-<p><a class="btn btn-info btn-lg mt-4" href="/Carros/CadastroCarros">Adicionar Carro</a></p>
+<p><a class="btn btn-info btn-lg mt-4" href="/Veículos/CadastroVeículos">Adicionar Veículos</a></p>
 <br />
 
 <table class="table table-bordered table-hover table-responsive">
@@ -21,8 +21,8 @@
             <td>@item.Motorização.Replace(",", ".")</td>
             <td>@item.Marca</td>
             <td>
-                @Html.ActionLink("Editar", "EditarCarro", new { Placa = item.Placa }) |
-                @Html.ActionLink("Excluir", "DeletarCarro", new { Placa = item.Placa })
+                @Html.ActionLink("Editar", "EditarVeículo", new { Placa = item.Placa }) |
+                @Html.ActionLink("Excluir", "DeletarVeículo", new { Placa = item.Placa })
             </td>
         </tr>
 

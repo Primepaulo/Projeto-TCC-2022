@@ -1,6 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Search Results";
+    ViewBag.Title = "Busca";
+    double média = 0.0;
 }
+
+<div class="mx-auto w-75">
     @{
         if (ViewBag.Oficinas != null)
         {
@@ -8,12 +11,49 @@
             {
                 if (ViewBag.Oficinas[i].Aprovada == true)
                 {
-                    <div>
-                        <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.Oficinas[i].Id })" class="mt-5">@ViewBag.Oficinas[i].Nome</a>
-                        @if (ViewBag.Imagens[i] != null)
-                        {
-                            <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive" width="150" height="50" />
-                        }
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                    <div class="col-md-2">
+                                        @if (ViewBag.Imagens[i] != null)
+                                        {
+                                            <img src="@ViewBag.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive border-0" />
+                                        }
+                                    </div>
+                                    <div class="col-md-4 my-auto">
+                                        <h4 class="d-inline-block">@ViewBag.Oficinas[i].Nome</h4>
+                                        <i class="bi bi-star-fill ms-2" style="color: #FFBF00"></i>
+
+                                        @if (Double.IsNaN(ViewBag.Médias[i]) == false)
+                                        {
+                                            média = ViewBag.Médias[i];
+                                        }
+
+                                        <span><strong>@média</strong></span>
+                                    </div>
+                                    <div class="col-md-3 my-auto">
+                                        @{ 
+                                            System.Text.StringBuilder String = new System.Text.StringBuilder(ViewBag.Oficinas[i].HorarioFuncionamento);
+                                            String.Replace("/", " - ");
+                                            <h6 class="d-inline-block">Horário de Funcionamento: </h6>
+                                            <h6 class="d-inline-block">@String.ToString()</h6>
+                                        }
+                                    </div>
+                                    <div class="col-md-3 my-auto">
+                                        <h6 class="d-lg-inline-block">Aceita Importado?</h6>
+                                        @if (ViewBag.Oficinas[i].AceitaImportado == true)
+                                        {
+                                            <i class="bi bi-check-circle-fill ms-3" style="color: forestgreen"></i>
+                                        }
+                                        else if (ViewBag.Oficinas[i].AceitaImportado == false)
+                                        {
+                                            <i class="bi bi-x-circle-fill ms-3" style="color: darkred"></i>
+                                        }
+                                    </div>
+                            </div>
+
+                            <a href="@Url.Action("Page", "Oficina", new { Id = ViewBag.Oficinas[i].Id })" class="stretched-link"></a>
+                        </div>
                     </div>
                 }
             }
@@ -27,3 +67,4 @@
             </div>
         }
     }
+</div>

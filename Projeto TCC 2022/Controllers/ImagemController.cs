@@ -40,7 +40,6 @@ namespace Projeto_TCC_2022.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult MudarImagem([Bind(Include = "Id, Url, Fk_Oficina_Id")] Imagem imagem, HttpPostedFileBase img)
         {
             if (ModelState.IsValid)
@@ -70,7 +69,6 @@ namespace Projeto_TCC_2022.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         //https://stackoverflow.com/questions/52466770/how-to-upload-image-using-a-form-in-asp-net-mvc
         public ActionResult AdicionarImagem(HttpPostedFileBase img)
         {

@@ -1,0 +1,17 @@
+﻿@if (ViewBag.éPessoa == true)
+{
+    <li class="nav-item nav-link"> <a href="@Url.Action("HistoricoOrçamentos", "Orçamento")" class="nav-link"><i class="bi bi-clipboard2-fill me-2"></i>Orçamentos</a></li>
+}
+
+@if (ViewBag.éOficina == true)
+{
+    <li class="nav-item dropdown my-auto">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="bi bi-clipboard2-fill me-2"></i>Orçamentos</a>
+        <ul class="dropdown-menu my-auto">
+
+            <li> <a href="@Url.Action("HistoricoOrçamentos", "Orçamento")" class="dropdown-item"><i class="bi bi-clipboard2-fill me-2"></i>Todos os Orçamentos</a></li>
+            <li><a href="@Url.Action("Agendamentos", "Oficina")" class="dropdown-item"><i class="bi bi-calendar-check-fill me-2"></i>Meus Agendamentos</a></li>
+
+        </ul>
+    </li>
+}

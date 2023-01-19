@@ -8,7 +8,7 @@
     <div class="col-md-3 offset-md-2">
 
     </div>
-    <a href="@Url.Action("HistoricoOrçamentos", "Orçamento")">Retornar</a>
+    <a class="mb-3" href="@Url.Action("HistoricoOrçamentos", "Orçamento")">Retornar</a>
 </div>
 
 
@@ -104,6 +104,27 @@
         </script>
     }
 
+    @if (Model.Status == 40  || Model.Status == 41 || Model.Status == 42)
+    {
+        <script>
+            function Update() {
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("ConfirmarAgendamentoPartial", "Orçamento", new { OrçamentoId = Model.Id })',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            };
+        </script>
+    }
+
     <script>
 
         function Lista() {
@@ -123,21 +144,16 @@
         }
 
         $(document).ready(function () {
-            @if (Model.Status != 24 && Model.Status != 32 && Model.Status != 31 || Model.Status != 10 && ViewBag.éPessoa == false) {
-                <text>
-                    setInterval(function() {
-                        Lista();
-                        Update();
-                    }, 60000);
-                    setInterval(function () {
-                        Update();
-                    }, 70000);
-                </text>
-            }
             Lista();
-            @if (Model.Status != 24 && Model.Status != 32 && Model.Status != 31 || Model.Status != 10 && ViewBag.éPessoa == false)
+            @if (Model.Status != 24 && Model.Status != 32 && Model.Status != 31 && Model.Status != 43 && Model.Status != 13 || Model.Status != 10 && ViewBag.éPessoa == false)
                 {
                     <text>
+                        const delay = ms => new Promise(res => setTimeout(res, ms));
+                        const Function = async () => {
+                            await delay(2000);
+                        }
+                        Function();
+                        
                         Update();
                     </text>
                 }

@@ -1,17 +1,16 @@
 ﻿@model Projeto_TCC_2022.Models.Carro
 
 @{
-    ViewBag.Title = "CadastroCarros";
+    ViewBag.Title = "Cadastro Veículos";
 }
 
-<h2>CadastroCarros</h2>
+<h2>Cadastro de Veículo</h2>
 
-@using (Html.BeginForm("CadastrarCarros", "Carros", FormMethod.Post))
+@using (Html.BeginForm("CadastrarVeículos", "Veículos", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Carro</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -64,7 +63,7 @@
 
 <div>
     <div>
-        @Html.ActionLink("Retornar", "VisualizarCarros", "Carros", null, new { @class = "" })
+        @Html.ActionLink("Retornar", "VisualizarVeículos", "Veículos", null, new { @class = "" })
     </div>
 </div>
 

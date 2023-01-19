@@ -1,5 +1,10 @@
 ﻿@model Projeto_TCC_2022.Models.ViewModels.HistoricoOrçamento
-@{ string Status = "";}
+@{ string Status = "";
+    int[] Completos = {10, 11, 12, 13, 43, 24, 25, 26, 31, 32};
+    List<int> CompletosList = new List<int>(Completos);
+
+    DateTime Atual = DateTime.Now;
+}
 
 <div class="w-75 ms-auto mb-5">
     <h3 style="color:#2c2c2c">Meus Orçamentos</h3>
@@ -31,11 +36,26 @@
         case 24:
             Status = "Finalizado. Cliente não levou carro para análise.";
             break;
+        case 25:
+            Status = "Finalizado. Orçamento foi cancelado pela Oficina.";
+            break;
+        case 26:
+            Status = "Finalizado.Orçamento foi cancelado pelo Cliente.";
+            break;
         case 31:
             Status = "Finalizado. Rejeitado pelo Cliente.";
             break;
         case 32:
             Status = "Finalizado. Aprovado pelo Cliente.";
+            break;
+        case 40:
+            Status = "Aguardando Confirmação do Agendamento";
+            break;
+        case 13:
+            Status = "Agendamento Recusado. Aguardando Remarcação.";
+            break;
+        case 43:
+            Status = "Finalizado. Data de Agendamento nunca foi definida.";
             break;
         default:
             Status = "Erro";
@@ -43,31 +63,35 @@
     }
 
     <div class="d-flex justify-content-center mb-5">
-        <div class="card w-50">
-            <div class="card-header">
+        <div class="card w-75">
+            <div class="card-body pb-0">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3 pe-0">
                         Data do Orçamento
+                        @if (CompletosList.Contains(Model.Orçamentos[i].Status))
+                        {<h6>
+                                @Model.Orçamentos[i].Data_Orçamento
+                            </h6>
+                        }
+                        else
+                        {
+                            var agendamento = Model.Agendamentos.Where(e => e.Fk_Orçamento_Id == Model.Orçamentos[i].Id).SingleOrDefault().Data;
+
+                            <h6>@agendamento</h6>
+                        }
+
                     </div>
                     <div class="col-md-2">
-                        Total
-                    </div>
-                    <div class="col-md-6">
-                        Status
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <h6>@Model.Orçamentos[i].Data_Orçamento</h6>
-                    </div>
-                    <div class="col-md-2">
+                        <span>Total</span>
                         <h6>@Convert.ToDecimal(Model.Orçamentos[i].Valor).ToString("F")</h6>
                     </div>
                     <div class="col-md-6">
+                        Status
                         <h6>@Status</h6>
                     </div>
                 </div>
             </div>
+            <hr />
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2 col-sm-12">
@@ -83,37 +107,46 @@
                         }
                         />
                     </div>
-                    <div class="col-md-3 col-sm-12">
+
+                    <div class="col-md-3 col-sm-12 pe-0 ps-0 text-center">
                         <span class="card-text">Oficina</span>
                         <h6 class="card-title">@Model.Oficinas[i].Nome</h6>
                         <div class="d-grid mx-auto">
                             <a href="@Url.Action("Page", "Oficina", new { Model.Oficinas[i].Id})" class="btn btn-outline-primary mt-4">@if (ViewBag.éPessoa == true)
-                            {<text>Pág.da Oficina</text>}@if (ViewBag.éOficina == true) {<text>Minha Pág.</text>}</a>
+                            {<text>Página da Oficina</text>}@if (ViewBag.éOficina == true) {<text>Minha Página</text>}</a>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-12">
-                        <span class="card-text">Carro</span>
+                    <div class="col-md-3 col-sm-12 text-center">
+                        <span class="card-text">Veículo</span>
                         <h6>@Model.Carros[i].Marca @Model.Carros[i].Modelo</h6>
 
                         <div class="d-grid mx-auto">
                             <a href="@Url.Action("StatusOrçamento", "Orçamento", new { Model.Orçamentos[i].Id })" class="btn btn-primary mt-4">Ver Detalhes</a>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-12">
+                    <div class="col-md-4 col-sm-12 text-center ps-0">
                         <span class="card-text">Placa</span>
                         <h6>@Model.Carros[i].Placa</h6>
-                        @if (Model.Orçamentos[i].Status == 32 && ViewBag.éPessoa == true)
+                        @if ((Model.Orçamentos[i].Status == 32 || Model.Orçamentos[i].Status == 31 || Model.Orçamentos[i].Status == 25) && ViewBag.éPessoa == true)
                         {
                             <div class="d-grid mx-auto">
                                 <a href="@Url.Action("Avaliar", "Avaliação", new { Model.Orçamentos[i].Id })" class="btn btn-success mt-4">Avaliar Serviços</a>
                             </div>
+                        }
+                        @if (ViewBag.éOficina == true && !(CompletosList.Contains(Model.Orçamentos[i].Status)))
+                        {
+                            var agendamento = Model.Agendamentos.Where(e => e.Fk_Orçamento_Id == Model.Orçamentos[i].Id).SingleOrDefault().Data;
+
+                            if (agendamento != null && agendamento <= Atual)
+                            {
+                                <div class="d-grid mx-auto">
+                                    <a href="@Url.Action("Agendamentos", "Oficina")" class="btn btn-outline-success mt-4">Ver na Lista de Agendamentos</a>
+                                </div>
+                            }
                         }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 }

@@ -1,0 +1,63 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.Calendario
+
+@{ 
+    var Horas = Model.Oficina.HorarioFuncionamento.Split('/');
+    var sTime = Horas[0];
+    var eTime = Horas[1];
+    var Start = Convert.ToInt32(sTime.Substring(0, sTime.LastIndexOf(":")));
+    var End = Convert.ToInt32(eTime.Substring(0, eTime.LastIndexOf(":")));
+    var sub = End - Start;
+
+    var Now = DateTime.Now;
+    var Days = Now.Day;
+    var hours = Now.TimeOfDay;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5">Escolha um Horário</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-0">
+            @for (int i = 0; i <= sub; i++)
+            {
+                string val;
+                if (Start < 10)
+                {
+                    val = "0" + Start + ":00";
+                }
+                else
+                {
+                    val = Start + ":00";
+                }
+
+                var valConv = DateTime.ParseExact(val, "HH:mm", System.Globalization.CultureInfo.CurrentCulture).TimeOfDay;
+
+                var item = Model.Agendamentos.Where(e => e.Data.Hour == Start).SingleOrDefault();
+
+                if (item != null)
+                {
+                    <div class="row mt-1 text-center">
+                        <div class="card" style="height: 40px">
+                            <a class="disabled h6 my-auto" style="text-decoration: none; color: black" href="#">@val<span class="badge text-bg-warning">Ocupado</span></a>
+                        </div>
+                    </div>
+                }
+
+                else if (item == null)
+                {
+                    <div class="row mt-1 text-center">
+                        <div class="card @if (valConv < hours && Model.Dia == Days){<text>d-none</text>}" style="height: 40px" >
+                            <a class="stretched-link h6 my-auto hora"
+                               style="text-decoration: none; color: black"
+                               @if (!(valConv < hours && Model.Dia == Days)) { <text> href="#" </text>}>@val</a>
+                        </div>
+                    </div>
+                    }
+
+                    Start++;
+                    }
+                </div>
+    </div>
+</div>

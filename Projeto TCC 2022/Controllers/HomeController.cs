@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.WebPages;
 
@@ -17,11 +18,8 @@ namespace Projeto_TCC_2022.Controllers
             {
                 return RedirectToAction("Index", "Administrador");
             }
-            return View();
-        }
 
-        public ActionResult About()
-        {
+            ViewBag.Logado = User.Identity.IsAuthenticated;
             return View();
         }
 
@@ -131,27 +129,37 @@ namespace Projeto_TCC_2022.Controllers
                 }
 
                 List<Imagem> Imagens = new List<Imagem>();
+                
+                List<double> Médias = new List<double>();
 
                 if (oficinas != null)
                 {
                     foreach (var oficina in oficinas)
                     {
                         Imagens.Add(Model1.GetImagem(oficina.Id));
+                        
+                        double MédiaGeral = 0;
+                        List<Avaliação> Av = Model1.GetAvaliaçãoByOficinaId(oficina.Id);
+
+                        if (Av != null)
+                        {
+                            foreach (var item in Av)
+                            {
+                                MédiaGeral += item.Estrelas;
+                            }
+
+                            MédiaGeral /= Av.Count();
+
+                            Médias.Add(MédiaGeral);
+                        }
+
+
                     }
                 }
 
-                List<Avaliação> Avaliações = new List<Avaliação>();
-
-                if (ViewBag.Oficinas != null)
-                {
-                    foreach (var oficina in oficinas)
-                    {
-                        //Avaliações.Add(Model1.GetAvaliações(oficina.Id));
-                    }
-                }
                 ViewBag.Oficinas = oficinas;
                 ViewBag.Imagens = Imagens;
-                ViewBag.Avaliações = Avaliações;
+                ViewBag.Médias = Médias;
             }
 
             return View();

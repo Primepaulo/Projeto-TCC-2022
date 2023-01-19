@@ -176,7 +176,7 @@
     <Compile Include="Controllers\AdministradorController.cs" />
     <Compile Include="Controllers\AvaliaçãoController.cs" />
     <Compile Include="Controllers\CadastroController.cs" />
-    <Compile Include="Controllers\CarrosController.cs" />
+    <Compile Include="Controllers\VeículosController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
     <Compile Include="Controllers\GenericController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -197,12 +197,17 @@
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\CelularTelefone.cs" />
     <Compile Include="Models\ItemAvaliação.cs" />
+    <Compile Include="Models\Agendamento.cs" />
     <Compile Include="Models\ViewModels\AddItemOrçamento2View.cs" />
     <Compile Include="Models\ViewModels\Avaliar.cs" />
     <Compile Include="Models\ViewModels\AvaliarItem.cs" />
     <Compile Include="Models\ViewModels\AvItemMédia.cs" />
     <Compile Include="Models\ViewModels\Cadastro.cs" />
+    <Compile Include="Models\ViewModels\Calendario.cs" />
+    <Compile Include="Models\ViewModels\CalendarioOficina.cs" />
+    <Compile Include="Models\ViewModels\ConfirmarAgendamentoPartial.cs" />
     <Compile Include="Models\ViewModels\DetalhesOrçamento.cs" />
+    <Compile Include="Models\ViewModels\Dias.cs" />
     <Compile Include="Models\ViewModels\EditarAvaliação.cs" />
     <Compile Include="Models\ViewModels\ExcluirAvaliação.cs" />
     <Compile Include="Models\ViewModels\HistoricoAvaliação.cs" />
@@ -253,7 +258,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\fonts\bootstrap-icons.woff" />
     <Content Include="Content\fonts\bootstrap-icons.woff2" />
-    <Content Include="Scripts\Avaliação.js" />
+    <Content Include="Imagens_Fixas\engine-2828878_960_720.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -271,8 +276,13 @@
     <Content Include="Content\fonts\FiraSans-Regular.ttf" />
     <Content Include="Content\fonts\Merriweather-Regular.ttf" />
     <Content Include="Content\fonts\Montserrat-VariableFont_wght.ttf" />
-    <None Include="Scripts\jquery-3.6.0.intellisense.js" />
-    <Content Include="Scripts\jquery-3.6.0.js" />
+    <None Include="Scripts\jquery-3.6.3.intellisense.js" />
+    <Content Include="Scripts\jquery-3.6.3.js" />
+    <Content Include="Scripts\jquery-3.6.3.min.js" />
+    <Content Include="Scripts\jquery-3.6.3.slim.js" />
+    <Content Include="Scripts\jquery-3.6.3.slim.min.js" />
+    <Content Include="Scripts\jquery-3.6.3.slim.min.map" />
+    <Content Include="Scripts\jquery-3.6.3.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.timepicker.min.js" />
@@ -291,7 +301,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
@@ -316,11 +325,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Cadastro\CadastroPessoa.cshtml" />
     <Content Include="Views\Numero\CadastroNúmero.cshtml" />
-    <Content Include="Views\Carros\CadastroCarros.cshtml" />
-    <Content Include="Views\Carros\VisualizarCarros.cshtml" />
+    <Content Include="Views\Veículos\CadastroVeículos.cshtml" />
+    <Content Include="Views\Veículos\VisualizarVeículos.cshtml" />
     <Content Include="Views\Cadastro\CadastroOficina.cshtml" />
-    <Content Include="Views\Carros\EditarCarro.cshtml" />
-    <Content Include="Views\Carros\DeletarCarro.cshtml" />
+    <Content Include="Views\Veículos\EditarVeículo.cshtml" />
+    <Content Include="Views\Veículos\DeletarVeículo.cshtml" />
     <Content Include="Views\Imagem\AdicionarImagem.cshtml" />
     <Content Include="Views\Imagem\MudarImagem.cshtml" />
     <Content Include="Views\Oficina\Page.cshtml" />
@@ -364,6 +373,13 @@
     <Content Include="Views\Avaliação\EditarAvaliação.cshtml" />
     <Content Include="Views\Erro\Erro.cshtml" />
     <Content Include="Views\Avaliação\ExcluirAvaliação.cshtml" />
+    <Content Include="Views\Shared\_Main.cshtml" />
+    <Content Include="Views\Orçamento\Marcar.cshtml" />
+    <Content Include="Views\Orçamento\MarcarModalPartial.cshtml" />
+    <Content Include="Views\Oficina\Agendamentos.cshtml" />
+    <Content Include="Views\Oficina\AgendamentosModalPartial.cshtml" />
+    <Content Include="Views\Orçamento\ConfirmarAgendamentoPartial.cshtml" />
+    <Content Include="Views\Shared\_OrçamentoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

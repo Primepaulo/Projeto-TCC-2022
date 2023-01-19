@@ -3,8 +3,6 @@
     public class OficinaApprovePartial
     {
         public int Id { get; set; }
-        public bool Marcar { get; set; }
-
         public Orçamento Orçamento { get; set; }
     }
 }

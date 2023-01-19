@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public class CarrosController : DataController
+    public class VeículosController : DataController
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -20,7 +20,7 @@ namespace Projeto_TCC_2022.Controllers
                 filterContext.HttpContext.Response.Redirect("/Home/Index");
             }
         }
-        public ActionResult VisualizarCarros()
+        public ActionResult VisualizarVeículos()
         {
             Pessoa pessoa = Model1.GetPessoa(UserID);
             if (pessoa == null)
@@ -32,7 +32,7 @@ namespace Projeto_TCC_2022.Controllers
 
             return View();
         }
-        public ActionResult CadastroCarros()
+        public ActionResult CadastroVeículos()
         {
             if (Pessoa == true)
             {
@@ -44,18 +44,18 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CadastrarCarros(string Placa, string Cor, string Modelo, string Motorização, string Marca)
+        public ActionResult CadastrarVeículos(string Placa, string Cor, string Modelo, string Motorização, string Marca)
         {
             if (Pessoa == true)
             {
                 Model1.InsertCarro(Placa, Cor, Modelo, Motorização, Marca, UserID);
-                return RedirectToAction("VisualizarCarros");
+                return RedirectToAction("VisualizarVeículos");
             }
 
             return RedirectToAction("Home", "Index");
         }
 
-        public ActionResult EditarCarro(string Placa)
+        public ActionResult EditarVeículo(string Placa)
         {
             if (Placa == null)
             {
@@ -77,14 +77,14 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarCarro([Bind(Include = "Placa,Cor,Modelo,Motorização,Marca, fk_Pessoa_Id")] Carro carro)
+        public ActionResult EditarVeículo([Bind(Include = "Placa,Cor,Modelo,Motorização,Marca, fk_Pessoa_Id")] Carro carro)
         {
             if (carro.fk_Pessoa_Id == UserID)
             {
                 if (ModelState.IsValid)
                 {
                     Model1.UpdateCarro(carro);
-                    return RedirectToAction("VisualizarCarros");
+                    return RedirectToAction("VisualizarVeículos");
                 }
                 return View(carro);
             }
@@ -92,7 +92,7 @@ namespace Projeto_TCC_2022.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult DeletarCarro(string Placa)
+        public ActionResult DeletarVeículo(string Placa)
         {
             if (Placa == null)
             {
@@ -111,7 +111,7 @@ namespace Projeto_TCC_2022.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost, ActionName("DeletarCarro")]
+        [HttpPost, ActionName("DeletarVeículo")]
         [ValidateAntiForgeryToken]
         public ActionResult Deletar(string Placa)
         {
@@ -119,7 +119,7 @@ namespace Projeto_TCC_2022.Controllers
             if (carro.fk_Pessoa_Id == UserID)
             {
                 Model1.DeleteCarro(Placa);
-                return RedirectToAction("VisualizarCarros");
+                return RedirectToAction("VisualizarVeículos");
             }
 
             return RedirectToAction("Index", "Home");

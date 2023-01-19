@@ -20,6 +20,60 @@
     src: url("fonts/Montserrat-VariableFont_wght.ttf");
 }
 
+.mask {
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+}
+
+.mask-custom {
+    backdrop-filter: blur(0px);
+    background-color: rgba(32,29,29,0.8);
+}
+
+.bg-image {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    position: relative;
+}
+
+/*Calendário*/
+
+@media (min-width: 992px) {
+    .seven-cols .col-md-1,
+    .seven-cols .col-sm-1,
+    .seven-cols .col-lg-1 {
+        width: 14.285714285714285714285714285714%;
+        *width: 14.285714285714285714285714285714%;
+    }
+}
+
+/*Outros*/
+
+.black-text{
+    color: black;
+}
+
+.gray-text {
+    color: #3f3f3f !important;
+}
+
+
+.w-66 {
+    width: 66.6%;
+}
+
+.w-55{
+    width: 55.5%
+}
+
 .a{
     color:inherit !important;
 }
@@ -144,9 +198,20 @@ a.deco-none:hover {
     width: 300px !important;
 }
 
-#navSearch{
-    width: 400px;
+@media(min-width: 1450px)
+{
+    #navSearch{
+        width: 400px;
+    }
 }
+
+@media(max-width: 1449px)
+{
+    #navSearch {
+        width: 150px;
+    }
+}
+
 
 #notificaçãoLista {
     padding-left: 0 !important;

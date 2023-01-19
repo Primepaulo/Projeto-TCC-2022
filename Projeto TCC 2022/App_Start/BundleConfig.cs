@@ -33,6 +33,7 @@ namespace Projeto_TCC_2022
                 "~/Content/jquery-ui.structure.css",
                 "~/Content/jquery-ui.theme.css",
                 "~/Content/jquery.timepicker.css",
+                "~/Content/tempus-dominus.css",
                 "~/Content/selectize.bootstrap5.css",
                 "~/Content/Site.css"));
         }

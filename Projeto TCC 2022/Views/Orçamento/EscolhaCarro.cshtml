@@ -7,7 +7,7 @@
     {
         @Html.AntiForgeryToken()
 
-        <select for="carro" name="carro" class="form-select" id="carro" placeholder="Escolha um carro">
+        <select for="carro" name="carro" class="form-select" id="carro" placeholder="Escolha um Veículo">
             @if (ViewBag.Carros != null)
             {
                 foreach (var item in ViewBag.Carros)
@@ -20,9 +20,7 @@
         <input type="hidden" name="Value" id="Value" value="@TempData["Value"].ToString()" />
 
         <div class="form-group text-center">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" name="choose" class="btn">Prosseguir<i class="bi bi-arrow-right-circle-fill ms-2"></i></button>
-            </div>
+            <button type="submit" name="choose" class="btn">Prosseguir<i class="bi bi-arrow-right-circle-fill ms-2"></i></button>
         </div>
     }
 </div>

@@ -11,5 +11,7 @@ namespace Projeto_TCC_2022.Models.ViewModels
         public Pessoa Pessoa { get; set; }
         public CelularTelefone CelularTelefone { get; set; }
 
+        public Dias Dias { get; set; }
+
     }
 }

@@ -38,7 +38,7 @@ namespace Projeto_TCC_2022.Controllers
             Response.Clear();
 
             if (Pessoa == true)
-                return RedirectToAction("CadastroCarros", "Carros");
+                return RedirectToAction("CadastroVeículos", "Veículos");
             else if (Oficina == true)
                 return RedirectToAction("AdicionarServiços", "Serviços");
             else

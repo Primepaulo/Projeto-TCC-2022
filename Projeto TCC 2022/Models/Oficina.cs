@@ -14,6 +14,7 @@ namespace Projeto_TCC_2022.Models
             Serviço = new HashSet<Serviço>();
             Orçamento = new HashSet<Orçamento>();
             Peça = new HashSet<Peça>();
+            Agendamento = new HashSet<Agendamento>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -66,6 +67,9 @@ namespace Projeto_TCC_2022.Models
         [StringLength(11)]
         public string HorarioFuncionamento { get; set; }
 
+        [StringLength(27)]
+        public string DiasFuncionamento { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orçamento> Orçamento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -74,6 +78,9 @@ namespace Projeto_TCC_2022.Models
         public virtual ICollection<Peça> Peça { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Messages> Messages { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Agendamento> Agendamento { get; set; }
         public virtual Imagem Imagem { get; set; }
     }
 }

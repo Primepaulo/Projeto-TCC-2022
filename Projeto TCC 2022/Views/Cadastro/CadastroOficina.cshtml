@@ -13,7 +13,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Oficina.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <input type="text" class="form-control" id="Oficina_CNPJ" name="Oficina.CNPJ" maxlength="18" autocomplete="off" required="required" />
+            <input type="text" class="form-control" id="Oficina_CNPJ" name="Oficina.CNPJ" maxlength="18" autocomplete="off" data-val="true" data-val-required="Campo requerido." />
             @Html.ValidationMessageFor(model => model.Oficina.CNPJ, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -103,12 +103,63 @@
     <div class="form-group">
         <label for="intervalo" class="control-label col-md-2">Horário de Funcionamento: </label>
         <div class="col-md-10 mt-3">
-            <input id="inicio" name="inicio" type="text" value="" class="timepicker" /> <span class="ms-2 me-2"> Até</span>
-            <input id="fim" name="fim" type="text" value="" class="timepicker" />
+            <input id="inicio" name="inicio" type="text" value="" class="timepicker" data-val="true" data-val-required="O campo é obrigatório" /> <span class="ms-2 me-2"> Até</span>
+            <input id="fim" name="fim" type="text" value="" class="timepicker" data-val="true" data-val-required="O campo é obrigatório" />
+            <span class="field-validation-valid" data-valmsg-for="inicio" data-valmsg-replace="true"></span>
+            <span class="field-validation-valid" data-valmsg-for="fim" data-valmsg-replace="true"></span>
         </div>
     </div>
 
-    <div class="form-group">
+
+    <div class="row w-50 text-center mt-4">
+        <div class="col">
+            <h6>Domingo</h6>
+        </div>
+        <div class="col">
+            <h6>Segunda</h6>
+        </div>
+        <div class="col">
+            <h6>Terça</h6>
+        </div>
+        <div class="col">
+            <h6>Quarta</h6>
+        </div>
+        <div class="col">
+            <h6>Quinta</h6>
+        </div>
+        <div class="col">
+            <h6>Sexta</h6>
+        </div>
+        <div class="col">
+            <h6>Sábado</h6>
+        </div>
+    </div>
+
+    <div class="row w-50 text-center">
+        <div class="col">
+            @Html.CheckBoxFor(e=> e.Dias.Dom, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Seg, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Ter, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Qua, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Qui, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Sex, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Sab, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+    </div>
+
+    <div class="form-group mt-4">
         <label for="CelularTelefone_CelularTelefone1" class="control-label col-md-2">Telefone ou Celular:</label>
         <div class="col-md-10">
             <input class="form-control text-box single-line mt-3" name="CelularTelefone.CelularTelefone1" , id="CelularTelefone_CelularTelefone" data-val="true" data-val-length="O campo Telefone ou Celular deve ser uma cadeia de caracteres com um comprimento máximo de 12."
@@ -130,7 +181,7 @@
     <script>
 
         $(document).ready(function () {
-            let inputCNPJ = $("#CNPJ")
+            let inputCNPJ = $("#Oficina_CNPJ")
             inputCNPJ.on("input", function () {
                 let inputLength = inputCNPJ.val().length;
 

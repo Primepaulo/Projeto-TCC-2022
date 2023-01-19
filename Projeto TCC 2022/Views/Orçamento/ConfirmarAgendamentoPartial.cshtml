@@ -1,0 +1,31 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.ConfirmarAgendamentoPartialModel
+
+@if (Model.Orçamento.Status == 40 && ViewBag.éPessoa == true)
+{
+    <h4>Aguardando Confirmação do Agendamento</h4>
+}
+
+else if (Model.Orçamento.Status == 40 && ViewBag.éPessoa == false)
+{
+    using (Html.BeginForm("AgendamentoPOST", "Orçamento", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Orçamento.Id)
+
+        <h6>Data Solicitada:</h6>
+
+        <h5>@Model.Agendamento.Data</h5>
+
+        <div class="row mt-2">
+            <div class="col-md-6 col-sm-12">
+                <button type="submit" class="btn btn-default" value="42" name="Operação">Aceitar Horário <i class="bi bi-check-lg" style="color:green"></i></button>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <button type="submit" class="btn btn-default" value="41" name="Operação">Recusar Horário<i class="bi bi-x-lg" style="color:red; font-size: 13px"></i></button>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <button type="submit" class="btn btn-danger" value="43" name="Operação">Cancelar Orçamento</button>
+        </div>
+    }
+}

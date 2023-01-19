@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Projeto_TCC_2022.Models;
+using Projeto_TCC_2022.Models.ViewModels;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -86,6 +87,45 @@ namespace Projeto_TCC_2022.Controllers
             ViewBag.userID = UserID;
             ViewBag.Categorias = Categorias;
             base.OnActionExecuting(filterContext);
+        }
+    }
+
+    public abstract class CadController : DataController
+    {
+        public static string Add(Dias dias)
+        {
+            string DiasFuncionamento = "";
+
+            if (dias.Dom == true)
+            {
+                DiasFuncionamento += "Dom";
+            }
+            if (dias.Seg == true)
+            {
+                DiasFuncionamento += ",Seg";
+            }
+            if (dias.Ter == true)
+            {
+                DiasFuncionamento += ",Ter";
+            }
+            if (dias.Qua == true)
+            {
+                DiasFuncionamento += ",Qua";
+            }
+            if (dias.Qui == true)
+            {
+                DiasFuncionamento += ",Qui";
+            }
+            if (dias.Sex == true)
+            {
+                DiasFuncionamento += ",Sex";
+            }
+            if (dias.Sab == true)
+            {
+                DiasFuncionamento += ",Sab";
+            }
+
+            return DiasFuncionamento;
         }
     }
 }

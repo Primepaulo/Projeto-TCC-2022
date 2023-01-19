@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public int Tipo { get; set; }
-        public decimal Val { get; set; }
+        public string Val { get; set; }
     }
 }

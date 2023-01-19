@@ -1,16 +1,34 @@
-﻿<header class="bg-dark py-5">
-    <div class="container">
-        <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6">
-                <div class="text-center my-5">
-                    <h1 class="display-5 fw-bolder text-white mb-2">Uma nova maneira de buscar oficinas e fazer orçamentos</h1>
-                    <p class="lead text-white-50 mb-3">Ache a oficina ideal para o seu carro e agende um orçamento na hora!</p>
-                </div>
-                <div class="gap-3 justify-content-center d-flex">
-                    <a href="/Cadastro/CadastroPessoa" class="btn btn-primary btn-lg me-3">Cadastre-se como Cliente</a>
-                    <a href="/Cadastro/CadastroOficina" class="btn btn-outline-primary btn-lg me-3">Cadastre-se como Oficina</a>
+﻿@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+
+
+<div class=" vw-100%" style="height: 450px;">
+    <div class="bg-image h-100">
+        <img src="~/Imagens_Fixas/engine-2828878_960_720.jpg" class="w-100" alt="teste" />
+        <div class="mask mask-custom">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-7">
+                    <div class="text-center my-5">
+                        <h1 class="display-5 fw-bolder text-white mb-2">Uma nova maneira de buscar oficinas e fazer orçamentos</h1>
+                        <h5 class=" text-white mb-3 mt-5">Ache a oficina ideal para o seu carro e agende um orçamento na hora!</h5>
+                    </div>
+                    <div class="gap-4 justify-content-center d-flex" style="margin-top:70px">
+                        @if (ViewBag.Logado == true)
+                        {
+                            <a href="/Cadastro/CadastroPessoa" class="btn btn-primary btn-lg me-3">Cadastre-se como Cliente</a>
+                            <a href="/Cadastro/CadastroOficina" class="btn btn-primary btn-lg me-3">Cadastre-se como Oficina</a>
+                        }
+                        @if (ViewBag.Logado == false)
+                        {
+                            <a href="/Cadastro/Cadastro/1" class="btn btn-primary btn-lg me-3">Cadastre-se como Cliente</a>
+                            <a href="/Cadastro/Cadastro/2" class="btn btn-primary btn-lg me-3">Cadastre-se como Oficina</a>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</header>
+</div>
+

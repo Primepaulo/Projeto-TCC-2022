@@ -6,31 +6,13 @@
     <div class="card-body">
         @using (Html.BeginForm("AprovarRecusar", "Orçamento", FormMethod.Post))
         {
-            if (Model.Marcar == true)
-            {
-                <h5 class="smallHeader">Escolha o horário da análise do veículo</h5>
-
-                <div>
-                    <input type="radio" id="Horário1" name="Horario" class="d-inline-block" onchange="exibir()" />
-                    <label class="d-inline-block" for="Horário1">Horário de Funcionamento</label>
-                </div>
-                <div class="mt-2 mb-2">
-                    <input type="radio" id="Horário2" name="Horario" onchange="exibir()" />
-                    <label for="Horário2">Horário Definido</label>
-                </div>
- 
-                <div class="mt-3 d-none" id="tempo">
-                    <input id="inicio" name="inicio" type="text" value="" class="timepicker d-inline-block w-25" /> <span class="ms-2 me-2 d-inline-block"> Até</span>
-                    <input id="fim" name="fim" type="text" value="" class="timepicker d-inline-block w-25" />
-                </div>
-            }
             @Html.HiddenFor(m => m.Id)
             <div class="row mt-2">
                 <div class="col-md-6 col-sm-12">
-                    <button type="submit" class="btn btn-default" value="12" name="Operação">Aceitar</button>
+                    <button type="submit" class="btn btn-default" value="12" name="Operação">Aceitar Solicitação <i class="bi bi-check-lg" style="color:green"></i></button>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <button type="submit" class="btn btn-default" value="11" name="Operação">Recusar</button>
+                    <button type="submit" class="btn btn-default" value="11" name="Operação">Recusar Solicitação<i class="bi bi-x-lg" style="color:red; font-size: 13px"></i></button>
                 </div>
             </div>
         }
@@ -39,7 +21,7 @@
 
 @if (ViewBag.éPessoa == true)
 {
-    <h4 class="bigHeader">Aguardando Oficina...</h4>
+    <h4 class="bigHeader ">Aguardando Oficina...</h4>
 }
 
 

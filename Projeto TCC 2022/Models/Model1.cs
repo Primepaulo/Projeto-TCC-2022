@@ -19,6 +19,7 @@ namespace Projeto_TCC_2022.Models
 
         public virtual DbSet<Administrador> Administrador { get; set; }
         public virtual DbSet<Avaliação> Avaliação { get; set; }
+        public virtual DbSet<Agendamento> Agendamento { get; set; }
         public virtual DbSet<ItemAvaliação> ItemAvaliação { get; set; }
         public virtual DbSet<Carro> Carro { get; set; }
         public virtual DbSet<CelularTelefone> CelularTelefone { get; set; }
@@ -64,6 +65,12 @@ namespace Projeto_TCC_2022.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Oficina>()
+                .HasMany(e => e.Agendamento)
+                .WithRequired(e => e.Oficina)
+                .HasForeignKey(e => e.Fk_Oficina_Id)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Oficina>()
                 .HasMany(e => e.Peça)
                 .WithRequired(e => e.Oficina)
                 .HasForeignKey(e => e.Fk_Oficina_Id)
@@ -72,6 +79,12 @@ namespace Projeto_TCC_2022.Models
             modelBuilder.Entity<Orçamento>()
                 .Property(e => e.Valor)
                 .HasPrecision(19, 4);
+
+            modelBuilder.Entity<Orçamento>()
+                .HasMany(e => e.Agendamento)
+                .WithOptional(e => e.Orçamento)
+                .HasForeignKey(e => e.Fk_Orçamento_Id);
+                
 
             modelBuilder.Entity<Orçamento>()
                 .HasMany(e => e.ItemOrçamento)
@@ -602,7 +615,7 @@ namespace Projeto_TCC_2022.Models
         }
 
         public static void InsertOficina(int Id, string Email, string CNPJ, string Nome, string CEP, string Estado, string Cidade, string Bairro,
-        string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado, bool Finalizada, string HorarioFuncionamento)
+        string Rua, int Número, string Complemento, string Descrição, bool Aprovada, bool AceitaImportado, bool Finalizada, string HorarioFuncionamento, string DiasFuncionamento)
         {
             using (var context = new Model1())
             {
@@ -623,7 +636,8 @@ namespace Projeto_TCC_2022.Models
                     Aprovada = Aprovada,
                     AceitaImportado = AceitaImportado,
                     Finalizada = Finalizada,
-                    HorarioFuncionamento = HorarioFuncionamento
+                    HorarioFuncionamento = HorarioFuncionamento,
+                    DiasFuncionamento = DiasFuncionamento
                 });
                 context.SaveChanges();
             }
@@ -854,7 +868,6 @@ namespace Projeto_TCC_2022.Models
                     fk_Carro_Placa = Placa,
                     fk_Oficina_Id = OficinaId,
                     Data_Orçamento = DateOrçamento,
-                    Data_Aprovação = null,
                     Status = 10,
                     Tipo = Tipo
                 };
@@ -867,23 +880,16 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-        public static void AprovarFinalizarOrçamento(int Id, int Operação, decimal? Valor, string DateT)
+        public static void AprovarFinalizarOrçamento(int Id, int Operação, decimal? Valor)
         {
             using (var context = new Model1())
             {
                 Orçamento orçamento = GetOrçamento(Id);
-                Oficina oficina = GetOficinaById(orçamento.fk_Oficina_Id);
                 orçamento.Status = Operação;
-                orçamento.Data_Aprovação = oficina.HorarioFuncionamento;
-
+                
                 if (Valor != null)
                 {
                     orçamento.Valor = Valor;
-                }
-
-                if (DateT != null && DateT != "" && DateT != "/")
-                {
-                    orçamento.Data_Aprovação = DateT;
                 }
 
                 context.Entry(orçamento).State = EntityState.Modified;
@@ -1362,6 +1368,72 @@ namespace Projeto_TCC_2022.Models
             {
                 ItemAvaliação I = context.ItemAvaliação.Find(item.Id);
                 context.ItemAvaliação.Remove(I);
+                context.SaveChanges();
+            }
+        }
+
+        //----------------------------------------------------------------------------------------
+        public static List<Agendamento> GetAgendamentos(int OficinaId)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Agendamento in context.Agendamento
+                            where Agendamento.Fk_Oficina_Id == OficinaId
+                            select Agendamento;
+                var List = query.ToList();
+                return List;
+            }
+        }
+
+        public static List<Agendamento> GetAgendamentoByDate(DateTime date)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Agendamento in context.Agendamento
+                            where DbFunctions.TruncateTime(Agendamento.Data) == date.Date
+                            select Agendamento;
+                var item = query.ToList();
+                return item;
+            }
+        }
+
+        public static Agendamento GetAgendamentoByOrçamento(int Id)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Agendamento in context.Agendamento
+                            where Agendamento.Fk_Orçamento_Id == Id
+                            select Agendamento;
+                var item = query.SingleOrDefault();
+                return item;
+            }
+        }
+
+
+        public static Agendamento Agendar(DateTime Data, int OficinaId, int PessoaId)
+        {
+            using (var context = new Model1())
+            {
+                Agendamento agendamento = new Agendamento
+                {
+                    Data = Data,
+                    Fk_Oficina_Id = OficinaId,
+                    Fk_Pessoa_Id = PessoaId,
+                    Fk_Orçamento_Id = null
+                };
+
+                context.Agendamento.Add(agendamento);
+                context.SaveChanges();
+
+                return agendamento;
+            }
+
+        }
+        public static void UpdateAgendamento(Agendamento agendamento)
+        {
+            using (var context = new Model1())
+            {
+                context.Entry(agendamento).State = EntityState.Modified;
                 context.SaveChanges();
             }
         }

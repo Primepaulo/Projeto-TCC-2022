@@ -6,7 +6,7 @@
         {
         <img class="rounded-circle my-auto d-inline-block" style="height: 150px;" src="@Model.Imagem.Url">
         }
-        <h3 class="d-inline-block my-auto">@Model.Oficina.Nome</h3>
+        <h3 class="d-inline-block my-auto ms-3">@Model.Oficina.Nome</h3>
 
         @{ 
             double Média = Model.Média_Geral;
@@ -58,7 +58,16 @@
                 }
             }
 
-            <div>
+        <div>
+            @{
+                System.Text.StringBuilder String = new System.Text.StringBuilder(Model.Oficina.HorarioFuncionamento);
+                String.Replace("/", " - ");
+                <h6 class="mt-3">Horário de Funcionamento: </h6>
+                <h6 class="smallHeader">@String.ToString()</h6>
+            }
+        </div>
+
+            <div class="mt-3">
                 <h6>Outras Informações</h6>
 
                 <h6 class="bigHeader d-inline-block">CNPJ: </h6>
@@ -76,13 +85,14 @@
                     @Importado
                 </span>
                 
-                @if (Model.Cel.Count() != 0)
+                @if (Model.Cel.Count() != 0 && Model.Cel != null)
                 {
-                    <h6 class="bigHeader mt-3">Números:</h6>
+                    <h6 class="mt-3">Números:</h6>
 
                     foreach (var item in Model.Cel)
                     {
                         <span class="text">@item.CelularTelefone1</span>
+                        <br />
                     }
                 }
 
@@ -94,11 +104,29 @@
 <h3 class="mt-4 mb-3">Agendar</h3>
 
 <div class="row">
-    <div class="col-md-6 text-center">
-        <a class="btn btn-primary">Agendar Serviço</a>
+    <div class="col-md-6 text-end">
+        <a 
+           @if (ViewBag.éPessoa == true) 
+           {
+                   <text>href = "@Url.Action("EscolhaCarro", "Orçamento", new { Id = Model.Oficina.Id, Value = false })"</text>
+           }
+           @if (ViewBag.éPessoa != true)
+           {
+                <text>href = "#"</text>
+           }
+           class="btn btn-primary me-3">Agendar Análise</a>
     </div>
-    <div class="col-md-6 text-center">
-        <a class="btn btn-secondary">Agendar Análise</a>
+    <div class="col-md-6 text-start">
+        <a 
+           @if (ViewBag.éPessoa == true) 
+            {
+                   <text>href = "@Url.Action("EscolhaCarro", "Orçamento", new { Id = Model.Oficina.Id, Value = true })"</text>
+            }
+           @if (ViewBag.éPessoa != true)
+           {
+                <text>href = "#"</text>
+           }
+           class="btn btn-primary me-3">Agendar Análise</a>
     </div>
 </div>
 
@@ -117,7 +145,7 @@
                     <h4 class="card-title bigHeader">@Model.Serviços[i].Nome</h4>
                     <div class="mt-3">
                         <h5 class="card-title" style="display: inline-block">Preço:</h5>
-                        <span class="card-text" style="display: inline-block">R$ @Convert.ToDecimal(Model.Serviços[i].PreçoMin).ToString("F") - R$ @Convert.ToDecimal(Model.Serviços[i].PreçoMin).ToString("F")</span>
+                        <span class="card-text" style="display: inline-block">R$ @Convert.ToDecimal(Model.Serviços[i].PreçoMin).ToString("F") - R$ @Convert.ToDecimal(Model.Serviços[i].PreçoMax).ToString("F")</span>
                     </div>
 
                     @{ 

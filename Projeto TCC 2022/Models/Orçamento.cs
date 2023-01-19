@@ -13,6 +13,7 @@ namespace Projeto_TCC_2022.Models
             ItemOrçamento = new HashSet<ItemOrçamento>();
             Notificação = new HashSet<Notificação>();
             Avaliação = new HashSet<Avaliação>();
+            Agendamento = new HashSet<Agendamento>();
         }
 
         [Column(TypeName = "money")]
@@ -33,9 +34,6 @@ namespace Projeto_TCC_2022.Models
 
         public DateTime Data_Orçamento { get; set; }
 
-        [StringLength(11)]
-        public string Data_Aprovação { get; set; }
-
         public int Tipo { get; set; }
 
         public virtual Carro Carro { get; set; }
@@ -50,6 +48,8 @@ namespace Projeto_TCC_2022.Models
         public virtual ICollection<Avaliação> Avaliação { get; set; }
 
         public virtual Oficina Oficina { get; set; }
+
+        public virtual ICollection<Agendamento> Agendamento { get; set; }
 
         public virtual Pessoa Pessoa { get; set; }
     }

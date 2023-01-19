@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public class CadastroController : DataController
+    public class CadastroController : CadController
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -20,8 +20,19 @@ namespace Projeto_TCC_2022.Controllers
                 filterContext.HttpContext.Response.Redirect("/Home/Index");
             }
         }
-        public ActionResult Cadastro()
+        public ActionResult Cadastro(int? Id)
         {
+            if (Id == 1)
+            {
+                Session["CadTipo"] = 1;
+                return RedirectToAction("Register", "Account");
+            }
+            else if (Id == 2)
+            {
+                Session["CadTipo"] = 2;
+                return RedirectToAction("Register", "Account");
+            }
+
             return View();
         }
         public ActionResult CadastroPessoa()
@@ -78,7 +89,7 @@ namespace Projeto_TCC_2022.Controllers
                 Model1.GetEmail(UserID), CPF, CNPJ, Tipo);
                 Model1.InsertCelular(numero.CelularTelefone1, UserID);
                 Response.Clear();
-                return RedirectToAction("VisualizarCarros", "Carro");
+                return RedirectToAction("VisualizarVeículos", "Veículos");
             }
 
             Response.Clear();
@@ -95,6 +106,13 @@ namespace Projeto_TCC_2022.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CadastrarOficina(Cadastro cadastro, string inicio, string fim)
         {
+            if (inicio == fim)
+            {
+                return RedirectToAction("CadastroOficina", "Cadastro");
+            }
+
+            string DiasFuncionamento = Add(cadastro.Dias);
+
             Oficina oficina = cadastro.Oficina;
             CelularTelefone numero = cadastro.CelularTelefone;
 
@@ -110,7 +128,8 @@ namespace Projeto_TCC_2022.Controllers
             {
                 Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, oficina.Nome, oficina.CEP,
                 oficina.Estado, oficina.Cidade, oficina.Bairro, oficina.Rua, oficina.Número,
-                oficina.Complemento, oficina.Descrição, false, oficina.AceitaImportado, false, HorarioFuncionamento);
+                oficina.Complemento, oficina.Descrição, false, oficina.AceitaImportado, false, HorarioFuncionamento,
+                DiasFuncionamento);
 
                 Model1.InsertCelular(numero.CelularTelefone1, UserID);
                 Response.Clear();

@@ -1,14 +1,11 @@
 ﻿@model Projeto_TCC_2022.Models.Carro
 
 @{
-    ViewBag.Title = "View";
+    ViewBag.Title = "Veículo";
 }
-
-<h2>View</h2>
-
-<h3>Deseja realmente deletar este carro?</h3>
+<h3>Deseja realmente deletar este Veículo?</h3>
 <div>
-    <h4>Carro</h4>
+    <h4>Veículo</h4>
     <hr />
     <dl class="dl-horizontal">
 
@@ -43,7 +40,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-           @Html.ActionLink("Retornar", "VisualizarCarros", "Carros", null, new { @class = "" })
+           @Html.ActionLink("Retornar", "VisualizarVeículos", "Veículos", null, new { @class = "" })
         </div>
     }
 </div>
