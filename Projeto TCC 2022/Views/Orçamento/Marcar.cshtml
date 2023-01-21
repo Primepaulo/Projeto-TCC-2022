@@ -76,9 +76,15 @@
             <div class="card w-100" style="height: 90px;">
                 <a class="stretched-link h6 my-auto" data-amount="@i" data-month="@Month" data-monthname="@monthName" data-day="@Range[i]" style="text-decoration: none; color: black" href="#">
                     @Range[i]
-                    @if (Ocupação.Where(e => e.Data.Day == i).Count() == Hours.Count())
+
+                    @{ 
+                        var xyz = Ocupação.Where(e => e.Data.Day == Range[i]).Count();
+                    } 
+
+                    @if (xyz == Hours.Count())
                     {
-                        <span class="badge text-bg-warning">Lotado</span>
+                        <br />
+                        <span class="badge text-bg-danger">Lotado</span>
                     }
                 </a>
             </div>
@@ -102,7 +108,7 @@
         <input type="hidden" name="Skip" id="Skip" value="@Model.Skip" />
     }
 
-    <div class="text-center mt-5">
+    <div class="text-center mt-3 mb-3">
         <button class="btn btn-primary">Confirmar</button>
     </div>
 

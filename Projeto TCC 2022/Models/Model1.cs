@@ -994,6 +994,30 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static void RemoveItens(int OrçamentoId)
+        {
+            using (var context = new Model1())
+            {
+                var query = from ItemOrçamento in context.ItemOrçamento
+                            where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId
+                            select ItemOrçamento;
+
+                if (query != null) { 
+
+                    var itens = query.ToList();
+
+                    if (itens.Count != 0)
+                    {
+                        context.ItemOrçamento.RemoveRange(itens);
+                        context.SaveChanges();
+                    }
+                }
+                
+
+                
+            }
+        }
+
         public static void AddQuantidade(ItemOrçamento itemOrçamento)
         {
             using (var context = new Model1())
@@ -1411,6 +1435,7 @@ namespace Projeto_TCC_2022.Models
             {
                 var query = from Agendamento in context.Agendamento
                             where Agendamento.Fk_Oficina_Id == OficinaId
+                            && (Agendamento.Finalizado == false || Agendamento.Finalizado == null)
                             select Agendamento;
                 var List = query.ToList();
                 return List;
@@ -1423,6 +1448,7 @@ namespace Projeto_TCC_2022.Models
             {
                 var query = from Agendamento in context.Agendamento
                             where DbFunctions.TruncateTime(Agendamento.Data) == date.Date
+                            && (Agendamento.Finalizado == false || Agendamento.Finalizado == null)
                             select Agendamento;
                 var item = query.ToList();
                 return item;

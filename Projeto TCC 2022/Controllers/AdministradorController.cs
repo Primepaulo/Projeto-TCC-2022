@@ -117,11 +117,10 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult AdicionarCategorias()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult AdicionarCategorias(string Nome)
         {
             Model1.InsertCategorias(Nome);
@@ -131,10 +130,9 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult UpdateCategoria(int Id)
         {
             Categoria categoria = Model1.GetCategoriaById(Id);
-            return View(categoria);
+            return PartialView(categoria);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult UpdateCategoria([Bind(Include = "Id, Nome")] Categoria categoria)
         {
             Model1.UpdateCategoria(categoria);
@@ -145,11 +143,10 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult DeleteCategoria(int Id)
         {
             Categoria categoria = Model1.GetCategoriaById(Id);
-            return View(categoria);
+            return PartialView(categoria);
         }
 
         [HttpPost, ActionName("DeleteCategoria")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeletarCategoria(int Id)
         {
             Model1.DeleteCategoria(Id);

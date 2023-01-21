@@ -54,7 +54,7 @@
     @using (Html.BeginForm("FormularOrçamento", "Orçamento", FormMethod.Post))
     {
         <input type="hidden" class="d-none" value="@Model.OrçamentoId" name="OrçamentoId" id="OrçamentoId" />
-        <div class="container mt-5" id="corpo">
+        <div class="container mt-5 mb-5" id="corpo">
             @foreach (var item in Model.Padrão)
             {
 
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <div class="row especial mb-4">
+                <div class="row especial especialItens mb-4" data-count="@Count">
                     <div class="col-md-3 col-sm-12">
                         <p>Serviço - @item.Nome</p>
                     </div>
@@ -107,13 +107,47 @@
                 Count++;
             }
         </div>
-        <div class="text-center"><button class="btn btn-danger mt-4" type="button" onclick="LimparOrçamento()">Limpar Minhas Escolhas</button></div>
+
+        <div class="text-center mt-4 mb-4">
+            <div class="text-center"><button class="btn btn-danger mt-4" type="button" data-bs-toggle="modal" data-bs-target="#escolhas">Limpar Minhas Escolhas</button></div>
+        </div>
+
+        <div class="modal fade" id="escolhas" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Esta ação é irreversível, você tem certeza?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <button class="btn btn-danger mt-4" type="button" onclick="LimparOrçamento()">Limpar Minhas Escolhas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         if (Model.Padrão.Count() != 0)
         {
-            <div class="text-center"><button class="btn btn-danger mt-4" type="button" onclick="LimparEspecial()">Limpar Seleção do Cliente</button></div>
+            <div class="text-center"><button class="btn btn-danger mt-4" type="button" data-bs-toggle="modal" data-bs-target="#padrao">Limpar Seleção do Cliente</button></div>
+
+            <div class="modal fade" id="padrao" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Esta ação é irreversível, você tem certeza?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center"><button class="btn btn-danger mt-4" type="button" onclick="LimparEspecial()">Limpar Seleção do Cliente</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
         <div class="container mt-3" id="total"></div>
-        <div class="text-center"><button type="submit" class="btn btn-default">Confirmar</button></div>
+        <div class="text-center mt-4 mb-4"><button type="submit" class="btn btn-primary">Confirmar</button></div>
+
+
     }
 </div>
 
@@ -258,12 +292,30 @@
                 cache: false,
                 error: function () {
                     console.log("Erro");
+                },
+                success: function () {
+                    $('#escolhas').modal('hide');
                 }
             });
         }
 
         function LimparEspecial() {
-            $(".especial").empty();
+
+            var start = '<input class="d-none" value="true" name="Itens[';
+
+            $('.especial').each(function () {
+                $(this).addClass("d-none");
+            });
+
+            $('.especialItens').each(function () {
+
+                var end = $(this).data('count');
+
+                var stringF = start + end + '].Finalizado" />'
+
+                $(this).append(stringF);
+            });
+            $('#padrao').modal('hide');
         }
 
     </script>

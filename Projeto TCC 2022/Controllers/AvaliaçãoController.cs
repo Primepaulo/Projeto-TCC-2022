@@ -88,7 +88,7 @@ namespace Projeto_TCC_2022.Controllers
 
                 Model1.GerarAvaliação(avaliação, avaliar.AvItem);
             }
-            return RedirectToAction("Index", "Home"); //Mudar
+            return RedirectToAction("HistoricoAvaliações");
         }
 
         public ActionResult HistoricoAvaliações()

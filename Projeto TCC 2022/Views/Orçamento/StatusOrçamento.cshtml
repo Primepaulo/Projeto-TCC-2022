@@ -1,8 +1,10 @@
 ﻿@model Projeto_TCC_2022.Models.Orçamento
 
-<div id="Status">
+@*<div id="Status">
 
-</div>
+</div>*@
+
+@Html.Action("DetalhesOrçamentoPartial", Model.Id )
 
 <div class="row mt-3 text-center">
     <div class="col-md-3 offset-md-2">
@@ -126,25 +128,7 @@
     }
 
     <script>
-
-        function Lista() {
-            $.ajax({
-
-                type: 'GET',
-                url: '@Url.Action("DetalhesOrçamentoPartial", "Orçamento", new {Id = Model.Id})',
-                dataType: 'html',
-                cache: false,
-                success: function (data) {
-                    $('#Status').html(data);
-                },
-                error: function () {
-                    console.log("Detalhes Ajax Erro");
-                }
-            })
-        }
-
         $(document).ready(function () {
-            Lista();
             @if (Model.Status != 24 && Model.Status != 32 && Model.Status != 31 && Model.Status != 43 && Model.Status != 13 || Model.Status != 10 && ViewBag.éPessoa == false)
                 {
                     <text>

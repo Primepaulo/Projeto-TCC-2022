@@ -12,7 +12,24 @@
                     <button type="submit" class="btn btn-success" value="12" name="Operação">Aceitar Solicitação <i class="bi bi-check-lg"></i></button>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <button type="submit" class="btn btn-danger" value="11" name="Operação">Recusar Solicitação <i class="bi bi-x-lg" style="font-size: 14px"></i></button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Recusar Solicitação <i class="bi bi-x-lg" style="font-size: 14px"></i></button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="confirmationModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Confirmar</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h3>Essa ação é irreversível, você tem certeza?</h3>
+                            <div class="text-center mx-auto mt-4">
+                                <button type="submit" class="btn btn-danger" value="11" name="Operação">Recusar Solicitação <i class="bi bi-x-lg" style="font-size: 14px"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         }

@@ -44,6 +44,14 @@
     position: relative;
 }
 
+
+/*@media screen and (min-width: 1136px)
+{
+    .main {
+        width: 1280px;
+    }
+}
+*/
 /*Calendário*/
 
 @media (min-width: 992px) {
@@ -89,6 +97,14 @@
 
 .text {
     font-family: 'Fira Sans';
+}
+
+.Montserrat {
+    font-family: Montserrat;
+}
+
+.Merryweather {
+    font-family: Merryweather;
 }
 
 .cardHeader {
@@ -140,6 +156,10 @@
 input,
 select {
     max-width: 280px;
+}
+
+.inputArea {
+    max-width: 100%;
 }
 
 .textareaAv {

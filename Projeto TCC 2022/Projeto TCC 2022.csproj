@@ -261,6 +261,8 @@
     <Content Include="Content\fonts\bootstrap-icons.woff" />
     <Content Include="Content\fonts\bootstrap-icons.woff2" />
     <Content Include="Imagens_Fixas\engine-2828878_960_720.jpg" />
+    <Content Include="Imagens_Fixas\pexels-mechanic-8985665.jpg" />
+    <Content Include="Imagens_Fixas\pexels-mídia-4116220.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />

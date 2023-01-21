@@ -89,6 +89,7 @@ namespace Projeto_TCC_2022.Controllers
                 Orçamento orçamento = Model1.GetOrçamento((int)Skip);
                 Agendamento agendamento = Model1.GetAgendamentoByOrçamento(orçamento.Id);
                 agendamento.Data = Data;
+                agendamento.Finalizado = false;
                 Model1.UpdateAgendamento(agendamento);
                 Model1.AprovarFinalizarOrçamento((int)Skip, 40, null);
                 Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Orçamento Remarcado!");
@@ -400,26 +401,48 @@ namespace Projeto_TCC_2022.Controllers
             {
                 orçamento.Status = 22;
                 Model1.UpdateOrçamento(orçamento);
+                Model1.FinalizarAgendamento(orçamento.Id);
                 Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Avaliação do Veículo confirmada!");
             }
             if (Operação == 24)
             {
                 orçamento.Status = 24;
                 Model1.UpdateOrçamento(orçamento);
+                Model1.FinalizarAgendamento(orçamento.Id);
                 Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Veículo não foi levado para análise.");
             }
 
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });
         }
+
+        [HttpPost]
+        public ActionResult Cancelar(int Id)
+        {
+            Orçamento orçamento = Model1.GetOrçamento(Id);
+
+            if (orçamento.fk_Pessoa_Id == UserID)
+            {
+                orçamento.Status = 26;
+                Model1.UpdateOrçamento(orçamento);
+            }
+
+            if (orçamento.fk_Oficina_Id == UserID)
+            {
+                orçamento.Status = 25;
+                Model1.UpdateOrçamento(orçamento);
+            }
+
+            return RedirectToAction("StatusOrçamento", "Orçamento", new { Id });
+        }
+
         public ActionResult FormularPromptPartial(int Id)
         {
             Orçamento orçamento = Model1.GetOrçamento(Id);
-            ViewBag.Id = Id;
             if (orçamento.Status == 22)
             {
                 ViewBag.Formulação = true;
             }
-            return PartialView();
+            return PartialView(orçamento);
         }
         [HttpPost]
         public ActionResult Formulando(int Id)
@@ -437,7 +460,7 @@ namespace Projeto_TCC_2022.Controllers
             if (orçamento.fk_Oficina_Id == UserID)
             {
                 List<Serviço> Inseridos = new List<Serviço>();
-                List<ItemOrçamento> itens = Model1.GetItems(orçamento.fk_Oficina_Id);
+                List<ItemOrçamento> itens = Model1.GetItems(orçamento.Id);
                 List<Serviço> serviços = Model1.GetServiços(orçamento.fk_Oficina_Id);
 
                 foreach (var item in itens)
@@ -578,32 +601,41 @@ namespace Projeto_TCC_2022.Controllers
 
             foreach (ItemViewModel item in ItensOrçamento.Itens)
             {
-                if (item.Val.Contains(".") == true)
+                if (item.Finalizado != true)
                 {
-                    item.Val = item.Val.Replace(".", ",");
-                }
-
-                if (Decimal.TryParse(item.Val, out decimal x) == true)
-                {
-
-                    if (item.Tipo == 1)
+                    if (item.Val.Contains(".") == true)
                     {
-                        Serviço serviço = Model1.GetServiço(item.Id);
-                        Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, x, serviço.Descrição, 1, false, 1);
+                        item.Val = item.Val.Replace(".", ",");
                     }
 
-                    else if (item.Tipo == 2)
+                    if (Decimal.TryParse(item.Val, out decimal x) == true)
                     {
-                        Peça peça = Model1.GetPeça(item.Id);
-                        Model1.AddItemOrçamento(OrçamentoId, peça.Nome, x, peça.Descrição, 1, null, 2);
+
+                        if (item.Tipo == 1)
+                        {
+                            Serviço serviço = Model1.GetServiço(item.Id);
+                            Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, x, serviço.Descrição, 1, false, 1);
+                        }
+
+                        else if (item.Tipo == 2)
+                        {
+                            Peça peça = Model1.GetPeça(item.Id);
+                            Model1.AddItemOrçamento(OrçamentoId, peça.Nome, x, peça.Descrição, 1, null, 2);
+                        }
                     }
                 }
 
-                Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
-
-                Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Orçamento finalizado, agora só falta aprovar!");
-                Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, Decimal.Parse(ItensOrçamento.Final));
+                if (item.Finalizado == true)
+                {
+                    Model1.RemoveItens(OrçamentoId);
+                }
             }
+
+            Orçamento orçamento = Model1.GetOrçamento(OrçamentoId);
+
+            Model1.GerarNotificações(orçamento, orçamento.fk_Pessoa_Id, "Orçamento finalizado, agora só falta aprovar!");
+            Model1.AprovarFinalizarOrçamento(OrçamentoId, 23, Decimal.Parse(ItensOrçamento.Final));
+
             return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = OrçamentoId });
         }
 

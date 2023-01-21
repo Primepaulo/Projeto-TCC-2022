@@ -28,6 +28,7 @@
                     @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
+                        <li style="visibility: hidden">Espaçam</li>
                     }
                     @if (ViewBag.éOficina == true)
                     {
@@ -127,9 +128,7 @@
         </div>
     </div>
         
-    <div class="w-100">
         @RenderBody()
-    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

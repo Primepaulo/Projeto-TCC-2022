@@ -178,7 +178,7 @@ namespace Projeto_TCC_2022.Controllers
                     pessoas.Add(Model1.GetPessoa(item.Fk_Pessoa_Id));
                 }
 
-                calendario.Agendamentos = agendamentos;
+                calendario.Agendamentos = agendamentos.OrderBy(e => e.Data).ToList();
                 calendario.Pessoas = pessoas;
                 calendario.Orçamentos = orçamentos;
             }

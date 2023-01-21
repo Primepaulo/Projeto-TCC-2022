@@ -6,7 +6,7 @@
     DateTime Atual = DateTime.Now;
 }
 
-<div class="w-75 ms-auto mb-5">
+<div class="mx-auto mb-5 text-center">
     <h3 style="color:#2c2c2c">Meus Orçamentos</h3>
 </div>
 
@@ -25,7 +25,7 @@
             Status = "Aceito pela Oficina.";
             break;
         case 21:
-            Status = "Aguardando avaliação do Veículo.";
+            Status = "Aguardando Avaliação do Veículo.";
             break;
         case 22:
             Status = "Em Formulação.";
@@ -40,7 +40,7 @@
             Status = "Finalizado. Orçamento foi cancelado pela Oficina.";
             break;
         case 26:
-            Status = "Finalizado.Orçamento foi cancelado pelo Cliente.";
+            Status = "Finalizado. Orçamento foi cancelado pelo Cliente.";
             break;
         case 31:
             Status = "Finalizado. Rejeitado pelo Cliente.";
@@ -67,7 +67,7 @@
             <div class="card-body pb-0">
                 <div class="row">
                     <div class="col-md-3 pe-0">
-                        Data do Orçamento
+                        Data de Criação
                         @if (CompletosList.Contains(Model.Orçamentos[i].Status))
                         {<h6>
                                 @Model.Orçamentos[i].Data_Orçamento
