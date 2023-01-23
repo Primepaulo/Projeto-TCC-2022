@@ -7,8 +7,19 @@ using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
 {
-    public class OficinaController : DefaultController
+    public class OficinaController : CadController
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.éPessoa = Pessoa;
+            ViewBag.éOficina = Oficina;
+            ViewBag.éAdmin = Admin;
+            ViewBag.éAprovada = Aprovada;
+            ViewBag.userID = UserID;
+            ViewBag.Categorias = Categorias;
+            base.OnActionExecuting(filterContext);
+        }
+
         public ActionResult Page(int Id)
         {
             Oficina oficina = Model1.GetOficinaById(Id);
@@ -76,9 +87,21 @@ namespace Projeto_TCC_2022.Controllers
             if (UserID == Id)
             {
                 Oficina oficina = Model1.GetOficinaById(Id);
+
+                string[] itens = oficina.DiasFuncionamento.Split(',');
+
+                Dias dias = Convert(itens);
+
                 Imagem imagem = Model1.GetImagem(Id);
                 ViewBag.Imagem = imagem;
-                return View(oficina);
+
+                Cadastro cad = new Cadastro
+                {
+                    Oficina = oficina,
+                    Dias = dias
+                };
+
+                return View(cad);
             }
 
             else
@@ -89,19 +112,21 @@ namespace Projeto_TCC_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarOficina([Bind(Include = "Id,Email,CNPJ,Nome,CEP,Estado,Cidade,Rua,Número,Complemento,Bairro,Descrição,Aprovada,AceitaImportado")] Oficina oficina, string inicio, string fim)
+        public ActionResult EditarOficina(Cadastro cadastro, string inicio, string fim)
         {
-            if (UserID == oficina.Id && Oficina == true)
+            if (UserID == cadastro.Oficina.Id && Oficina == true)
             {
                 if (ModelState.IsValid)
                 {
                     string HorarioFuncionamento = inicio + "/" + fim;
-                    oficina.HorarioFuncionamento = HorarioFuncionamento;
-                    Model1.UpdateOficina(oficina);
-                    return RedirectToAction("Page/" + oficina.Id);
+                    cadastro.Oficina.HorarioFuncionamento = HorarioFuncionamento;
+                    string DiasFuncionamento = Add(cadastro.Dias);
+                    cadastro.Oficina.DiasFuncionamento = DiasFuncionamento;
+                    Model1.UpdateOficina(cadastro.Oficina);
+                    return RedirectToAction("Page/" + cadastro.Oficina.Id);
                 }
             }
-            return View(oficina);
+            return View(cadastro);
         }
 
         public ActionResult Sugerir()

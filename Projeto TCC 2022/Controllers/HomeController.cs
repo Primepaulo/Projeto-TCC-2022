@@ -19,10 +19,49 @@ namespace Projeto_TCC_2022.Controllers
             {
                 return RedirectToAction("Index", "Administrador");
             }
+            if (ViewBag.éPessoa == true)
+            {
+                return RedirectToAction("IndexPessoa", "Home");
+            }
+            if (ViewBag.éOficina == true)
+            {
+                return RedirectToAction("IndexOficina", "Home");
+            }
 
             ViewBag.Logado = User.Identity.IsAuthenticated;
             return View();
         }
+
+        public ActionResult IndexPessoa()
+        {
+            if (ViewBag.éAdmin == true)
+            {
+                return RedirectToAction("Index", "Administrador");
+            }
+            if (ViewBag.éOficina == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        public ActionResult IndexOficina()
+        {
+            if (ViewBag.éAdmin == true)
+            {
+                return RedirectToAction("Index", "Administrador");
+            }
+            if (ViewBag.éPessoa == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Oficina oficina = Model1.GetOficinaById(UserID);
+
+            return View(oficina);
+        }
+
 
         [HttpGet]
         public ActionResult DataRequestSessions()

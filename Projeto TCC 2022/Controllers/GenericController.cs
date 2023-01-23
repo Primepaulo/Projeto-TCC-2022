@@ -2,6 +2,8 @@
 using Projeto_TCC_2022.Models;
 using Projeto_TCC_2022.Models.ViewModels;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Projeto_TCC_2022.Controllers
@@ -96,36 +98,78 @@ namespace Projeto_TCC_2022.Controllers
         {
             string DiasFuncionamento = "";
 
-            if (dias.Dom == true)
+            if (dias.Domingo == true)
             {
-                DiasFuncionamento += "Dom";
+                DiasFuncionamento += "Domingo";
             }
-            if (dias.Seg == true)
+            if (dias.Segunda == true)
             {
-                DiasFuncionamento += ",Seg";
+                DiasFuncionamento += ",Segunda";
             }
-            if (dias.Ter == true)
+            if (dias.Terça == true)
             {
-                DiasFuncionamento += ",Ter";
+                DiasFuncionamento += ",Terça";
             }
-            if (dias.Qua == true)
+            if (dias.Quarta == true)
             {
-                DiasFuncionamento += ",Qua";
+                DiasFuncionamento += ",Quarta";
             }
-            if (dias.Qui == true)
+            if (dias.Quinta == true)
             {
-                DiasFuncionamento += ",Qui";
+                DiasFuncionamento += ",Quinta";
             }
-            if (dias.Sex == true)
+            if (dias.Sexta == true)
             {
-                DiasFuncionamento += ",Sex";
+                DiasFuncionamento += ",Sexta";
             }
-            if (dias.Sab == true)
+            if (dias.Sábado == true)
             {
-                DiasFuncionamento += ",Sab";
+                DiasFuncionamento += ",Sábado";
             }
 
             return DiasFuncionamento;
+        }
+
+        public static Dias Convert(string[] itens)
+        {
+            Dias dias = new Dias();
+
+            if (itens.Contains("Domingo") == true)
+            {
+                dias.Domingo = true;
+            }
+
+            if (itens.Contains("Segunda") == true)
+            {
+                dias.Segunda = true;
+            }
+
+            if (itens.Contains("Terça") == true)
+            {
+                dias.Terça = true;
+            }
+
+            if (itens.Contains("Quarta") == true)
+            {
+                dias.Quarta = true;
+            }
+
+            if (itens.Contains("Quinta") == true)
+            {
+                dias.Quinta = true;
+            }
+
+            if (itens.Contains("Sexta") == true)
+            {
+                dias.Sexta = true;
+            }
+
+            if (itens.Contains("Sábado") == true)
+            {
+                dias.Sábado = true;
+            }
+
+            return dias;
         }
     }
 }

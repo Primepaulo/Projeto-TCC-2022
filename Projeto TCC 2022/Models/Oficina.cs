@@ -67,7 +67,6 @@ namespace Projeto_TCC_2022.Models
         [StringLength(11)]
         public string HorarioFuncionamento { get; set; }
 
-        [StringLength(27)]
         public string DiasFuncionamento { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

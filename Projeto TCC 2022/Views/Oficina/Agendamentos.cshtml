@@ -5,7 +5,7 @@
     var Today = DateTime.Today;
     var Day = Today.Day;
     var DayWeek = Today.DayOfWeek;
-
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("pt-BR");
     var Horas = Model.Oficina.HorarioFuncionamento.Split('/');
     var sTime = Horas[0];
     var eTime = Horas[1];
@@ -13,6 +13,26 @@
     var End = Convert.ToInt32(eTime.Substring(0, eTime.LastIndexOf(":")));
 
     List<int> Hours = new List<int>();
+
+    string[] itensx = Model.Oficina.DiasFuncionamento.Split(',');
+
+    string[] itensy = itensx.Select(s => s.ToLower()).ToArray();
+
+    List<string> itens = new List<string>();
+
+    foreach (var item in itensy)
+    {
+        if (item != "Sábado" && item != "Domingo")
+        {
+            itens.Add(item + "-feira");
+        }
+        else
+        {
+            itens.Add(item);
+        }
+    }
+
+
 
     for (int i = Start; i <= End; i++)
     {
@@ -64,16 +84,27 @@
         @:</div><div class="row seven-cols text-center">
         }
 
+        var weekday = culture.DateTimeFormat.GetDayName(Range[i].DayOfWeek).ToLower();
+
         <div class="col-md-1 p-0">
             <div class="card w-100" style="height: 90px;">
-                <a class="stretched-link h6 my-auto" data-amount="@i" data-date="@Range[i].Date" style="text-decoration: none; color: black" href="#">
-                    @Range[i].Day
-                    @if (Model.Agendamentos.FindIndex(item => item.Data.Date == Range[i].Date) >= 0)
-                    {
-                        <br />
-                        <span class="badge text-bg-warning mt-2">Possui Marcações</span>
-                    }
-                </a>
+                @if (itens.Contains(weekday) != true)
+                {
+                    <a class="disabled" href="#"></a>
+                }
+                @if (itens.Contains(weekday) == true)
+                {
+                    <a class="stretched-link h6 my-auto" data-amount="@i" data-date="@Range[i].Date" style="text-decoration: none; color: black" href="#">
+                        @Range[i].Day
+                        @if (Model.Agendamentos.FindIndex(item => item.Data.Date == Range[i].Date) >= 0)
+                        {
+                            <br />
+                            <span class="badge text-bg-warning mt-2">Possui Marcações</span>
+                        }
+                    </a>
+                }
+
+
             </div>
         </div>
         RowCount++;

@@ -1,6 +1,6 @@
 ﻿
 @if (ViewBag.Admin != null)
-{
+ {
     <div class="d-flex justify-content-center flex-wrap mt-5">
         <section style="width:400px">
             <h1 class="text-center Montserrat">Bem Vindo!</h1>
@@ -14,7 +14,7 @@
             <hr />
             <div class="row">
                 <div class="col-md-4 col-sm-12">
-                    <a class="btn btn-success" href="@Url.Action("Messages")">Mensagens</a>
+                    <a class="btn btn-success" href="@Url.Action("UnreadMessages")">Mensagens</a>
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <a class="btn btn-primary" href="@Url.Action("VisualizarCategorias")">Categorias</a>
@@ -25,7 +25,4 @@
             </div>
         </div>
     </div>
-
-    
-
-    }
+ }

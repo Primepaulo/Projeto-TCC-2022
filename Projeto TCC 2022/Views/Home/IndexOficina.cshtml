@@ -1,0 +1,55 @@
+﻿@model Projeto_TCC_2022.Models.Oficina
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<div class="vw-100" style="margin: 3rem 0 1rem 0">
+    <h3 class="text-center bigHeader mb-3">SOBOM - Para facilitar sua vida</h3>
+    <h4 class="smallHeader text-center mb-5">Tudo o que você precisa em um só lugar.</h4>
+</div>
+
+<div class="w-100 text-center mb-4">
+    <h2 class="bigHeader">@Model.Nome</h2>
+</div>
+
+<div class="row w-100 position-relative">
+<div class="offset-md-2 col-md-4 bigHeader text-center fs-4 py-4">
+    <div class="card">
+        <div class="card-body">
+            <span>Meus Orçamentos <i class="bi bi-arrow-right"></i></span>
+            <h6 class="smallHeader mt-2">Veja seus Orçamentos em andamento e finalizados.</h6>
+        </div>
+        <a class="stretched-link" href="@Url.Action("HistoricoOrçamentos", "Orçamento")"></a>
+    </div>
+</div>
+<div class="col-md-4 bigHeader text-center fs-4 py-4">
+    <div class="card">
+        <div class="card-body">
+            <span>Meus Agendamentos <i class="bi bi-arrow-right"></i></span>
+            <h6 class="smallHeader mt-2">Veja seus agendamentos de análise de veículos</h6>
+        </div>
+        <a class="stretched-link" href="@Url.Action("Agendamentos", "Oficina")"></a>
+    </div>
+</div>
+</div>
+
+<div class="row position-relative text-center bigHeader fs-4 w-100 pb-4 pt-3">
+    <div class="offset-md-2 col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <span>Meus Serviços <i class="bi bi-arrow-right"></i></span>
+                <h6 class="smallHeader mt-2">Cadastre, Edite ou Exclua Serviços.</h6>
+            </div>
+            <a class="stretched-link" href="@Url.Action("VisualizarServiços", "Serviços")"></a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <span>Minhas Peças <i class="bi bi-arrow-right"></i></span>
+                <h6 class="smallHeader mt-2">Cadastre, Edite ou Exclua Peças.</h6>
+            </div>
+            <a class="stretched-link" href="@Url.Action("VisualizarPeças", "Peças")"></a>
+        </div>
+    </div>
+</div>

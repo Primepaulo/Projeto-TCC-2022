@@ -3,7 +3,8 @@
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right mb-0" }))
     {
-    @Html.AntiForgeryToken()
+
+        @Html.AntiForgeryToken()
         <div class="collapse navbar-collapse ms-2 text-center" id="navbarNavDarkDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">

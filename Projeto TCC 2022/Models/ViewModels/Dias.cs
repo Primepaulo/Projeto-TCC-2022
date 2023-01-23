@@ -7,12 +7,12 @@ namespace Projeto_TCC_2022.Models.ViewModels
 {
     public class Dias
     {
-        public bool Dom { get; set; }
-        public bool Seg { get; set; }
-        public bool Ter { get; set; }
-        public bool Qua { get; set; }
-        public bool Qui { get; set; }
-        public bool Sex { get; set; }
-        public bool Sab { get; set; }
+        public bool Domingo { get; set; }
+        public bool Segunda { get; set; }
+        public bool Terça { get; set; }
+        public bool Quarta { get; set; }
+        public bool Quinta { get; set; }
+        public bool Sexta { get; set; }
+        public bool Sábado { get; set; }
     }
 }

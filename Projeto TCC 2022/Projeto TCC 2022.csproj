@@ -387,6 +387,8 @@
     <Content Include="Views\Numero\ExcluirNúmero.cshtml" />
     <Content Include="Views\Peças\EditarPeça.cshtml" />
     <Content Include="Views\Numero\EditarNúmero.cshtml" />
+    <Content Include="Views\Home\IndexPessoa.cshtml" />
+    <Content Include="Views\Home\IndexOficina.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

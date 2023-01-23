@@ -5,6 +5,7 @@
     var Today = DateTime.Today;
     var Day = Today.Day;
     var DayWeek = Today.DayOfWeek;
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("pt-BR");
 
     var Horas = Model.Oficina.HorarioFuncionamento.Split('/');
     var sTime = Horas[0];
@@ -19,15 +20,33 @@
         Hours.Add(i);
     }
 
+    string[] itensx = Model.Oficina.DiasFuncionamento.Split(',');
+
+    string[] itensy = itensx.Select(s => s.ToLower()).ToArray();
+
+    List<string> itens = new List<string>();
+
+    foreach (var item in itensy)
+    {
+        if (item != "Sábado" && item != "Domingo")
+        {
+            itens.Add(item + "-feira");
+        }
+        else
+        {
+            itens.Add(item);
+        }
+    }
+
     var Ocupação = Model.Agendamentos.Where(a => Hours.Any(b => b == a.Data.Hour)).ToList();
 
-    List<int> Range = new List<int>();
+    List<DateTime> Range = new List<DateTime>();
 
-    Range.Add(Day);
+    Range.Add(Today);
 
     for (var i = 1; i <= 30; i++)
     {
-        Range.Add(Today.AddDays(i).Day);
+        Range.Add(Today.AddDays(i));
     }
 }
 
@@ -72,21 +91,33 @@
         string mName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(Month);
         string monthName = mName.Substring(0, 1).ToUpper() + mName.Substring(1);
 
+        var weekday = culture.DateTimeFormat.GetDayName(Range[i].DayOfWeek).ToLower();
+
         <div class="col-md-1 p-0">
             <div class="card w-100" style="height: 90px;">
-                <a class="stretched-link h6 my-auto" data-amount="@i" data-month="@Month" data-monthname="@monthName" data-day="@Range[i]" style="text-decoration: none; color: black" href="#">
-                    @Range[i]
 
-                    @{ 
-                        var xyz = Ocupação.Where(e => e.Data.Day == Range[i]).Count();
-                    } 
+                @if (itens.Contains(weekday) != true)
+                {
+                    <a class="disabled" href="#"></a>
+                }
 
-                    @if (xyz == Hours.Count())
-                    {
-                        <br />
-                        <span class="badge text-bg-danger">Lotado</span>
-                    }
-                </a>
+                @if (itens.Contains(weekday) == true)
+                {
+
+                    <a class="stretched-link h6 my-auto" data-amount="@i" data-month="@Month" data-monthname="@monthName" data-day="@Range[i].Day" style="text-decoration: none; color: black" href="#">
+                        @Range[i].Day
+
+                        @{
+                            var xyz = Ocupação.Where(e => e.Data.Day == Range[i].Day).Count();
+                        }
+
+                        @if (xyz == Hours.Count())
+                        {
+                            <br />
+                            <span class="badge text-bg-danger">Lotado</span>
+                        }
+                    </a>
+                }
             </div>
         </div>
         RowCount++;

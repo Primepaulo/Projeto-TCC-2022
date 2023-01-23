@@ -498,7 +498,6 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult ItemOrçamentoPartial2(int Id, string Tipo, int Quant)
         {
-            Debug.WriteLine(Tipo);
             if (Tipo == "Serviço")
             {
                 return RedirectToAction("ItemOrçamentoPartial1", "Orçamento", new { Id, Tipo, Quant });
