@@ -22,6 +22,12 @@ namespace Projeto_TCC_2022
                 );
 
             routes.MapRoute(
+                name: "Exception",
+                url: "Exception/{action}/{id}",
+                new { controller = "Exception", action = "Index", id = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
                 name: "Serviços",
                 url: "Serviços/{action}/{id}",
                 new { controller = "Serviços", action = "VisualizarServiços", id = UrlParameter.Optional }

@@ -94,8 +94,7 @@ namespace Projeto_TCC_2022.Controllers
             }
 
             Response.Clear();
-            string Erro = "Erro no Cadastro, CNPJ ou CPF já foi cadastrado.";
-            return RedirectToAction("Erro", "Erro", new { Erro });
+            return RedirectToAction("Index", "Exception", new { Id = 1 });
         }
 
         public ActionResult CadastroOficina()
@@ -125,7 +124,7 @@ namespace Projeto_TCC_2022.Controllers
                 numero.CelularTelefone1 = numero.CelularTelefone1.Split('0')[1];
             }
 
-            if (Model1.GetOficinaByCNPJ(oficina.CNPJ) == false)
+            if (Model1.GetOficinaByCNPJ(novoCNPJ) == false)
             {
                 Model1.InsertOficina(UserID, Model1.GetEmail(UserID), novoCNPJ, oficina.Nome, oficina.CEP,
                 oficina.Estado, oficina.Cidade, oficina.Bairro, oficina.Rua, oficina.Número,
@@ -138,7 +137,7 @@ namespace Projeto_TCC_2022.Controllers
             }
 
             Response.Clear();
-            return RedirectToAction("Erro", "Erro", new { Erro = "Erro no Cadastro, CNPJ já foi cadastrado." });
+            return RedirectToAction("Index", "Exception", new {Id = 2});
         }
     }
 }

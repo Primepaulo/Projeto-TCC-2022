@@ -160,16 +160,19 @@ namespace Projeto_TCC_2022.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirme sua conta", "Confirme sua conta clicando <a href=\"" + callbackUrl + "\">aqui</a>");
 
-                    if ((int)Session["CadTipo"] == 1)
+                    if (Session["CadTipo"] != null)
                     {
-                        return RedirectToAction("CadastroPessoa", "Cadastro");
-                    }
+                        if ((int)Session["CadTipo"] == 1)
+                        {
+                            return RedirectToAction("CadastroPessoa", "Cadastro");
+                        }
 
-                    else if ((int)Session["CadTipo"] == 2)
-                    {
-                        return RedirectToAction("CadastroOficina", "Cadastro");
+                        else if ((int)Session["CadTipo"] == 2)
+                        {
+                            return RedirectToAction("CadastroOficina", "Cadastro");
+                        }
                     }
-
+                    
                     return RedirectToAction("Cadastro", "Cadastro");
                 }
                 AddErrors(result);

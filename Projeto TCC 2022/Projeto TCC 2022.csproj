@@ -177,7 +177,7 @@
     <Compile Include="Controllers\AvaliaçãoController.cs" />
     <Compile Include="Controllers\CadastroController.cs" />
     <Compile Include="Controllers\VeículosController.cs" />
-    <Compile Include="Controllers\ErroController.cs" />
+    <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\GenericController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -374,7 +374,7 @@
     <Content Include="Views\Avaliação\Avaliar.cshtml" />
     <Content Include="Views\Avaliação\HistoricoAvaliações.cshtml" />
     <Content Include="Views\Avaliação\EditarAvaliação.cshtml" />
-    <Content Include="Views\Erro\Erro.cshtml" />
+    <Content Include="Views\Exception\Index.cshtml" />
     <Content Include="Views\Avaliação\ExcluirAvaliação.cshtml" />
     <Content Include="Views\Shared\_Main.cshtml" />
     <Content Include="Views\Orçamento\Marcar.cshtml" />
