@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
@@ -1467,6 +1468,18 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static Agendamento GetAgendamentoByHora(DateTime Data)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Agendamento in context.Agendamento
+                            where Agendamento.Data == Data &&
+                            Agendamento.Finalizado == false
+                            select Agendamento;
+                var validation = query.SingleOrDefault();
+                return validation;
+            }
+        }
 
         public static Agendamento Agendar(DateTime Data, int OficinaId, int PessoaId)
         {

@@ -84,31 +84,33 @@ namespace Projeto_TCC_2022.Controllers
 
             DateTime Data = DateTime.Parse(ActualDate + " " + Time);
 
-            if (Skip != null)
+            if (Model1.GetAgendamentoByHora(Data) == null)
             {
-                Orçamento orçamento = Model1.GetOrçamento((int)Skip);
-                Agendamento agendamento = Model1.GetAgendamentoByOrçamento(orçamento.Id);
-                agendamento.Data = Data;
-                agendamento.Finalizado = false;
-                Model1.UpdateAgendamento(agendamento);
-                Model1.AprovarFinalizarOrçamento((int)Skip, 40, null);
-                Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Orçamento Remarcado!");
-                return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = (int)Skip });
+                if (Skip != null)
+                {
+                    Orçamento orçamento = Model1.GetOrçamento((int)Skip);
+                    Agendamento agendamento = Model1.GetAgendamentoByOrçamento(orçamento.Id);
+                    agendamento.Data = Data;
+                    agendamento.Finalizado = false;
+                    Model1.UpdateAgendamento(agendamento);
+                    Model1.AprovarFinalizarOrçamento((int)Skip, 40, null);
+                    Model1.GerarNotificações(orçamento, orçamento.fk_Oficina_Id, "Orçamento Remarcado!");
+                    return RedirectToAction("StatusOrçamento", "Orçamento", new { Id = (int)Skip });
+                }
+
+                Session["Agendamento"] = Model1.Agendar(Data, Id, UserID);
+
+
+
+                if (Value == false)
+                {
+                    return RedirectToAction("AgendarServiço", "Orçamento", new { Id });
+                }
+                else if (Value == true)
+                {
+                    return RedirectToAction("AgendarAnálise", "Orçamento", new { Id });
+                }
             }
-
-            Session["Agendamento"] = Model1.Agendar(Data, Id, UserID);
-
-
-
-            if (Value == false)
-            {
-                return RedirectToAction("AgendarServiço", "Orçamento", new { Id });
-            }
-            else if (Value == true)
-            {
-                return RedirectToAction("AgendarAnálise", "Orçamento", new { Id });
-            }
-            else
                 return RedirectToAction("Erro"); //TBA
         }
 
