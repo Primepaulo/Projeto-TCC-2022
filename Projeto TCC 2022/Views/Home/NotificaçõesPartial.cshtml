@@ -1,0 +1,72 @@
+﻿@model List<Projeto_TCC_2022.Models.Notificação>
+
+<div class="navbar-nav">
+    <div class="dropdown">
+        <a href="#" class="nav-link dropdown-toggle" id="notificaçõesMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+
+            @{int count = 0;}
+
+            @foreach (var item in Model)
+            {
+                if (item.Lido == false)
+                {
+                    count++;
+                }
+            }
+            @if (count > 0)
+            {
+
+                <i class="bi bi-bell-fill"><span class="badge rounded-pill badge-notification bg-danger position-absolute translate-middle" style="font-size: 9px;">@count</span></i>
+            }
+
+            @if (count == 0)
+            {
+                <i class="bi bi-bell-fill"></i>
+            }
+
+        </a>
+
+        @if (Model.Count == 0)
+        {
+            <div class="dropdown-menu notificação1">
+
+                 <div class="ps-3 mt-2">
+                    <h6 class="smallHeader">Sem notificações!</h6>
+                 </div>
+            </div>
+         }
+        @if (Model.Count > 0)
+        {
+            <div class="dropdown-menu notificação2" style="width: 325px; left: -75%">
+                <div class="ps-3">
+
+                    <h5 class="smallHeader">Notificações</h5>
+
+                    @foreach (var item in Model)
+                    {
+                        <hr />
+
+                        <h6 class="smallHeader">Status - Orçamento @item.Fk_Orçamento_Id</h6>
+                        <div>
+                            @if (ViewBag.éPessoa == true || ViewBag.éOficina == true)
+                            {
+                                <a class="read text" style="text-decoration:none; color:black" href="/Orçamento/StatusOrçamento/@item.Orçamento.Id">@item.Texto</a>
+                                <input type="hidden" class="d-none" value="@item.Id" id="notificaçãoInput">
+                            }
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-3 offset-md-2">
+                                <a href="/Orçamento/StatusOrçamento/@item.Orçamento.Id" class="btn btn-outline-primary ms-2 read"><i class="bi bi-arrow-up-right"></i></a>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-outline-success ms-2 read" value="@item.Id"><i class="bi bi-check"></i></button>
+                            </div>
+                        </div>
+
+
+                    }
+                </div>
+            </div>
+        }
+        </div>
+    </div>

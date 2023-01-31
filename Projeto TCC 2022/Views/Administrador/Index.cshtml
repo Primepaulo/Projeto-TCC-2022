@@ -1,0 +1,28 @@
+﻿
+@if (ViewBag.Admin != null)
+ {
+    <div class="d-flex justify-content-center flex-wrap mt-5">
+        <section style="width:400px">
+            <h1 class="text-center Montserrat">Bem Vindo!</h1>
+        </section>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-body text-center">
+            <h5 class="smallHeader">Admin</h5>
+            <h4 class="bigHeader">@ViewBag.Admin.Nome</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <a class="btn btn-success" href="@Url.Action("UnreadMessages")">Mensagens</a>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <a class="btn btn-primary" href="@Url.Action("VisualizarCategorias")">Categorias</a>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <a class="btn btn-warning" href="@Url.Action("ListaOficinas")">Oficinas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+ }

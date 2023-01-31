@@ -1,0 +1,149 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.HistoricoAvaliação
+
+<div class="mx-auto" style="width: 80%">
+    <h3 class="mb-3" style="color:#2c2c2c">Minhas Avaliações</h3>
+
+    @if (Model.Av.Count() == 0)
+    {
+        <div class="card">
+            <div class="card-body mx-auto">
+                <h5 class="bigHeader">Sem avaliações até o momento.</h5>
+            </div>
+        </div>
+    }
+
+    @for (int count = 0; count < Model.Av.Count(); count++)
+    {
+         
+        var orçamento = Model.Orçamentos[count];
+        var oficina = Model.Oficinas[count];
+        Projeto_TCC_2022.Models.Imagem imagem = Model.Imagens.Where(e => e.Fk_Oficina_Id == oficina.Id).SingleOrDefault();
+        
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 dashed">
+                        <div class="text-center">
+                            <img class="rounded-circle" style="width: 60%; height:60%;" src="@imagem.Url">
+                        </div>
+
+                        <h6 class="mt-2" style="color: #3f3f3f;">Oficina</h6>
+                        <h5 class="card-title">@oficina.Nome</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 style="color: #3f3f3f;">Texto</h6>
+                        <p class="card-text">@Model.Av[count].Texto</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h6 style="color: #3f3f3f;">Itens</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 style="color: #3f3f3f;">Estrelas</h6>
+                            </div>
+                        </div>
+                        @for (int i = 0; i < Model.Av[count].ItemAvaliação.Count(); i++)
+                        {
+                            Projeto_TCC_2022.Models.Serviço serviço = Model.Serviços.Where(e => e.Id == Model.Itens[i].Fk_Serviço_Id).SingleOrDefault();
+
+
+                            if (i == 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5 class="card-title my-auto">@serviço.Nome</h5>
+                                    </div>
+                                    <div class="col-md-4 mx-auto my-auto">
+                                        <p class="mb-0">
+                                            @switch (Model.Itens[i].Estrelas)
+                                            {
+
+                                                case 1:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 2:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 3:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 4:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 5:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></text>
+                                                    break;
+                                            }
+
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+
+                            else if (i != 0)
+                            {
+                                <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <h5 class="card-title my-auto">@serviço.Nome</h5>
+                                    </div>
+                                    <div class="col-md-4 mx-auto my-auto">
+                                        <p class="mb-0">
+                                            @switch (Model.Itens[i].Estrelas)
+                                            {
+
+                                                case 1:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 2:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 3:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 4:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></text>
+                                                    break;
+                                                case 5:
+                                                    <text><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></text>
+                                                    break;
+                                            }
+
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <h6 style="color: #3f3f3f;">Média</h6>
+                        <h6 class="card-title">@Model.Av[count].Estrelas</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 dashed">
+
+                    </div>
+                    <div class="col-md-4">
+                        <!-- usar offset ficou ruim, mas fique aqui a classe offset-md-3  -->
+                        <div class="d-grid mx-auto">
+                            <a href="@Url.Action("Page", "Oficina", new {Id = oficina.Id})" class="btn btn-outline-primary mt-2">Pág. da Oficina</a>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-grid mx-auto">
+                            <a href="@Url.Action("EditarAvaliação", "Avaliação", new {Id = Model.Av[count].Id})" class="btn btn-primary mt-2">Editar</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="d-grid mx-auto">
+                            <a href="@Url.Action("ExcluirAvaliação", "Avaliação", new {Id = Model.Av[count].Id})" class="btn btn-danger mt-2">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,35 @@
+﻿@model Projeto_TCC_2022.Models.Carro
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5">Excluir Veículo?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-0">
+            <h5 class="smallHeader mt-3">Placa</h5>
+            <h4>@Model.Placa</h4>
+
+            <h5 class="smallHeader mt-3">Cor</h5>
+            <h4>@Model.Cor</h4>
+
+            <h5 class="smallHeader mt-3">Modelo</h5>
+            <h4>@Model.Modelo</h4>
+
+            <h5 class="smallHeader mt-3">Motorização</h5>
+            <h4>@Model.Motorização</h4>
+
+            <h5 class="smallHeader mt-3">Marca</h5>
+            <p>@Model.Marca</p>
+
+
+            @using (Html.BeginForm("Deletar", "Veículos", FormMethod.Post))
+            {
+                @Html.HiddenFor(e => e.Placa)
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-danger">Deletar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

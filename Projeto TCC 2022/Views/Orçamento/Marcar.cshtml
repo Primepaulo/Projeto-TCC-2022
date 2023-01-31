@@ -1,0 +1,189 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.Calendario
+
+@{
+    int RowCount = 0;
+    var Today = DateTime.Today;
+    var Day = Today.Day;
+    var DayWeek = Today.DayOfWeek;
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("pt-BR");
+
+    var Horas = Model.Oficina.HorarioFuncionamento.Split('/');
+    var sTime = Horas[0];
+    var eTime = Horas[1];
+    var Start = Convert.ToInt32(sTime.Substring(0, sTime.LastIndexOf(":")));
+    var End = Convert.ToInt32(eTime.Substring(0, eTime.LastIndexOf(":")));
+
+    List<int> Hours = new List<int>();
+
+    for (int i = Start; i <= End; i++)
+    {
+        Hours.Add(i);
+    }
+
+    string[] itensx = Model.Oficina.DiasFuncionamento.Split(',');
+
+    string[] itensy = itensx.Select(s => s.ToLower()).ToArray();
+
+    List<string> itens = new List<string>();
+
+    foreach (var item in itensy)
+    {
+        if (item != "Sábado" && item != "Domingo")
+        {
+            itens.Add(item + "-feira");
+        }
+        else
+        {
+            itens.Add(item);
+        }
+    }
+
+    var Ocupação = Model.Agendamentos.Where(a => Hours.Any(b => b == a.Data.Hour)).ToList();
+
+    List<DateTime> Range = new List<DateTime>();
+
+    Range.Add(Today);
+
+    for (var i = 1; i <= 30; i++)
+    {
+        Range.Add(Today.AddDays(i));
+    }
+}
+
+<h5>Marcar</h5>
+
+<div class="row mb-4">
+    <div class="mx-auto text-center">
+        <h3 id="tag">Horário Selecionado: Nenhum</h3>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">D</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">S</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">T</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">Q</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">Q</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">S</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">S</h6></div></div>
+</div>
+<div class="row seven-cols text-center">
+    @for (int i = 0; i < Range.Count; i++)
+    {
+        if (i == 0 && DayWeek != DayOfWeek.Sunday)
+        {
+            for (int a = 0; a < (int)DayWeek; a++)
+            {
+                <div class="col-md-1 p-0">
+                    <div class="card w-100" style="height: 90px;">
+                        <a class="disabled" href="#"></a>
+                    </div>
+                </div>
+                RowCount++;
+            }
+        }
+
+        if (RowCount % 7 == 0 && i != 0)
+        {
+        @:</div><div class="row seven-cols text-center">
+        }
+
+        int Month = Today.AddDays(i).Month;
+        string mName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(Month);
+        string monthName = mName.Substring(0, 1).ToUpper() + mName.Substring(1);
+
+        var weekday = culture.DateTimeFormat.GetDayName(Range[i].DayOfWeek).ToLower();
+
+        <div class="col-md-1 p-0">
+            <div class="card w-100" style="height: 90px;">
+
+                @if (itens.Contains(weekday) != true)
+                {
+                    <a class="disabled" href="#"></a>
+                }
+
+                @if (itens.Contains(weekday) == true)
+                {
+
+                    <a class="stretched-link h6 my-auto" data-amount="@i" data-month="@Month" data-monthname="@monthName" data-day="@Range[i].Day" style="text-decoration: none; color: black" href="#">
+                        @Range[i].Day
+
+                        @{
+                            var xyz = Ocupação.Where(e => e.Data.Day == Range[i].Day).Count();
+                        }
+
+                        @if (xyz == Hours.Count())
+                        {
+                            <br />
+                            <span class="badge text-bg-danger">Lotado</span>
+                        }
+                    </a>
+                }
+            </div>
+        </div>
+        RowCount++;
+    }
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1">
+</div>
+
+
+@using (Html.BeginForm("EscolherHorario", "Orçamento", FormMethod.Post))
+{
+    <input type="hidden" name="Value" id="Value" value="@Model.Value.ToString()" />
+    <input type="text" name="Date" id="Date" required="required" class="d-none" />
+    <input type="text" name="Time" id="Time" required="required" class="d-none" />
+    <input type="hidden" name="Id" id="Id"  value="@Model.Oficina.Id" />
+    if (Model.Skip != null)
+    {
+        <input type="hidden" name="Skip" id="Skip" value="@Model.Skip" />
+    }
+
+    <div class="text-center mt-3 mb-3">
+        <button class="btn btn-primary">Confirmar</button>
+    </div>
+
+}
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            $('.h6').click(function () {
+
+                $("#Date").val($(this).data("amount"));
+                var x = $("#Date").val();
+                var b = $(this).data("month");
+                var z = $(this).data("monthname");
+                var a = $(this).data("day");
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("MarcarModalPartial", "Orçamento", new {Id = Model.Oficina.Id})?Dia=' + a + '&Month=' + b,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                        $(".hora").click(function () {
+                            $("#Time").val($(this).text());
+
+                            var y = $(this).text();
+
+                            $("#tag").text('Horário Selecionado: ' + a + ' de ' + z + ' - ' + y);
+
+                            $('#Modal').modal('hide');
+                        });
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            })
+        });
+
+
+    </script>
+}

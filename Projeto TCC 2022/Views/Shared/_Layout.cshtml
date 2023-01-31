@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="~/Content/images/logo.jpg" />
+    <title>SOBOM</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-dark bg-dark navbar-expand-md">
+        <div class="container-fluid">
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand"><span style="color: #ffffff">SOBOM</span> <i style="color: #379392 " class="bi bi-wrench-adjustable-circle-fill"></i></a>
+            <button type="button"
+                    class="navbar-toggler"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainCollapse"
+                    aria-controls="mainCollapse"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainCollapse" style="flex-grow:0">
+                <ul class="navbar-nav">''
+                    
+                    @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
+                    {
+                        <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
+                    }
+                    @if (ViewBag.éOficina == true)
+                    {
+                        <li class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
+                    }
+                    @if (ViewBag.éOficina == true && ViewBag.éAprovada == true)
+                    {
+                        <li class="nav-item nav-link">@Html.ActionLink("Sugerir Categoria", "Sugerir", "Oficina", null, new { @class = "nav-link" })</li>
+                    }
+                    @if (ViewBag.éPessoa == true)
+                    {
+                        //List Items invisíveis de Espaçamento
+                        <li style="visibility: hidden">Espaçamento</li>
+                        <li style="visibility: hidden">Espaçamento</li>
+                        <li style = "visibility: hidden" > Espaçamento </li>
+                    }
+
+                </ul>
+            </div>
+
+            <form class="d-flex mx-auto" method="get" role="search" action="@Url.Action("DataRequestSessions", "Home")">
+                <div class="input-group">
+                    <button id="FiltroBotão" type="button"
+                            class="btn btn-light dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>Oficina</span>
+                    </button>
+
+                    <ul class="dropdown-menu" id="filtros">
+                        <li><a class="dropdown-item">Oficina</a></li>
+                        <li><a id="item" class="dropdown-item">Serviço</a></li>
+                        <li><a class="dropdown-item">Bairro</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <label class="ms-3" for="importado">Carro Importado</label>
+                            <input type="checkbox" name="importado" id="importado" value="true">
+                        </li>
+                    </ul>
+
+                    <input type="hidden" id="filter" name="filter" />
+
+                    <button id="CategoriaBotão" type="button" class="btn btn-light dropdown-toggle
+                        dropdown-toggle-split d-none" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>Categoria</span>
+                    </button>
+
+                    <ul class="dropdown-menu" id="categorias">
+                        @foreach (var item in ViewBag.Categorias)
+                        {
+                            <li><a class="dropdown-item">@item.Nome</a></li>
+                        }
+                    </ul>
+
+                    <input type="hidden" id="categoria" name="categoria" value="Categoria" />
+
+                    <input type="text" class="form-control flex-grow-0" name="navSearch" id="navSearch" placeholder="Buscar..." />
+
+                    <button type="submit" name="navSubmit" class="btn btn-outline-success">
+                        <i class="bi bi-search"></i>
+                    </button>
+
+                </div>
+            </form>
+
+            @if (ViewBag.éPessoa == false && ViewBag.éOficina == false)
+            {
+                <ul class="navbar-nav">
+                    <li style="visibility: hidden">Espaçamento</li>
+                </ul>
+            }
+
+            <div id="notificações">
+
+            </div>
+
+            <ul class="navbar-nav navbar-right">
+                @if (ViewBag.éOficina == true)
+                {
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarServiços", "Serviços", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-wrench me-2"></i>Serviços</a></li>
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarPeças", "Peças", new {Id = ViewBag.UserID})" class="nav-link"><i class="bi bi-gear me-2"></i>Peças</a></li>
+                }
+                @if (ViewBag.éPessoa == true)
+                {
+                    <li class="nav-item nav-link"> <a href="@Url.Action("VisualizarVeículos", "Veículos")" class="nav-link"><i class="bi bi-car-front-fill me-2"></i>Veículos</a></li>
+                    <li class="nav-item nav-link"> <a href="@Url.Action("HistoricoAvaliações", "Avaliação")" class="nav-link"><i class="bi bi-list-stars me-2"></i>Avaliações</a></li>
+                }
+                @if (ViewBag.éPessoa == true || ViewBag.éOficina == true)
+                {
+                    @Html.Partial("_OrçamentoPartial")
+                }
+            </ul>
+
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    @RenderSection("scripts", required: false)
+    <script>
+        function AtualizarNotificações() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("NotificaçõesPartial", "Home")",
+                dataType: "html",
+                cache: false,
+                success: function (data) {
+                    $("#notificações").html(data);
+                }
+            });
+        }
+
+        function MarcarComoLido(read) {
+
+            $.ajax({
+                type: "GET",
+                url: "/Home/MarkAsRead/" + read,
+                dataType: "html",
+                cache: false,
+                success: function () {
+                    $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("NotificaçõesPartial", "Home")",
+                    dataType: "html",
+                    cache: false,
+                    success: function (data) {
+                        $("#notificações").html(data);
+                        }
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            $("#filter").val("Oficina");
+
+            //Trecho adaptado de uma das respostas (parte de mudar valor do botão): https://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+
+            $("#filtros li a").click(function () {
+                $(this).parents(".input-group").find('#FiltroBotão').html($(this).text() + ' <span></span>');
+                $(this).parents(".input-group").find('#FiltroBotão').val($(this).data('value'));
+                $("#filter").val($(this).text());
+
+                if ($(this).text() == "Serviço") {
+                    $("#CategoriaBotão").removeClass("d-none");
+                }
+                else if ($(this).text() != "Serviço") {
+                    if ($("#CategoriaBotão").hasClass("d-none") != true) {
+                        $("#CategoriaBotão").addClass("d-none");
+                    }
+                }
+            });
+
+            $("#categorias li a").click(function () {
+                $(this).parents(".input-group").find('#CategoriaBotão').html($(this).text() + ' <span></span>');
+                $(this).parents(".input-group").find('#CategoriaBotão').val($(this).data('value'));
+                $("#categoria").val($(this).text());
+            });
+
+
+            setInterval(function () {
+                AtualizarNotificações();
+            }, 60000);
+
+            AtualizarNotificações();
+
+            $("#notificações").on("click", 'button.read', function () {
+                var read = $(this).val();
+                MarcarComoLido(read);
+            });
+
+            $("#notificações").on("click", 'a.read', function () {
+                var read = $("#notificaçãoInput").val();
+                MarcarComoLido(read);
+            });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.Calendario
+
+@{
+    int RowCount = 0;
+    var Today = DateTime.Today;
+    var Day = Today.Day;
+    var DayWeek = Today.DayOfWeek;
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("pt-BR");
+    var Horas = Model.Oficina.HorarioFuncionamento.Split('/');
+    var sTime = Horas[0];
+    var eTime = Horas[1];
+    var Start = Convert.ToInt32(sTime.Substring(0, sTime.LastIndexOf(":")));
+    var End = Convert.ToInt32(eTime.Substring(0, eTime.LastIndexOf(":")));
+
+    List<int> Hours = new List<int>();
+
+    string[] itensx = Model.Oficina.DiasFuncionamento.Split(',');
+
+    string[] itensy = itensx.Select(s => s.ToLower()).ToArray();
+
+    List<string> itens = new List<string>();
+
+    foreach (var item in itensy)
+    {
+        if (item != "Sábado" && item != "Domingo")
+        {
+            itens.Add(item + "-feira");
+        }
+        else
+        {
+            itens.Add(item);
+        }
+    }
+
+
+
+    for (int i = Start; i <= End; i++)
+    {
+        Hours.Add(i);
+    }
+
+    List<DateTime> Range = new List<DateTime>();
+
+    Range.Add(Today);
+
+    for (var i = 1; i <= 30; i++)
+    {
+        Range.Add(Today.AddDays(i));
+    }
+}
+
+<div class="row mb-4">
+    <div class="mx-auto text-center">
+        <h3 id="tag">Seus Agendamentos:</h3>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">D</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">S</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">T</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">Q</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">Q</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">S</h6></div></div>
+    <div class="col p-0"><div class="card w-100" style="height: 35px;"><h6 class="my-auto">S</h6></div></div>
+</div>
+<div class="row seven-cols text-center">
+    @for (int i = 0; i < Range.Count; i++)
+    {
+        if (i == 0 && DayWeek != DayOfWeek.Sunday)
+        {
+            for (int a = 0; a < (int)DayWeek; a++)
+            {
+                <div class="col-md-1 p-0">
+                    <div class="card w-100" style="height: 90px;">
+                        <a class="disabled" href="#"></a>
+                    </div>
+                </div>
+                RowCount++;
+            }
+        }
+
+        if (RowCount % 7 == 0 && i != 0)
+        {
+        @:</div><div class="row seven-cols text-center">
+        }
+
+        var weekday = culture.DateTimeFormat.GetDayName(Range[i].DayOfWeek).ToLower();
+
+        <div class="col-md-1 p-0">
+            <div class="card w-100" style="height: 90px;">
+                @if (itens.Contains(weekday) != true)
+                {
+                    <a class="disabled" href="#"></a>
+                }
+                @if (itens.Contains(weekday) == true)
+                {
+                    <a class="stretched-link h6 my-auto" data-amount="@i" data-date="@Range[i].Date" style="text-decoration: none; color: black" href="#">
+                        @Range[i].Day
+                        @if (Model.Agendamentos.FindIndex(item => item.Data.Date == Range[i].Date) >= 0)
+                        {
+                            <br />
+                            <span class="badge text-bg-warning mt-2">Possui Marcações</span>
+                        }
+                    </a>
+                }
+
+
+            </div>
+        </div>
+        RowCount++;
+    }
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1">
+</div>
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            $('.h6').click(function () {
+
+                var a = $(this).data("date");
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("AgendamentosModalPartial", "Oficina")?Date=' + a,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            })
+        });
+    </script>
+}

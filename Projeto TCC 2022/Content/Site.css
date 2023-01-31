@@ -1,0 +1,255 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 20px;
+}
+
+@font-face {
+    font-family:"Fira Sans";
+    src: url("fonts/FiraSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Merryweather";
+    src: url("fonts/Merriweather-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("fonts/Montserrat-VariableFont_wght.ttf");
+}
+
+.mask {
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+}
+
+.mask-custom {
+    backdrop-filter: blur(0px);
+    background-color: rgba(32,29,29,0.8);
+}
+
+.bg-image {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    position: relative;
+}
+
+
+/*@media screen and (min-width: 1136px)
+{
+    .main {
+        width: 1280px;
+    }
+}
+*/
+/*Calendário*/
+
+@media (min-width: 992px) {
+    .seven-cols .col-md-1,
+    .seven-cols .col-sm-1,
+    .seven-cols .col-lg-1 {
+        width: 14.285714285714285714285714285714%;
+        *width: 14.285714285714285714285714285714%;
+    }
+}
+
+/*Outros*/
+
+.black-text{
+    color: black;
+}
+
+.gray-text {
+    color: #3f3f3f !important;
+}
+
+
+.w-66 {
+    width: 66.6%;
+}
+
+.w-55{
+    width: 55.5%
+}
+
+.a{
+    color:inherit !important;
+}
+
+.smallHeader {
+    color: #3f3f3f;
+    font-family: 'Fira Sans';
+}
+
+.bigHeader{
+    font-family: 'Fira Sans';
+}
+
+.text {
+    font-family: 'Fira Sans';
+}
+
+.Montserrat {
+    font-family: Montserrat;
+}
+
+.Merryweather {
+    font-family: Merryweather;
+}
+
+.cardHeader {
+    background-color: #FEFEFE !important;
+}
+
+
+.dashed {
+    border-right: 1px dashed #3f3f3f;
+}
+
+.upload {
+    border: 2px dashed black;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.upload button {
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    background: #ff9900;
+    color: inherit;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload.active {
+    border: 2px solid black;
+}
+
+::file-selector-button {
+    display: none;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select {
+    max-width: 280px;
+}
+
+.inputArea {
+    max-width: 100%;
+}
+
+.textareaAv {
+    padding-left:5px;
+    padding-top:5px;
+}
+
+#textarea {
+    max-width: 480px;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    background-color: #777;
+    border-color: #fff
+}
+
+/*Search*/
+
+#textarea {
+    resize: none;
+}
+
+ul {
+    list-style-position: inside;
+}
+
+a.deco-none {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+a.deco-none:link {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+a.deco-none:hover {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.centerOficinaImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.categoriaLayout.selectize-control.single .selectize-input {
+    background: none !important;
+    width: 100px !important;
+    position: absolute !important;
+}
+
+.categoriaLayout.selectize-control.single .selectize-dropdown{
+    width: 300px !important;
+}
+
+@media(min-width: 1450px)
+{
+    #navSearch{
+        width: 400px;
+    }
+}
+
+@media(max-width: 1449px)
+{
+    #navSearch {
+        width: 150px;
+    }
+}
+
+
+#notificaçãoLista {
+    padding-left: 0 !important;
+}
+
+.notificação1 {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

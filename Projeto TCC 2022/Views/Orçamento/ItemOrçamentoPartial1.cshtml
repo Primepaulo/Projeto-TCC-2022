@@ -1,0 +1,68 @@
+﻿@model Projeto_TCC_2022.Models.Classes.ServiçoCategoria
+
+@{ 
+    if (this.ViewContext.FormContext == null)
+    {
+        this.ViewContext.FormContext = new FormContext();
+    }
+    decimal PreçoMin = 0;
+    decimal PreçoMax = 0;
+}
+
+<div class="row rotulo">
+    <div class="col-md-3">
+        <h4 class="bigHeader">Nome do Item</h4>
+    </div>
+    <div class="col-md-3">
+        <h4 class="bigHeader">Preço Min.</h4>
+    </div>
+    <div class="col-md-3">
+        <h4 class="bigHeader">Preço Max.</h4>
+    </div>
+
+    @if (ViewBag.Tipo == "Serviço")
+    {
+
+        <div class="col-md-3">
+            <h4 class="bigHeader">Valor Final</h4>
+        </div>
+    }
+</div>
+
+<div class="row itemOrçamento mb-4">
+    <div class="col-md-3 col-sm-12">
+        <p>Serviço - @Model.Serviço.Nome</p>
+        <input @if(ViewBag.Tipo == "Serviço"){<text>name = "Itens[@Model.Quant].Id" </text>} class="d-none serviçosId" value="@Model.Serviço.Id" />
+    </div>
+    <div class="col-md-3 col-sm-12">
+        @if (Model.Serviço.PreçoMin != null)
+        {
+            PreçoMin = (decimal)Model.Serviço.PreçoMin;
+            <p class="preço ms-2">@PreçoMin.ToString("F")</p>
+        }
+    </div>
+    <div class="col-md-3 col-sm-12">
+        @if (Model.Serviço.PreçoMax != null)
+        {
+            PreçoMax = (decimal)Model.Serviço.PreçoMax;
+            <p class="preço ms-2">@PreçoMax.ToString("F")</p>
+        }
+    </div>
+
+    @if (ViewBag.Tipo == "Serviço")
+    {
+
+        var x = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+
+        <div class="col-md-3 col-sm-12">
+            <input name="Itens[@Model.Quant].Val" class="form-control itemOrçamentoValue" oninput="Valor()" data-val="true" data-val-number="Valor precisa ser um número."
+                   data-val-range="Preencha um valor que esteja entre o valor mínimo ou máximo."
+                   @if (Model.Serviço.PreçoMin != null) { <text> data-val-range-min="@PreçoMin.ToString("F", x)" </text> }
+                   @if (Model.Serviço.PreçoMax != null) { <text> data-val-range-max="@PreçoMax.ToString("F", x)" </text> }
+                   data-val-required="Campo Requerido" type="number" lang="pt-br" />
+            <input class="d-none tipo" value="1" name="Itens[@Model.Quant].Tipo" />
+            <span class="field-validation-valid" data-valmsg-for="Itens[@Model.Quant].Val" data-valmsg-replace="true"></span>
+        </div>
+        <input type="hidden" value="1" name="Tipo" class="itemOrçamentoTipo" />
+    }
+</div>

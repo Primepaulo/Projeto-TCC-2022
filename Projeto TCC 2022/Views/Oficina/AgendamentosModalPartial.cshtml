@@ -1,0 +1,36 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.CalendarioOficina
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5">Horários Agendados</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-0">
+            @if (Model.Agendamentos != null)
+            {
+                for (int i = 0; i < Model.Agendamentos.Count; i++)
+                {
+                    <div class="row mb-2 text-center">
+                        <div class="card">
+                            <h6 class="mt-2">Pessoa</h6>
+                            <h5>@Model.Pessoas[i].Nome @Model.Pessoas[i].Sobrenome</h5>
+                            <h6 class="mt-2">Horário</h6>
+                            <h5>@Model.Agendamentos[i].Data.ToString("HH:mm")</h5>
+                            <h6 class="mt-2">Orçamento</h6>
+                            <a class="btn btn-primary mt-2" href="@Url.Action("StatusOrçamento", "Orçamento", new { Id = Model.Orçamentos[i].Id })">
+                                Ir para o Orçamento
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="row mt-4 text-center">
+                        <h5>Sem Agendamentos</h5>
+                </div>
+            }
+        </div>
+    </div>
+</div>

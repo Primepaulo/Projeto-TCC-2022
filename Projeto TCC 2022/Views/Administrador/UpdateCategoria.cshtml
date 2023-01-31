@@ -1,0 +1,25 @@
+﻿@model Projeto_TCC_2022.Models.Categoria
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5">Editar Categoria</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        @using (Html.BeginForm("UpdateCategoria", "Administrador", FormMethod.Post))
+        {
+            <div class="modal-body pt-0">
+                <h5 class="smallHeader mt-3">Nome</h5>
+                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+
+                @Html.HiddenFor(e => e.Id)
+
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

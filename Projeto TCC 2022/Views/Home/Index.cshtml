@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+<div class="w-100">
+    <div class=" vw-100%" style="height: 80vh;">
+        <div class="bg-image h-100">
+            <img src="~/Imagens_Fixas/engine-2828878_960_720.jpg" class="w-100" alt="teste" />
+            <div class="mask mask-custom">
+                <div class="row gx-5 justify-content-center" style="margin-top:100px">
+                    <div class="col-lg-7">
+                        <div class="text-center my-5">
+                            <h1 class="display-5 fw-bolder text-white mb-2">Uma nova maneira de buscar oficinas e fazer orçamentos</h1>
+                            <h5 class=" text-white mb-3 mt-5">Ache a oficina ideal para o seu carro e agende um orçamento na hora!</h5>
+                        </div>
+                        <div class="gap-4 justify-content-center d-flex" style="margin-top:70px">
+                            @if (ViewBag.Logado == true)
+                            {
+                                <a href="/Cadastro/CadastroPessoa" class="btn btn-warning btn-lg me-3">Cadastre-se como Cliente</a>
+                                <a href="/Cadastro/CadastroOficina" class="btn btn-success btn-lg me-3">Cadastre-se como Oficina</a>
+                            }
+                            @if (ViewBag.Logado == false)
+                            {
+                                <a href="/Cadastro/Cadastro/1" class="btn btn-warning btn-lg me-3">Cadastre-se como Cliente</a>
+                                <a href="/Cadastro/Cadastro/2" class="btn btn-success btn-lg me-3">Cadastre-se como Oficina</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 10rem 0 8rem 0">
+        <div class="container px-4 px-lg-5">
+            <div class="row align-items-center mb-4 mb-lg-5 pb-lg-5">
+                <div class="col-md-6 col-sm-12">
+                    <img class="img-fluid rounded" src="~/Imagens_Fixas/pexels-mechanic-8985665.jpg" />
+                </div>
+                <div class=" offset-md-1 col-md-5 col-sm-12">
+                    <h3 class="mb-3 text-center bigHeader">SOBOM - O que é?</h3>
+                    <p class="text-justify Montserrat">
+                        O SOBOM (Sistema de Orçamentos e Busca de Oficinas Mecânicas) tem como principal objetivo
+                        facilitar a busca de oficinas confiáveis para que seu veículo esteja sempre em boas mãos.
+                    </p>
+                    <p class="text-justify Montserrat">
+                        Para tal, permitimos o uso de diversos filtros e ranqueamos as oficinas por avaliações que
+                        foram escritas por outros clientes que já foram atendidos por elas.
+                    </p>
+                    <p class="text-justify Montserrat">
+                        Além disso, tornamos mais
+                        fácil a geração de orçamentos, permitindo que um horário que seja agradável para ambas as
+                        partes seja agendado e para que o seu orçamento seja formulado com eficiência e sem dores de cabeça.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-4 mb-lg-5 pt-lg-5">
+                <div class="col-md-5 col-sm-12">
+                    <h3 class="mb-3 text-center bigHeader">Como Funciona?</h3>
+                    <p class="text-justify Montserrat">
+                        Busque sua oficina ideal através do nosso mecanismo de filtros, que permite a busca por
+                        bairro ou por serviço efetuado, além de filtrar por oficinas que aceitam ou não veículos importados.
+                    </p>
+                    <p class="text-justify Montserrat">
+                        Solicite um serviço específico ou uma análise geral do carro, e agende um horário disponível no
+                        calendário da oficina. Agora é só esperar a oficina aceitar sua solicitação e levar o carro para que
+                        o valor do orçamento seja avaliado.
+                    </p>
+                    <p class="text-justify Montserrat">
+                        Surgiram novos problemas durante a análise? Sem problemas! A oficina pode adicionar novos serviços e
+                        indicar o preço de qualquer peça necessária no orçamento.
+                    </p>
+                </div>
+                <div class=" offset-md-1 col-md-6 col-sm-12">
+                    <img class="img-fluid rounded" src="~/Imagens_Fixas/pexels-mídia-4116220.jpg" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container px-4 px-lg-5 mb-5">
+        <div class="row position-relative">
+            <div class="col-md-6 col-sm-12 text-center py-4 bigHeader fs-2">
+                @if (ViewBag.Logado == false)
+                {
+                    <a href="/Cadastro/Cadastro/1" class="stretched-link"></a>
+                }
+                @if (ViewBag.Logado == true)
+                {
+                    <a href="/Cadastro/CadastroPessoa" class="stretched-link"></a>
+                }
+            <span>Cadastre-se como Cliente <i class="bi bi-arrow-right"></i></span> 
+            </div>
+            <div class="col-md-6 col-sm-12 fs-2 py-4 text-center bigHeader">
+                @if (ViewBag.Logado == false)
+                {
+                    <a href="/Cadastro/Cadastro/2" class="stretched-link"></a>
+                }
+                @if (ViewBag.Logado == true)
+                {
+                    <a href="/Cadastro/CadastroOficina" class="stretched-link"></a>
+                }
+            <span>Cadastre-se como Oficina <i class="bi bi-arrow-right"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-relative">
+        <div class="container px-4 px-lg-5 mb-5 text-center">
+            <a class="stretched-link" href="@Url.Action("Login", "Account")"></a>
+            <span class="bigHeader">Já utiliza o sistema? Clique aqui para Logar</span>
+        </div>
+    </div>
+
+
+</div>
+

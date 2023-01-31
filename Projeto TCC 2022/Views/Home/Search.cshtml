@@ -1,0 +1,71 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.Search
+@{
+    ViewBag.Title = "Busca";
+    double média = 0.0;
+}
+
+<div class="mx-auto w-75">
+    @{
+        if (Model.Oficinas != null && Model.Oficinas.Count() != 0)
+        {
+            for (int i = 0; i < Model.Oficinas.Count(); i++)
+            {
+                if (Model.Oficinas[i].Oficina.Aprovada == true)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                    <div class="col-md-2">
+                                        @if (Model.Imagens[i] != null)
+                                        {
+                                            <img src="@Model.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive border-0" />
+                                        }
+                                    </div>
+                                    <div class="col-md-4 my-auto">
+                                        <h4 class="d-inline-block">@Model.Oficinas[i].Oficina.Nome</h4>
+                                        <i class="bi bi-star-fill ms-2" style="color: #FFBF00"></i>
+
+                                        @if (Double.IsNaN(Model.Oficinas[i].Média) == false)
+                                        {
+                                            média = Model.Oficinas[i].Média;
+                                        }
+
+                                        <span><strong>@média</strong></span>
+                                    </div>
+                                    <div class="col-md-3 my-auto">
+                                        @{ 
+                                            System.Text.StringBuilder String = new System.Text.StringBuilder(Model.Oficinas[i].Oficina.HorarioFuncionamento);
+                                            String.Replace("/", " - ");
+                                            <h6 class="d-inline-block">Horário de Funcionamento: </h6>
+                                            <h6 class="d-inline-block">@String.ToString()</h6>
+                                        }
+                                    </div>
+                                    <div class="col-md-3 my-auto">
+                                        <h6 class="d-lg-inline-block">Aceita Importado?</h6>
+                                        @if (Model.Oficinas[i].Oficina.AceitaImportado == true)
+                                        {
+                                            <i class="bi bi-check-circle-fill ms-3" style="color: forestgreen"></i>
+                                        }
+                                        else if (Model.Oficinas[i].Oficina.AceitaImportado == false)
+                                        {
+                                            <i class="bi bi-x-circle-fill ms-3" style="color: darkred"></i>
+                                        }
+                                    </div>
+                            </div>
+
+                            <a href="@Url.Action("Page", "Oficina", new { Id = Model.Oficinas[i].Oficina.Id })" class="stretched-link"></a>
+                        </div>
+                    </div>
+                }
+            }
+
+        }
+        else
+        {
+            <div class="text-center mt-5">
+                <h1><i class="bi bi-exclamation-triangle-fill" style="font-size:larger"></i></h1>
+                <h1>Oficina ou Serviço com os filtros desejados não foi encontrado<i class="bi bi-exclamation-lg"></i></h1>
+            </div>
+        }
+    }
+</div>

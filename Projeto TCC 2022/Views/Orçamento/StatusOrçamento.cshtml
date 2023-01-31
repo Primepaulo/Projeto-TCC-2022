@@ -1,0 +1,146 @@
+﻿@model Projeto_TCC_2022.Models.Orçamento
+
+@*<div id="Status">
+
+</div>*@
+
+@Html.Action("DetalhesOrçamentoPartial", Model.Id )
+
+<div class="row mt-3 text-center">
+    <div class="col-md-3 offset-md-2">
+
+    </div>
+    <a class="mb-3" href="@Url.Action("HistoricoOrçamentos", "Orçamento")">Retornar</a>
+</div>
+
+
+@section scripts{
+
+    @if (Model.Status == 10)
+    {
+        <script>
+
+            function Update() {
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("OficinaApprovePartial", "Orçamento", new { Id = Model.Id })',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+
+                $('.timepicker').timepicker({
+                    timeFormat: 'HH:mm',
+                    dynamic: false,
+                    dropdown: false,
+                    scrollbar: false
+                });
+            };
+
+            function exibir() {
+
+                if ($("#Horário1").is(":checked")) {
+                    $("#tempo").addClass("d-none");
+                    $("#tempo").removeAttr("data-val");
+                }
+                else if ($("#Horário2").is(":checked")) {
+                    $("#tempo").removeClass("d-none");
+                    $("#tempo").attr("data-val", "true");
+
+                    var attrCNPJ = $("#tempo").attr("data-val");
+
+                    if (typeof attrCNPJ !== undefined) {
+                        $("#CNPJ").attr("data-val", true);
+                    }
+                }
+            }
+
+        </script>
+    }
+
+    @if (Model.Status == 21)
+    {
+        <script>
+            function Update() {
+                $.ajax({
+
+                    type: 'GET',
+                    url: '@Url.Action("ConfirmarAvaliaçãoPartial", "Orçamento", new { Id = Model.Id })',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            };
+        </script>
+    }
+
+    @if (Model.Status == 12 && ViewBag.éOficina == true || Model.Status == 22 && ViewBag.éOficina == true)
+    {
+        <script>
+            function Update() {
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("FormularPromptPartial", "Orçamento", new { Id = Model.Id })',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            };
+        </script>
+    }
+
+    @if (Model.Status == 40  || Model.Status == 41 || Model.Status == 42)
+    {
+        <script>
+            function Update() {
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("ConfirmarAgendamentoPartial", "Orçamento", new { OrçamentoId = Model.Id })',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Div').html(data);
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            };
+        </script>
+    }
+
+    <script>
+        $(document).ready(function () {
+            @if (Model.Status != 24 && Model.Status != 32 && Model.Status != 31 && Model.Status != 43 && Model.Status != 13 || Model.Status != 10 && ViewBag.éPessoa == false)
+                {
+                    <text>
+                        const delay = ms => new Promise(res => setTimeout(res, ms));
+                        const Function = async () => {
+                            await delay(2000);
+                        }
+                        Function();
+                        
+                        Update();
+                    </text>
+                }
+            });
+    </script>
+}

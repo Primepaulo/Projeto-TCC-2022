@@ -1,0 +1,119 @@
+﻿<div class="card">
+    <div class="card-header border-0">
+        <h3 class="smallHeader">Serviços</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Preço Min.</th>
+                    <th scope="col">Preço Max.</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < ViewBag.Lista.Count; i++)
+                {
+                    <tr class="text-center">
+                        <td>@ViewBag.Lista[i].Nome</td>
+                        <td>@ViewBag.Lista[i].Descrição</td>
+                        <td>R$ @ViewBag.Lista[i].PreçoMin.ToString("F")</td>
+                        <td>R$ @ViewBag.Lista[i].PreçoMax.ToString("F")</td>
+                        <td>@ViewBag.Categorias[i].Nome</td>
+                        <td>
+                            <a class="edit btn btn-primary" data-id="@ViewBag.Lista[i].Id" href="#">Editar</a>
+                            <a class="excluir btn btn-danger" data-id="@ViewBag.Lista[i].Id" href="#">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-center mt-4 mb-3">
+            <a class="btn btn-primary btn-lg" href="#" id="add">Adicionar Serviços</a>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1">
+</div>
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+
+            $('#add').click(function () {
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("AdicionarServiços", "Serviços")',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    },
+                    complete: function () {
+                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                        $.validator.unobtrusive.parse("form");
+                    }
+                });
+
+            });
+
+            $('.edit').click(function () {
+
+                var a = $(this).data("id");
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("EditarServiço", "Serviços")/' + a,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    },
+                    complete: function () {
+                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                        $.validator.unobtrusive.parse("form");
+                    }
+                });
+            });
+
+            $('.excluir').click(function () {
+
+                var a = $(this).data("id");
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("DeletarServiço", "Serviços")/' + a,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            });
+
+        });
+    </script>
+}

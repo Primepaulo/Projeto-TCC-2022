@@ -1,0 +1,38 @@
+﻿@model Projeto_TCC_2022.Models.Carro
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5">Adicionar Veículo</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        @using (Html.BeginForm("CadastrarVeículos", "Veículos", FormMethod.Post))
+        {
+            <div class="modal-body pt-0">
+                <h5 class="smallHeader mt-3">Placa</h5>
+                <input data-val="true" data-val-required="Campo Requerido" type="text" class="form-control" name="Placa" id="Placa" autocomplete="off" data-val-regex="Placa Inválida" data-val-regex-pattern="^[a-zA-Z]{3}[0-9][A-Za-z0-9][0-9]{2}$" onkeyup="this.value = this.value.toUpperCase();" />
+                @Html.ValidationMessageFor(model => model.Placa, "", new { @class = "text-danger" })
+
+                <h5 class="smallHeader mt-3">Cor</h5>
+                @Html.EditorFor(model => model.Cor, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Cor, "", new { @class = "text-danger" })
+
+                <h5 class="smallHeader mt-3">Modelo</h5>
+                @Html.EditorFor(model => model.Modelo, new { htmlAttributes = new { @class = "form-control", name = "Modelo", @id = "Modelo" } })
+                @Html.ValidationMessageFor(model => model.Modelo, "", new { @class = "text-danger" })
+
+                <h5 class="smallHeader mt-3">Motorização</h5>
+                <input data-val="true" data-val-required="Campo Requerido" type="text" class="form-control" name="Motorização" id="Motorização" data-val-regex="Motorização Inválida" data-val-regex-pattern="^[1-9]{1}[\.]{1}[0]{1,2}$" />
+                @Html.ValidationMessageFor(model => model.Motorização, "", new { @class = "text-danger" })
+
+                <h5 class="smallHeader mt-3">Marca</h5>
+                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control", name = "Marca", @id = "Marca" } })
+                @Html.ValidationMessageFor(model => model.Marca, "", new { @class = "text-danger" })
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

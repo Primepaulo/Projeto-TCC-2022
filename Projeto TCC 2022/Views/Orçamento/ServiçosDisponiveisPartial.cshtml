@@ -1,0 +1,12 @@
+﻿<div class="col" id="DivServiço">
+    <select id="Serviços" placeholder="Escolha um Serviço">
+        <option value="">Escolha um Serviço</option>
+        @if (ViewBag.ServiçoOficina != null)
+        {
+            foreach (var item in ViewBag.ServiçoOficina)
+            {
+                <option value="@item.Id">@item.Nome - @item.PreçoMin.ToString("F")/@item.PreçoMax.ToString("F")</option>
+            }
+        }
+    </select>
+</div>

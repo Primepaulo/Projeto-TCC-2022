@@ -1,0 +1,108 @@
+﻿@model List<Projeto_TCC_2022.Models.CelularTelefone>
+@{
+    ViewBag.Title = "Visualizar Números";
+}
+
+<h2 class="mb-4">Números</h2>
+
+@foreach (var item in Model)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="smallHeader">Número</h5>
+                    <h4>@item.CelularTelefone1</h4>
+                </div>
+                <div class="offset-md-6 col-md-1 my-auto">
+                    <a class="btn btn-outline-primary editar" href="#" data-id="@item.Id">Editar</a>
+                </div>
+                <div class="col-md-1 my-auto">
+                    <a class="btn btn-danger excluir" data-id="@item.Id" href="#">Excluir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="text-center mt-5">
+    <a class="btn btn-primary w-25" id="num">Cadastrar Número</a>
+</div>
+
+<div class="modal fade" id="Modal" tabindex="-1">
+</div>
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+        $(document).ready(function () {
+
+            $("#num").click(function () {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("CadastroNúmero", "Numero")',
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    },
+                    complete: function () {
+                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                        $.validator.unobtrusive.parse("form");
+                    }
+                });
+            });
+
+            $('.editar').click(function () {
+
+                var a = $(this).data("id");
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("EditarNúmero", "Numero")/' + a,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    },
+                    complete: function () {
+                        $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                        $.validator.unobtrusive.parse("form");
+                    }
+                });
+
+            });
+
+            $('.excluir').click(function () {
+
+                var a = $(this).data("id");
+
+                $.ajax
+                ({
+                    type: 'GET',
+                    url: '@Url.Action("ExcluirNúmero", "Numero")/' + a,
+                    dataType: 'html',
+                    cache: false,
+                    success: function (data) {
+                        $('#Modal').html(data);
+                        $('#Modal').modal("show");
+                    },
+                    error: function () {
+                        console.log("Erro");
+                    }
+                });
+            })
+        });
+</script>
+}

@@ -1,0 +1,324 @@
+﻿@model Projeto_TCC_2022.Models.Classes.AddItemOrçamento2View
+
+@{
+    decimal Min = 0, Max = 0;
+    int Count = 0;
+    var x = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+}
+
+<div class="container mt-5">
+    <h5 class="smallHeader mb-4">Serviços</h5>
+    <div class="row">
+        <div class="col">
+            <select id="Categorias" placeholder="Escolha uma Categoria">
+                <option value="">Escolha uma Categoria</option>
+                @foreach (var item in Model.Categorias)
+                {
+                    <option value="@item.Id">@item.Nome</option>
+                }
+            </select>
+        </div>
+
+
+        <div class="col" id="DivServiço">
+            <select id="Serviços" placeholder="Escolha um Serviço">
+                <option value="">Escolha um Serviço</option>
+            </select>
+        </div>
+
+
+        <div class="col">
+            <button class="btn" onclick="AddItem('Serviço')">Adicionar Serviço</button>
+        </div>
+    </div>
+
+    <h5 class="smallHeader mt-3">Peças</h5>
+
+    <div class="row mt-3">
+        <div class="col-md-4 col-sm-12" id="DivPeça">
+            <select id="Peças" placeholder="Escolha uma Peça">
+                <option value="">Escolha uma Peça</option>
+                @foreach (var item in Model.Peças)
+                {
+                    <option value="@item.Id">@item.Nome</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <button class="btn" onclick="AddItem('Peça')">Adicionar Peça</button>
+        </div>
+    </div>
+
+    <h5 class="smallHeader mt-5 mb-2">Itens do Orçamento</h5>
+
+    @using (Html.BeginForm("FormularOrçamento", "Orçamento", FormMethod.Post))
+    {
+        <input type="hidden" class="d-none" value="@Model.OrçamentoId" name="OrçamentoId" id="OrçamentoId" />
+        <div class="container mt-5 mb-5" id="corpo">
+            @foreach (var item in Model.Padrão)
+            {
+
+                <div class="row especial">
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Nome do Item</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Preço Min.</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Preço Max.</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="bigHeader">Valor Final</h4>
+                    </div>
+                </div>
+
+                <div class="row especial especialItens mb-4" data-count="@Count">
+                    <div class="col-md-3 col-sm-12">
+                        <p>Serviço - @item.Nome</p>
+                    </div>
+                    <input class="d-none serviçosId" value="@item.Id" name="Itens[@Count].Id" />
+                    <input class="d-none tipo" value="1" name="Itens[@Count].Tipo" />
+                    <div class="col-md-3 col-sm-12">
+                        @if (item.PreçoMin != null)
+                        {
+                            Min = (decimal)item.PreçoMin;
+                            <p class="preço ms-2">@Min.ToString("F")</p>
+                        }
+
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        @if (item.PreçoMax != null)
+                        {
+                            Max = (decimal)item.PreçoMax;
+                            <p class="preço ms-2">@Max.ToString("F")</p>
+                        }
+                    </div>
+
+                    <div class="col-md-3 col-sm-12">
+                        <input name="Itens[@Count].Val" class="form-control itemOrçamentoValue" oninput="Valor()" data-val="true" data-val-number="Valor precisa ser um número."
+                               data-val-range="Preencha um valor que esteja entre o valor mínimo ou máximo."
+                               @if (item.PreçoMin != null) { <text> data-val-range-min="@Min.ToString("F", x)" </text> }
+                               @if (item.PreçoMax != null) { <text> data-val-range-max="@Max.ToString("F", x)" </text> }
+                               data-val-required="Campo Requerido" type="number" lang="pt-br" />
+                        <span class="field-validation-valid" data-valmsg-for="Itens[@Count].Val" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                Count++;
+            }
+        </div>
+
+        <div class="text-center mt-4 mb-4">
+            <div class="text-center"><button class="btn btn-danger mt-4" type="button" data-bs-toggle="modal" data-bs-target="#escolhas">Limpar Minhas Escolhas</button></div>
+        </div>
+
+        <div class="modal fade" id="escolhas" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Esta ação é irreversível, você tem certeza?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <button class="btn btn-danger mt-4" type="button" onclick="LimparOrçamento()">Limpar Minhas Escolhas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        if (Model.Padrão.Count() != 0)
+        {
+            <div class="text-center"><button class="btn btn-danger mt-4" type="button" data-bs-toggle="modal" data-bs-target="#padrao">Limpar Seleção do Cliente</button></div>
+
+            <div class="modal fade" id="padrao" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Esta ação é irreversível, você tem certeza?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center"><button class="btn btn-danger mt-4" type="button" onclick="LimparEspecial()">Limpar Seleção do Cliente</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="container mt-3" id="total"></div>
+        <div class="text-center mt-4 mb-4"><button type="submit" class="btn btn-primary">Confirmar</button></div>
+
+
+    }
+</div>
+
+@section scripts{
+
+    <script>
+
+        var y = @Model.Padrão.Count;
+
+        function AddItem(x) {
+            if (x == 'Serviço') {
+                var itemId = $("#Serviços").val();
+            }
+
+            if (x == 'Peça') {
+                var itemId = $("#Peças").val();
+            }
+
+            $.ajax
+            ({
+                type: 'GET',
+                url: "/Orçamento/ItemOrçamentoPartial2/" + itemId + "?Tipo=" + x + "&" + "Quant=" + y,
+                dataType: 'html',
+                cache: false,
+                success: function (data) {
+                    $('#corpo').append(data);
+
+                    var serviços = $(".serviçosId").map((_, item) => item.value).get();
+                    var peças = $(".peçasId").map((_, item) => item.value).get();
+                    var final = $(".itemOrçamentoValue").map((_, item) => item.value).get();
+
+                    y++;
+
+                    $.ajax
+                    ({
+                        type: 'POST',
+                        url: "/Orçamento/TotalPartial2/",
+                        data: {
+                            serviços: serviços,
+                            Peças: peças,
+                            final: final
+                        },
+                        cache: false,
+                        success: function (response) {
+                            $('#total').html(response);
+
+                        }
+                    })
+
+                },
+                //Trecho retirado de uma página de dúvidas da microsoft: 
+                //https://social.msdn.microsoft.com/Forums/en-US/da561161-8345-43e9-bd9b-7d53bc3c06ff/unobtrusive-validation-not-working-on-ajax-loaded-partial-view?forum=aspmvc
+                complete: function () {
+                    $("form").each(function () { $.data($(this)[0], 'validator', false); });
+                    $.validator.unobtrusive.parse("form");
+                }
+            });
+        }
+
+        function Valor() {
+
+            var serviços = $(".serviçosId").map((_, item) => item.value).get();
+            var peças = $(".peçasId").map((_, item) => item.value).get();
+            var final = $(".itemOrçamentoValue").map((_, item) => item.value).get();
+
+            $.ajax
+                ({
+                    type: 'POST',
+                    url: "/Orçamento/TotalPartial2/",
+                    data: {
+                        serviços: serviços,
+                        Peças: peças,
+                        final: final
+                    },
+                    cache: false,
+                    success: function (response) {
+                        $('#total').html(response);
+                    }
+                })
+        }
+
+
+        function eventHandler(InputCategoria) {
+            var CategoriaController = InputCategoria[0].selectize;
+            var categoriaId = CategoriaController.getValue();
+            console.log("Executado");
+
+            var url = "/Orçamento/ServiçosDisponiveisPartial/?categoriaId=" + categoriaId + "&oficinaId=" + @Model.Oficina.Id;
+
+            $.ajax
+            ({
+                type: 'GET',
+                url: url,
+                dataType: 'html',
+                cache: false,
+                success: function (data) {
+                    $('#DivServiço').html(data);
+                },
+                error: function () {
+                    console.log("Erro");
+                }
+            }).done(function () {
+                var InputServiço = $('#Serviços').selectize({
+                    sortField: 'text'
+                });
+                console.log("Partial JS rodado");
+            });
+        };
+
+        $(document).ready(function () {
+
+            var InputServiço = $('#Serviços').selectize({
+                sortField: 'text'
+            });
+
+            var InputPeça = $('#Peças').selectize({
+                sortField: 'text'
+            });
+
+            var ServiçoController = InputServiço[0].selectize;
+
+            ServiçoController.disable();
+
+            var InputCategoria = $('#Categorias').selectize({
+            sortField: 'text',
+            onChange: function () {
+                eventHandler(InputCategoria);
+            }
+            });
+        });
+
+        function LimparOrçamento() {
+            $(".itemOrçamento").empty();
+            $(".rotulo").empty();
+            $("#total").empty();
+
+            $.ajax
+            ({
+                type: 'GET',
+                url: "/Orçamento/LimparOrçamento2",
+                dataType: 'html',
+                cache: false,
+                error: function () {
+                    console.log("Erro");
+                },
+                success: function () {
+                    $('#escolhas').modal('hide');
+                }
+            });
+        }
+
+        function LimparEspecial() {
+
+            var start = '<input class="d-none" value="true" name="Itens[';
+
+            $('.especial').each(function () {
+                $(this).addClass("d-none");
+            });
+
+            $('.especialItens').each(function () {
+
+                var end = $(this).data('count');
+
+                var stringF = start + end + '].Finalizado" />'
+
+                $(this).append(stringF);
+            });
+            $('#padrao').modal('hide');
+        }
+
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

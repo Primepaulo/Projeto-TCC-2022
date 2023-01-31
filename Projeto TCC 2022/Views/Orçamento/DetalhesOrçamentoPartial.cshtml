@@ -1,0 +1,440 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.DetalhesOrçamento
+
+<div id="Status" class="row mt-2">
+    <div class="col-md-4 pe-0">
+        <div class="card h-100">
+
+            <div class="card-header cardHeader">
+                <i class="bi bi-clipboard2-fill me-2"></i> <h6 class="d-inline-block smallHeader">Orçamento</h6>
+            </div>
+            <div class="card-body">
+
+                <h5 class="smallHeader">
+                    Nome da Oficina
+                </h5>
+                @if (Model.Imagem != null)
+                {
+                    <img src="@Model.Imagem.Url" class="rounded-circle w-25 d-inline-block" />
+                }
+                <h4 class="bigHeader mt-3 d-inline-block">
+                    <a class="text-decoration-none a" href="@Url.Action("Page", "Oficina", new { Id = Model.Oficina.Id })"> @Model.Oficina.Nome</a>
+                </h4>
+
+                <h5 class="smallHeader mt-4">
+                    Nome do Cliente:
+                </h5>
+                <h4 class="bigHeader mt-3">
+                    @Model.Pessoa.Nome @Model.Pessoa.Sobrenome
+                </h4>
+
+                <h5 class="smallHeader mt-4">
+                    Detalhes do Veículo:
+                </h5>
+                <h4 class="bigHeader mt-3">
+                    @Model.Carro.Marca @Model.Carro.Modelo @Model.Carro.Motorização
+                </h4>
+                <h5 class="mt-3 smallHeader">Cor do Veículo:</h5>
+                <h4 class="bigHeader">
+                    @Model.Carro.Cor
+                </h4>
+
+                <h5 class="smallHeader mt-4">
+                    Placa do Veículo:
+                </h5>
+                <h4 class="bigHeader mt-3">
+                    @Model.Carro.Placa
+                </h4>
+
+                <div class="text-center">
+                    <button type="button" class="btn fs-5" data-bs-toggle="modal" data-bs-target="#detalhes">
+                        <i class="bi bi-arrow-down-short"></i> Ver Detalhes
+                        <i class="bi bi-arrow-down-short"></i>
+                    </button>
+                </div>
+
+                <div class="modal fade" id="detalhes" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detalhes</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <h5 class="smallHeader">
+                                    Data Agendada:
+                                </h5>
+
+
+                                @if (Model.Agendamento != null)
+                                {
+                                    <h3 class="bigHeader mt-2" style="color:#DA042C"><strong>@Model.Agendamento.Data</strong></h3>
+                                    
+                                }
+                                else
+                                {
+                                    <h3 class="bigHeader mt-2">
+                                        Ainda não há.
+                                    </h3>
+                                }
+
+
+                                <hr />
+
+                                <h4 class="bigHeader mt-4">
+                                    Oficina
+                                </h4>
+
+                                <h5 class="smallHeader mt-4">
+                                    Nome da Oficina
+                                </h5>
+
+                                <img src="@Model.Imagem.Url" class="rounded-circle w-25 d-inline-block" />
+                                <h4 class="d-inline-block">@Model.Oficina.Nome</h4>
+
+                                <h5 class="bigHeader mt-3">
+                                    Email da Oficina: <strong>@Model.Oficina.Email</strong>
+                                </h5>
+                                <h5 class="bigHeader mt-3">
+                                    Números da Oficina:
+                                </h5>
+                                @if (Model.CelOficina.Count() != 0 && Model.CelOficina != null)
+                                {
+                                    foreach (var item in Model.CelOficina)
+                                    {
+                                        <h5 class="bigHeader">
+                                            <strong>@item.CelularTelefone1</strong>
+                                        </h5>
+                                    }
+                                }
+                                <h4 class="bigHeader mt-3">
+                                    Endereço da Oficina:
+                                </h4>
+                                <h5 class="bigHeader">
+                                    Estado: <strong>@Model.Oficina.Estado</strong>
+                                </h5>
+                                <h5 class="bigHeader">
+                                    Cidade: <strong>@Model.Oficina.Cidade</strong>
+                                </h5>
+                                <h5 class="bigHeader">
+                                    Bairro: <strong>@Model.Oficina.Bairro</strong>
+                                </h5>
+                                <h5 class="bigHeader">
+                                    Rua: <strong>@Model.Oficina.Rua</strong>
+                                </h5>
+                                <h5 class="bigHeader">
+                                    Número: <strong>@Model.Oficina.Número</strong>
+                                </h5>
+                                <h5 class="bigHeader">
+                                    Complemento: <strong>@Model.Oficina.Complemento</strong>
+                                </h5>
+                                
+
+                                <hr />
+                                <h4 class="bigHeader">Cliente</h4>
+                                <h5 class="smallHeader mt-4">
+                                    Nome do Cliente:
+                                </h5>
+
+                                <h4 class="bigHeader mt-2">
+                                    @Model.Pessoa.Nome @Model.Pessoa.Sobrenome
+                                </h4>
+
+                                <h5 class="smallHeader mt-4">
+                                    Detalhes do Veículo:
+                                </h5>
+
+                                <h5 class="smallHeader mt-2">
+                                    Placa: <strong>@Model.Carro.Placa</strong>
+                                </h5>
+
+                                <h5 class="smallHeader mt-2">
+                                    Modelo: <strong>@Model.Carro.Marca @Model.Carro.Modelo</strong>
+                                </h5>
+
+                                <h5 class="smallHeader mt-2">
+                                    Motorização: <strong>@Model.Carro.Motorização</strong>
+                                </h5>
+
+                                <h5 class="smallHeader mt-2">
+                                    Cor: <strong>@Model.Carro.Cor</strong>
+                                </h5>
+
+                                <h5 class="bigHeader mt-3">
+                                    Email do Cliente: <strong>@Model.Pessoa.Email</strong>
+                                </h5>
+
+                                <h5 class="bigHeader mt-3">
+                                    Números do Cliente:
+                                </h5>
+                                @if (Model.CelPessoa.Count() != 0 && Model.CelPessoa != null)
+                                {
+                                    foreach (var item in Model.CelPessoa)
+                                    {
+                                        <h5 class="bigHeader">
+                                            <strong>@item.CelularTelefone1</strong>
+                                        </h5>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header cardHeader">
+                <div>
+                    <span class="smallHeader">Data de Criação:</span>
+                    <h5 class="bigHeader d-inline-block">@Model.Orçamento.Data_Orçamento</h5>
+                </div>
+            </div>
+
+            @if (Model.ItensOrçamento != null)
+            {
+                <div class="card-body text-center">
+                    <h5 class="smallHeader">Status</h5>
+
+                    <div id="Div">
+                        @if (Model.Orçamento.Status == 11) //Recusado pela Oficina
+                        {
+                            <i class="bi bi-x-circle-fill me-2" style="color: darkred"></i>
+                            <h4 class="text-center d-inline-block">Pedido Recusado pela Oficina</h4>
+                            <i class="bi bi-x-circle-fill ms-2" style="color: darkred"></i>
+                        }
+
+                        @if (Model.Orçamento.Status == 12 && ViewBag.éPessoa == true) //Aceito pela Oficina, aguardando formulação do orçamento
+                        {
+                            <h4 class="text-center">Aceito pela Oficina, aguardando aprovação do Agendamento.</h4>
+                        }
+
+                        @if (Model.Orçamento.Status == 13 && ViewBag.éPessoa == false)
+                        {
+                            <h4 class="text-center">Aguardando Resposta do Cliente...</h4>
+                        }
+
+                        @if (Model.Orçamento.Status == 13 && ViewBag.éPessoa == true)
+                        {
+                            <h4 class="text-center">Agendamento Recusado. Remarcar?</h4>
+
+                            using (Html.BeginForm("AgendamentoPOST", "Orçamento", FormMethod.Post))
+                            {
+                                @Html.HiddenFor(m => m.Orçamento.Id)
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6 col-sm-12">
+                                        <button type="submit" class="btn btn-primary" value="13" name="Operação">Remarcar</button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Cancelar Orçamento</button>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="confirmationModal" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Confirmar</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h3>Essa ação é irreversível, você tem certeza?</h3>
+                                                <div class="text-center mx-auto mt-4">
+                                                    <button type="submit" class="btn btn-danger" value="43" name="Operação">Cancelar Orçamento</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+
+                        @if (Model.Orçamento.Status == 22 && ViewBag.éPessoa == true) // Em Formulação
+                        {
+                            <h4 class="text-center bigHeader">Em Formulação</h4>
+
+                            using (Html.BeginForm("Cancelar", "Orçamento", FormMethod.Post))
+                            {
+                                <input type="hidden" name="Id" value="@Model.Orçamento.Id" />
+
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmationModal">Cancelar Orçamento</button>
+                                </div>
+
+                                <div class="modal fade" id="confirmationModal" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">Confirmar</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5>A Oficina já está trabalhando no seu Orçamento, você tem certeza que quer cancelar o Orçamento?</h5>
+                                                <div class="text-center mx-auto mt-4">
+                                                    <button type="submit" class="btn btn-danger">Cancelar Orçamento</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                            @if (Model.Orçamento.Status == 23 && ViewBag.éPessoa == true) //Aguardando Aprovação Cliente
+                            {
+                                <h4 class="text-center bigHeader mb-3">Aguardando aprovação do Cliente</h4>
+
+                                using (Html.BeginForm("AprovarOrçamento", "Orçamento", FormMethod.Post))
+                                {
+                                    <input name="Id" id="Id" value="@Model.Orçamento.Id" type="hidden" class="d-none" />
+
+                                    <div class="row text-center">
+                                        <div class="offset-md-3 col-md-3 col-sm-12">
+                                            <button type="submit" class="btn btn-success" value="32" name="Operação">Aceitar</button>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12">
+                                            <button type="submit" class="btn btn-danger" value="31" name="Operação">
+                                                Recusar
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                            @if (Model.Orçamento.Status == 23 && ViewBag.éOficina == true) //Aguardando Aprovação Cliente
+                            {
+                                <h4 class="text-center">Aguardando aprovação do cliente...</h4>
+                            }
+
+                            @if (Model.Orçamento.Status == 24) //Cliente nunca levou o carro
+                            {
+                                <i class="bi bi-exclamation-circle-fill me-2" style="color:darkred"></i>
+                                <h4 class="text-center d-inline-block">Finalizado. Cliente nunca levou o veículo para ser analisado.</h4>
+                                <i class="bi bi-exclamation-circle-fill ms-2" style="color:darkred"></i>
+                            }
+
+                            @if (Model.Orçamento.Status == 25)
+                            {
+                                <div class="text-center">
+                                    <i class="bi bi-exclamation-circle-fill me-2" style="color:darkred"></i>
+                                    <h4 class="ms-3  d-inline-block">Cancelado pela Oficina.</h4>
+                                    <i class="ms-3 bi bi-exclamation-circle-fill ms-2" style="color:darkred"></i>
+                                </div>
+                            }
+
+                            @if (Model.Orçamento.Status == 43)
+                            {
+                                <div class="text-center">
+                                    <i class="bi bi-exclamation-circle-fill me-2" style="color:darkred"></i>
+                                    <h4 class="ms-3  d-inline-block">Orçamento Cancelado.</h4>
+                                    <i class="ms-3 bi bi-exclamation-circle-fill ms-2" style="color:darkred"></i>
+                                </div>
+                            }
+
+                            @if (Model.Orçamento.Status == 26)
+                            {
+                                <i class="bi bi-exclamation-circle-fill me-2" style="color:darkred"></i>
+                                <h4 class="text-center d-inline-block">Cancelado pelo Cliente.</h4>
+                                <i class="bi bi-exclamation-circle-fill ms-2" style="color:darkred"></i>
+                            }
+
+                            @if (Model.Orçamento.Status == 32) //Finalizado com sucesso
+                            {
+                                <i class="bi bi-check-circle-fill me-2" style="color:green"></i>
+                                <h4 class="text-center d-inline-block">Finalizado com sucesso.</h4>
+                                <i class="bi bi-check-circle-fill ms-2" style="color:green"></i>
+                            }
+
+                            @if (Model.Orçamento.Status == 31) //Reprovado pelo Cliente
+                            {
+                                <i class="bi bi-x-circle-fill me-2" style="color: darkred"></i>
+                                <h4 class="text-center d-inline-block">Finalizado. Orçamento reprovado pelo Cliente.</h4>
+                                <i class="bi bi-x-circle-fill ms-2" style="color: darkred"></i>
+                            }
+                        </div>
+                </div>
+
+                <hr />
+
+                if (Model.Agendamento != null)
+                {
+                    <div class="text-center mt-4 mb-4">
+                        <div class="bigHeader">Horário para a Análise:</div>
+                        <h4 class="bigHeader d-inline-block" style="color:#DA042C"><strong>@Model.Agendamento.Data</strong></h4>
+                    </div>
+                }
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3"><h6 class="smallHeader">Nome do Item:</h6></div>
+                        <div class="col-md-2"><h6 class="smallHeader">Tipo do Item:</h6></div>
+                        <div class="col-md-2"><h6 class="smallHeader">Valor Mínimo:</h6></div>
+                        <div class="col-md-2"><h6 class="smallHeader">Valor Máximo:</h6></div>
+                        <div class="col-md-3"><h6 class="smallHeader">Valor Definido:</h6></div>
+                    </div>
+
+                    @foreach (var item in Model.ItensOrçamento)
+                    {
+                        <div class="row mt-4">
+                            @{
+                                var count = 1;
+                                Projeto_TCC_2022.Models.Serviço x = Model.Serviços.Where(i => i.Nome == item.Nome).FirstOrDefault();
+                                Projeto_TCC_2022.Models.Peça y = Model.Peças.Where(i => i.Nome == item.Nome).FirstOrDefault();
+
+                                var preço = "R$ ";
+                                preço += Convert.ToDecimal(item.Preço).ToString("F");
+
+                                if (preço == "R$ 0,00")
+                                {
+                                    preço = "Não Definido";
+                                }
+
+                                <div class="col-md-3"><h5 class="bigHeader">@item.Nome</h5></div>
+                                if (x != null)
+                                {
+                                    <div class="col-md-2"><h5 class="bigHeader">Serviço</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(x.PreçoMin).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(x.PreçoMax).ToString("F")</h5></div>
+                                    <div class="col-md-3"><h5 class="bigHeader">@preço</h5></div>
+                                }
+                                if (y != null)
+                                {
+                                    <div class="col-md-2"><h5 class="bigHeader">Peça</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(y.PreçoMin).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(y.PreçoMax).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@preço</h5></div>
+                                }
+                                if (x == null && y == null)
+                                {
+                                    <div class="col-md-2"><h5 class="bigHeader">Removido</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">Removido</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">Removido</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@preço</h5></div>
+                                }
+                                count++;
+
+                            }
+                        </div>
+                    }
+
+                    <div class="mt-5 bigHeader text-center">
+                        <h3 class="d-inline-block"><strong>Total:</strong> </h3><span class="h3">  <strong>R$ @Convert.ToDecimal(Model.Orçamento.Valor).ToString("F")</strong></span>
+                    </div>
+
+                </div>
+            }
+
+            @if (Model.ItensOrçamento == null)
+            {
+                <div class="card-body">
+                    <div class="text-center">
+                        <h3>Sem itens até o momento.</h3>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

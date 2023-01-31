@@ -1,0 +1,264 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.Cadastro
+
+<h2>Cadastrar Oficina</h2>
+
+@using (Html.BeginForm("CadastrarOficina", "Cadastro", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="Oficina_CNPJ" name="Oficina.CNPJ" maxlength="18" autocomplete="off" data-val="true" data-val-required="Campo requerido." />
+            @Html.ValidationMessageFor(model => model.Oficina.CNPJ, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*Razão Social*@
+    <div class="form-group">
+        <label for="Oficina_Nome" class="control-label col-md-2">Nome da Oficina</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Nome, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Nome, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Oficina_cep">CEP:</label>
+        <div class="col-md-10">
+            <input name="Oficina.cep" id="Oficina_cep" class="form-control" maxlength="9" />
+            <p class="d-none" id="valCep">Cep Inválido</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Estado, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Estado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Cidade, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Cidade, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Cidade, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Bairro, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Bairro, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Bairro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Rua, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Rua, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Rua, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Número, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Número, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Número, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Complemento, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Oficina.Complemento, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Oficina.Complemento, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Oficina.Descrição, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Oficina.Descrição, new { @class = "form-control", @rows = "4" })
+            @Html.ValidationMessageFor(model => model.Oficina.Descrição, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Oficina_AceitaImportado" class="control-label col-md-2">Aceita Importado?</label>
+        <div class="col-md-10">
+            @Html.CheckBoxFor(model => model.Oficina.AceitaImportado)
+            @Html.ValidationMessageFor(model => model.Oficina.AceitaImportado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="intervalo" class="control-label col-md-10">Horário de Funcionamento: </label>
+        <div class="col-md-10 mt-3">
+            <input id="inicio" name="inicio" type="text" value="" class="timepicker" data-val="true" data-val-required="O campo é obrigatório" /> <span class="ms-2 me-2"> Até</span>
+            <input id="fim" name="fim" type="text" value="" class="timepicker" data-val="true" data-val-required="O campo é obrigatório" />
+            <span class="field-validation-valid" data-valmsg-for="inicio" data-valmsg-replace="true"></span>
+            <span class="field-validation-valid" data-valmsg-for="fim" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+
+
+    <div class="row w-50 text-center mt-4">
+        <div class="col">
+            <h6>Domingo</h6>
+        </div>
+        <div class="col">
+            <h6>Segunda</h6>
+        </div>
+        <div class="col">
+            <h6>Terça</h6>
+        </div>
+        <div class="col">
+            <h6>Quarta</h6>
+        </div>
+        <div class="col">
+            <h6>Quinta</h6>
+        </div>
+        <div class="col">
+            <h6>Sexta</h6>
+        </div>
+        <div class="col">
+            <h6>Sábado</h6>
+        </div>
+    </div>
+
+    <div class="row w-50 text-center">
+        <div class="col">
+            @Html.CheckBoxFor(e=> e.Dias.Domingo, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Segunda, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Terça, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Quarta, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Quinta, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Sexta, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+        <div class="col">
+            @Html.CheckBoxFor(e => e.Dias.Sábado, htmlAttributes: new { @class = "form-check-input" })
+        </div>
+    </div>
+
+    <div class="form-group mt-4">
+        <label for="CelularTelefone_CelularTelefone1" class="control-label col-md-2">Telefone ou Celular:</label>
+        <div class="col-md-10">
+            <input class="form-control text-box single-line mt-3" name="CelularTelefone.CelularTelefone1" , id="CelularTelefone_CelularTelefone" data-val="true" data-val-length="O campo Telefone ou Celular deve ser uma cadeia de caracteres com um comprimento máximo de 12."
+                   data-val-length-max="12" data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="(\d{1}){10,12}" data-val-regex="Número Inválido" />
+            @Html.ValidationMessageFor(model => model.CelularTelefone.CelularTelefone1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group mb-5 mt-5">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Cadastrar" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+@section scripts
+    {
+    <script>
+
+        $(document).ready(function () {
+            let inputCNPJ = $("#Oficina_CNPJ")
+            inputCNPJ.on("input", function () {
+                let inputLength = inputCNPJ.val().length;
+
+                let inputVal = inputCNPJ.val();
+
+                if (isNaN(inputVal[inputVal.length - 1])) {
+                    inputCNPJ.val(inputVal.substring(0, inputVal.length - 1));
+                    return;
+                }
+
+                if (inputLength === 2 || inputLength === 6) {
+                    inputCNPJ.val(inputCNPJ.val() + ".");
+                }
+                else if (inputLength === 10) {
+                    inputCNPJ.val(inputCNPJ.val() + "/");
+                }
+                else if (inputLength === 16) {
+                    inputCNPJ.val(inputCNPJ.val() + "-");
+                }
+            })
+
+            $('.timepicker').timepicker({
+                timeFormat: 'HH:mm',
+                dynamic: false,
+                dropdown: false,
+                scrollbar: false
+            });
+
+            //Trecho adaptado do exemplo da API do https://viacep.com.br/exemplo/jquery/
+            $("#Oficina_cep").blur(function () {
+
+                if (!$("#valCep").hasClass("d-none")) {
+                    $("#valCep").addClass("d-none");
+                }
+
+                var cep = $(this).val().replace(/\D/g, '');
+
+                var validacep = /^[0-9]{8}$/;
+                if (validacep.test(cep)) {
+
+                    $("#Oficina_Rua").val("...");
+                    $("#Oficina_Bairro").val("...");
+                    $("#Oficina_Cidade").val("...");
+                    $("#Oficina_Estado").val("...");
+
+                    $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                        if (!("erro" in dados)) {
+
+                            $("#Oficina_Rua").val(dados.logradouro);
+                            $("#Oficina_Bairro").val(dados.bairro);
+                            $("#Oficina_Cidade").val(dados.localidade);
+                            $("#Oficina_Estado").val(dados.uf);
+                        }
+                        else {
+                            limpa_formulário_cep();
+                            $("#valCep").removeClass("d-none");
+                        }
+                    });
+
+                    function limpa_formulário_cep() {
+                        $("#Oficina_Rua").val("");
+                        $("#Oficina_Bairro").val("");
+                        $("#Oficina_Cidade").val("");
+                        $("#Oficina_Estado").val("");
+                    }
+                }
+            });
+        });
+
+        $('form').submit(function (e) {
+            $(':disabled').each(function (e) {
+                $(this).removeAttr('disabled');
+            })
+        });
+
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right mb-0" }))
+    {
+
+        @Html.AntiForgeryToken()
+        <div class="collapse navbar-collapse ms-2 text-center" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person" style="font-size: 1.2rem;"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <ul class="nav navbar-nav navbar-right">
+                            @if (ViewBag.éOficina == true)
+                            {
+                            <li class="nav-item nav-link"> <a href="@Url.Action("EditarOficina", "Oficina", new { Id = ViewBag.UserID })" class="nav-link"><i class="bi bi-wrench me-2"></i>Editar Dados</a></li>
+                            }
+                            @if (ViewBag.éOficina == true || ViewBag.éPessoa == true)
+                            {
+                                <li class="nav-item nav-link"> <a class="nav-link" href="@Url.Action("VisualizarNúmeros", "Numero")"><i class="bi bi-telephone-fill me-2"></i>Números</a></li>
+                            }
+                            <li class="nav-item nav-link">
+                                <a href="@Url.Action("Index", "Manage", null)" class="nav-link"><i class="bi bi-key-fill me-2"></i>Mudar Senha</a>
+                            </li>
+                            <li class="nav-item nav-link"><a href="javascript:document.getElementById('logoutForm').submit()" class="deco-none nav-link"><i class="bi bi-door-open me-2"></i>Fazer logoff</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    }
+}
+else
+{
+    <ul class="navbar-nav mb-2 mb-md-0">
+        <li class="nav-item">@Html.ActionLink("Registre-se", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })</li>
+        <li class="nav-item">@Html.ActionLink("Logon", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
+    </ul>
+}

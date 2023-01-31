@@ -1,0 +1,121 @@
+﻿@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<div class="vw-100" style="height: 30vh; margin: 3rem 0 1rem 0">
+    <div class="container-fluid d-flex justify-content-center">
+        <form method="get" role="search" action="@Url.Action("DataRequestSessions", "Home")">
+
+            <h2 class="text-center bigHeader mb-2">Busque por Oficina, Serviço ou Bairro</h2>
+            <h4 class="smallHeader text-center mb-5">Tente agora e ache a sua oficina ideal.</h4>
+
+            <div class="input-group justify-content-center" style="height: 43px">
+                <button id="FiltroBotãoIndex" type="button"
+                        class="btn btn-light border border-2 dropdown-toggle"
+                        data-bs-toggle="dropdown">
+                    <span>Oficina</span>
+                </button>
+
+                <ul class="dropdown-menu" id="filtrosIndex">
+                    <li><a class="dropdown-item">Oficina</a></li>
+                    <li><a id="itemIndex" class="dropdown-item">Serviço</a></li>
+                    <li><a class="dropdown-item">Bairro</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <label class="ms-3" for="importado">Carro Importado</label>
+                        <input type="checkbox" name="importado" id="importadoIndex" value="true">
+                    </li>
+                </ul>
+
+                <input type="hidden" id="filterIndex" name="filter" />
+
+                <button id="CategoriaBotãoIndex" type="button" class="btn btn-light dropdown-toggle
+                dropdown-toggle-split d-none border border-2" data-bs-toggle="dropdown">
+                    <span>Categoria</span>
+                </button>
+
+                <ul class="dropdown-menu" id="categoriasIndex">
+                    @foreach (var item in ViewBag.Categorias)
+                    {
+                        <li><a class="dropdown-item">@item.Nome</a></li>
+                    }
+                </ul>
+
+                <input type="hidden" id="categoriaIndex" name="categoria" value="Categoria" />
+
+                <input type="text" style="width: 770px" class="form-control" name="navSearch" id="navSearchIndex" placeholder="Buscar..." />
+
+                <button type="submit" name="navSubmit bigHeader" class="btn btn-success">
+                    Buscar
+                </button>
+
+            </div>       
+        </form>
+    </div>
+</div>
+
+
+<div class="row w-100 position-relative">
+    <div class="offset-md-2 col-md-4 bigHeader text-center fs-4 py-4">
+        <div class="card">
+            <div class="card-body">
+                <span>Meus Veículos <i class="bi bi-arrow-right"></i></span>
+                <h6 class="smallHeader mt-2">Cadastre, Edite ou Exclua veículos.</h6>
+            </div>
+            <a class="stretched-link" href="@Url.Action("VisualizarVeículos", "Veículos")"></a>
+        </div>
+    </div>
+    <div class="col-md-4 bigHeader text-center fs-4 py-4">
+        <div class="card">
+            <div class="card-body">
+                <span>Meus Orçamentos <i class="bi bi-arrow-right"></i></span>
+                <h6 class="smallHeader mt-2">Veja seus Orçamentos em andamento e finalizados.</h6>
+            </div>
+            <a class="stretched-link" href="@Url.Action("HistoricoOrçamentos", "Orçamento")"></a>
+        </div>
+    </div>
+</div>
+
+<div class="row position-relative text-center bigHeader fs-4 w-100 pb-4 pt-3">
+    <div class="offset-md-4 col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <span>Minhas Avaliações <i class="bi bi-arrow-right"></i></span>
+                <h6 class="smallHeader mt-2">Veja suas avaliações e modifique-as se necessário.</h6>
+            </div>
+            <a class="stretched-link" href="@Url.Action("HistoricoAvaliações", "Avaliação")"></a>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script>
+    $(document).ready(function () {
+
+        $("#filterIndex").val("Oficina");
+
+        //Trecho adaptado de uma das respostas (parte de mudar valor do botão): https://stackoverflow.com/questions/13437446/how-to-display-selected-item-in-bootstrap-button-dropdown-title
+
+        $("#filtrosIndex li a").click(function () {
+            $(this).parents(".input-group").find('#FiltroBotãoIndex').html($(this).text() + ' <span></span>');
+            $(this).parents(".input-group").find('#FiltroBotãoIndex').val($(this).data('value'));
+            $("#filterIndex").val($(this).text());
+
+            if ($(this).text() == "Serviço") {
+                $("#CategoriaBotãoIndex").removeClass("d-none");
+            }
+            else if ($(this).text() != "Serviço") {
+                if ($("#CategoriaBotãoIndex").hasClass("d-none") != true) {
+                    $("#CategoriaBotãoIndex").addClass("d-none");
+                }
+            }
+        });
+
+        $("#categoriasIndex li a").click(function () {
+            $(this).parents(".input-group").find('#CategoriaBotãoIndex').html($(this).text() + ' <span></span>');
+            $(this).parents(".input-group").find('#CategoriaBotãoIndex').val($(this).data('value'));
+            $("#categoriaIndex").val($(this).text());
+        });
+    });
+    </script>     
+}

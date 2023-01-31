@@ -1,0 +1,33 @@
+﻿@model Projeto_TCC_2022.Models.Serviço
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5">Excluir Serviço?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-0">
+            <h5 class="smallHeader mt-3">Nome</h5>
+            <h4>@Model.Nome</h4>
+
+            <h5 class="smallHeader mt-3">Preço Mínimo</h5>
+            <h4>@Convert.ToDecimal(Model.PreçoMin).ToString("F")</h4>
+
+            <h5 class="smallHeader mt-3">Preço Máximo</h5>
+            <h4>@Convert.ToDecimal(Model.PreçoMax).ToString("F")</h4>
+
+            <h5 class="smallHeader mt-3">Descrição</h5>
+            <p>@Model.Descrição</p>
+
+
+            @using (Html.BeginForm("Deletar", "Serviços", FormMethod.Post))
+            {
+                @Html.HiddenFor(e => e.Id)
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-danger">Deletar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

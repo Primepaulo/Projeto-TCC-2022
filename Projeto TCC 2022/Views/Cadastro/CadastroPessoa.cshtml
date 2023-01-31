@@ -1,0 +1,240 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.Cadastro
+
+
+
+
+@using (Html.BeginForm("CadastrarPessoa", "Cadastro", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Cadastrar Pessoa</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pessoa.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pessoa.Nome, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Pessoa.Nome, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pessoa.Sobrenome, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pessoa.Sobrenome, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Pessoa.Sobrenome, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Pessoa_cep">CEP:</label>
+        <div class="col-md-10">
+            <input name="Pessoa.cep" id="Pessoa_cep" class="form-control" maxlength="9" />
+            <p class="d-none" id="valCep">Cep Inválido</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pessoa.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pessoa.Estado, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Pessoa.Estado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pessoa.Cidade, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pessoa.Cidade, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Pessoa.Cidade, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pessoa.Rua, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pessoa.Rua, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+            @Html.ValidationMessageFor(model => model.Pessoa.Rua, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pessoa.Número, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pessoa.Número, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Pessoa.Número, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pessoa.Complemento, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pessoa.Complemento, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Pessoa.Complemento, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <input type="radio" id="física" name="Tipo" value="1" onchange="exibir()">
+    <label for="física">Pessoa Física</label><br>
+
+    <input type="radio" id="jurídica" name="Tipo" value="2" onchange="exibir()">
+    <label for="jurídica">Pessoa Jurídica</label><br>
+
+    <div class="form-group d-none" id="textCPF">
+        @Html.LabelFor(model => model.Pessoa.CPF, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input data-val="true" data-val-required="Campo Requerido" type="text" class="form-control" name="Pessoa.CPF" id="Pessoa_CPF" maxlength="14" , autocomplete="off" />
+            @Html.ValidationMessageFor(model => model.Pessoa.CPF, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group d-none" id="textCNPJ">
+        @Html.LabelFor(model => model.Pessoa.CNPJ, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+
+            <input type="text" data-val="true" data-val-required="Campo Requerido" class="form-control" name="Pessoa.CNPJ" id="Pessoa_CNPJ" maxlength="18" , autocomplete="off" />
+            @Html.ValidationMessageFor(model => model.Pessoa.CNPJ, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="CelularTelefone_CelularTelefone1" class="control-label col-md-2">Telefone ou Celular:</label>
+        <div class="col-md-10">
+            <input class="form-control text-box single-line mt-3" name="CelularTelefone.CelularTelefone1" , id="CelularTelefone_CelularTelefone" data-val="true" data-val-length="O campo Telefone ou Celular deve ser uma cadeia de caracteres com um comprimento máximo de 12."
+                   data-val-length-max="12" data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="(\d{1}){10,12}" data-val-regex="Número Inválido" />
+            @Html.ValidationMessageFor(model => model.CelularTelefone.CelularTelefone1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group mb-5 mt-5">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Cadastrar" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+@section scripts {
+    <script>
+        let inputCPF = $("#Pessoa_CPF")
+
+        inputCPF.on("input", function () {
+            let inputLength = inputCPF.val().length;
+
+            let inputVal = inputCPF.val();
+            if (isNaN(inputVal[inputVal.length - 1])) {
+                inputCPF.val(inputVal.substring(0, inputVal.length - 1));
+                return;
+            }
+
+            if (inputLength === 3 || inputLength === 7) {
+                inputCPF.val(inputCPF.val() + ".")
+            }
+
+            else if (inputLength === 11) {
+                inputCPF.val(inputCPF.val() + "-")
+            }
+        })
+
+        let inputCNPJ = $("#Pessoa_CNPJ")
+        inputCNPJ.on("input", function () {
+            let inputLength = inputCNPJ.val().length;
+
+            let inputVal = inputCNPJ.val();
+
+            if (isNaN(inputVal[inputVal.length - 1])) {
+                inputCNPJ.val(inputVal.substring(0, inputVal.length - 1));
+                return;
+            }
+
+            if (inputLength === 2 || inputLength === 6) {
+                inputCNPJ.val(inputCNPJ.val() + ".");
+            }
+            else if (inputLength === 10) {
+                inputCNPJ.val(inputCNPJ.val() + "/");
+            }
+            else if (inputLength === 16) {
+                inputCNPJ.val(inputCNPJ.val() + "-");
+            }
+        })
+
+        //Trecho adaptado do exemplo da API do https://viacep.com.br/exemplo/jquery/
+        $("#Pessoa_cep").blur(function () {
+
+            if (!$("#valCep").hasClass("d-none")) {
+                $("#valCep").addClass("d-none");
+            }
+
+            var cep = $(this).val().replace(/\D/g, '');
+
+            var validacep = /^[0-9]{8}$/;
+            if (validacep.test(cep)) {
+
+                $("#Pessoa_Rua").val("...");
+                $("#Pessoa_Cidade").val("...");
+                $("#Pessoa_Estado").val("...");
+
+                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                    if (!("erro" in dados)) {
+
+                        $("#Pessoa_Rua").val(dados.logradouro);
+                        $("#Pessoa_Cidade").val(dados.localidade);
+                        $("#Pessoa_Estado").val(dados.uf);
+                    }
+                    else {
+                        limpa_formulário_cep();
+                        $("#valCep").removeClass("d-none");
+                    }
+                });
+
+                function limpa_formulário_cep() {
+                    $("#Pessoa_Rua").val("");
+                    $("#Pessoa_Cidade").val("");
+                    $("#Pessoa_Estado").val("");
+                }
+            }
+        });
+
+        $('form').submit(function (e) {
+            $(':disabled').each(function (e) {
+                $(this).removeAttr('disabled');
+            })
+        });
+
+
+        function exibir() {
+
+            if ($("#física").is(":checked")) {
+                $("#textCPF").removeClass("d-none");
+                $("#Pessoa_CNPJ").removeAttr("data-val");
+                if (!$("#textCNPJ").hasClass("d-none")) {
+                    $("#textCNPJ").addClass("d-none");
+                }
+
+                var attrCPF = $("#Pessoa_CPF").attr("data-val");
+
+                if (typeof attrCPF !== undefined) {
+                    $("#Pessoa_CPF").attr("data-val", true);
+                }
+            }
+            else if ($("#jurídica").is(":checked")) {
+                $("#textCNPJ").removeClass("d-none");
+                $("#Pessoa_CPF").removeAttr("data-val");
+                if (!$("#textCPF").hasClass("d-none")) {
+                    $("#textCPF").addClass("d-none");
+                }
+
+                var attrCNPJ = $("#Pessoa_CNPJ").attr("data-val");
+
+                if (typeof attrCNPJ !== undefined) {
+                    $("#Pessoa_CNPJ").attr("data-val", true);
+                }
+            }
+        }
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

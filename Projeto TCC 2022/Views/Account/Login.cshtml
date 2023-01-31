@@ -1,0 +1,56 @@
+﻿@using Projeto_TCC_2022.Models
+@model LoginViewModel
+
+<div class="d-flex justify-content-center align-content-center flex-wrap" style="height: 70vh">
+        <section id="loginForm" style="width: 400px">
+            <h2 class="mb-4 text-center Montserrat">Login</h2>
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control inputArea" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-4">
+                    @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control inputArea" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input"})
+                        @Html.LabelFor(m => m.RememberMe, new { @class = "form-check-label"})
+                    </div>
+                </div>
+
+
+                <div class="d-grid gap-2 col-12 pt-2">
+                    <input type="submit" value="Login" class="btn btn-primary inputArea Montserrat" />
+                </div>
+
+                <div class="text-center mt-5">
+                    <h6 class="mb-4">Ainda não possui cadastro?</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a style="text-decoration: none" href="/Cadastro/Cadastro/1">Cadastre-se como Cliente</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a style="text-decoration: none" href="/Cadastro/Cadastro/2">Cadastre-se como Oficina</a>
+                        </div>
+                    </div>
+                </div>
+                    
+
+                @* Habilite quando a confirmação da conta estiver ativada para a funcionalidade de redefinição de senha
+                    <p>
+                        @Html.ActionLink("Esqueceu sua senha?", "ForgotPassword")
+                    </p>*@
+            }
+        </section>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

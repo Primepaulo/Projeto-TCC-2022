@@ -1,0 +1,65 @@
+﻿@model Projeto_TCC_2022.Models.ViewModels.ConfirmarAgendamentoPartialModel
+
+@if (Model.Orçamento.Status == 40 && ViewBag.éPessoa == true)
+{
+    <h4>Aguardando Confirmação do Agendamento...</h4>
+}
+
+else if (Model.Orçamento.Status == 40 && ViewBag.éPessoa == false)
+{
+    using (Html.BeginForm("AgendamentoPOST", "Orçamento", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Orçamento.Id)
+
+        <h6>Data Solicitada:</h6>
+
+        <h5>@Model.Agendamento.Data</h5>
+
+        <div class="row mt-2">
+            <div class="col-md-6 col-sm-12">
+                <button type="submit" class="btn btn-success" value="42" name="Operação">Aceitar Horário <i class="bi bi-check-lg"></i></button>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal2">Recusar Horário<i class="bi bi-x-lg ms-2" style="font-size: 14px"></i></button>
+            </div>
+        </div>
+
+        <div class="text-center mx-auto mt-3">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">Cancelar Orçamento</button>
+        </div>
+
+        <div class="modal fade" id="confirmationModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Confirmar</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Essa ação é irreversível, você tem certeza?</h3>
+                        <div class="text-center mx-auto mt-4">
+                            <button type="submit" class="btn btn-danger" value="43" name="Operação">Cancelar Orçamento</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmationModal2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Confirmar</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Essa ação fará com que o Cliente tenha que agendar outro horário, você tem certeza?</h5>
+                        <div class="text-center mx-auto mt-4">
+                            <button type="submit" class="btn btn-danger" value="41" name="Operação">Recusar Horário<i class="bi bi-x-lg ms-2" style="font-size: 14px"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
