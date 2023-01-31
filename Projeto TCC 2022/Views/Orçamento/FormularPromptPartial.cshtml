@@ -6,7 +6,7 @@
 
     @if (ViewBag.Formulação == true)
     {
-        <a class="btn btn-primary" href="@Url.Action("AddItemOrçamento2", "Orçamento", new {Id = ViewBag.Id})">Formular Orçamento</a>
+        <a class="btn btn-primary" href="@Url.Action("AddItemOrçamento2", "Orçamento", new {Id = Model.Id})">Formular Orçamento</a>
 
         using (Html.BeginForm("Cancelar", "Orçamento", FormMethod.Post))
         {
