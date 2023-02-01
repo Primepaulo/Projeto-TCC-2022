@@ -41,7 +41,7 @@ namespace Projeto_TCC_2022.Controllers
 
                     if (serviço != null)
                     {
-                        if (item.Descrição == serviço.Descrição)
+                        if (item.Descrição == serviço.Descrição && item.Nome == serviço.Nome)
                         {
                             if (serviços.Contains(serviço) != true)
                             {
@@ -110,8 +110,10 @@ namespace Projeto_TCC_2022.Controllers
 
                     oficinas.Add(oficina);
                     orçamentos.Add(orçamento);
-                    imagens.Add(Model1.GetImagem(oficina.Id));
 
+                    Imagem img = Model1.GetImagem(oficina.Id);
+
+                    imagens.Add(img);
 
                     var x = Model1.GetItensAvaliação(item.Id);
                     foreach (var item2 in x)
@@ -119,6 +121,7 @@ namespace Projeto_TCC_2022.Controllers
 
                         Itens.Add(item2);
                         serviços.Add(Model1.GetServiço(item2.Fk_Serviço_Id));
+                        
                     }
                 }
 

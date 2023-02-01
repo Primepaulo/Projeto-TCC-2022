@@ -1,5 +1,10 @@
 ﻿@model Projeto_TCC_2022.Models.ViewModels.HistoricoAvaliação
 
+@{ 
+    int ItemAvCount = 0;
+    int ItemAvCount2;
+}
+
 <div class="mx-auto" style="width: 80%">
     <h3 class="mb-3" style="color:#2c2c2c">Minhas Avaliações</h3>
 
@@ -17,7 +22,7 @@
          
         var orçamento = Model.Orçamentos[count];
         var oficina = Model.Oficinas[count];
-        Projeto_TCC_2022.Models.Imagem imagem = Model.Imagens.Where(e => e.Fk_Oficina_Id == oficina.Id).SingleOrDefault();
+        Projeto_TCC_2022.Models.Imagem imagem = Model.Imagens.Where(e => e.Fk_Oficina_Id == oficina.Id).FirstOrDefault();
         
 
         <div class="card mb-3">
@@ -46,18 +51,19 @@
                         </div>
                         @for (int i = 0; i < Model.Av[count].ItemAvaliação.Count(); i++)
                         {
-                            Projeto_TCC_2022.Models.Serviço serviço = Model.Serviços.Where(e => e.Id == Model.Itens[i].Fk_Serviço_Id).SingleOrDefault();
+                            Projeto_TCC_2022.Models.Serviço serviço = Model.Serviços.Where(e => e.Id == Model.Itens[ItemAvCount].Fk_Serviço_Id).FirstOrDefault();
 
 
                             if (i == 0)
                             {
+
                                 <div class="row">
                                     <div class="col-md-8">
                                         <h5 class="card-title my-auto">@serviço.Nome</h5>
                                     </div>
                                     <div class="col-md-4 mx-auto my-auto">
                                         <p class="mb-0">
-                                            @switch (Model.Itens[i].Estrelas)
+                                            @switch (Model.Itens[ItemAvCount].Estrelas)
                                             {
 
                                                 case 1:
@@ -84,13 +90,14 @@
 
                             else if (i != 0)
                             {
+
                                 <div class="row mt-2">
                                     <div class="col-md-8">
                                         <h5 class="card-title my-auto">@serviço.Nome</h5>
                                     </div>
                                     <div class="col-md-4 mx-auto my-auto">
                                         <p class="mb-0">
-                                            @switch (Model.Itens[i].Estrelas)
+                                            @switch (Model.Itens[ItemAvCount].Estrelas)
                                             {
 
                                                 case 1:
@@ -114,11 +121,11 @@
                                     </div>
                                 </div>
                             }
+
+                            ItemAvCount++;
                         }
                     </div>
                     <div class="col-md-1 text-center">
-                        <h6 style="color: #3f3f3f;">Média</h6>
-                        <h6 class="card-title">@Model.Av[count].Estrelas</h6>
                     </div>
                 </div>
                 <div class="row">

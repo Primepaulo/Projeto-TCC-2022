@@ -127,11 +127,15 @@
                     <div class="col-md-4 col-sm-12 text-center ps-0">
                         <span class="card-text">Placa</span>
                         <h6>@Model.Carros[i].Placa</h6>
-                        @if ((Model.Orçamentos[i].Status == 32 || Model.Orçamentos[i].Status == 31 || Model.Orçamentos[i].Status == 25) && ViewBag.éPessoa == true)
+                        @if ((Model.Orçamentos[i].Status == 32 || Model.Orçamentos[i].Status == 31 || Model.Orçamentos[i].Status == 25)
+                            && ViewBag.éPessoa == true)
                         {
-                            <div class="d-grid mx-auto">
-                                <a href="@Url.Action("Avaliar", "Avaliação", new { Model.Orçamentos[i].Id })" class="btn btn-success mt-4">Avaliar Serviços</a>
-                            </div>
+                            if (Model.Av[i] == null)
+                            {
+                                <div class="d-grid mx-auto">
+                                    <a href="@Url.Action("Avaliar", "Avaliação", new { Model.Orçamentos[i].Id })" class="btn btn-success mt-4">Avaliar Serviços</a>
+                                </div>
+                            }
                         }
                         @if (ViewBag.éOficina == true && !(CompletosList.Contains(Model.Orçamentos[i].Status)))
                         {

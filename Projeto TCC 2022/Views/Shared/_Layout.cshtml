@@ -13,7 +13,7 @@
 <body>
     <div class="navbar navbar-dark bg-dark navbar-expand-md">
         <div class="container-fluid">
-            <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand"><span style="color: #ffffff">SOBOM</span> <i style="color: #379392 " class="bi bi-wrench-adjustable-circle-fill"></i></a>
+            <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand"><span style="color: #ffffff" class="Montserrat">SOBOM</span> <i style="color: #E2E2E2 " class="bi bi-wrench-adjustable-circle-fill"></i></a>
             <button type="button"
                     class="navbar-toggler"
                     data-bs-toggle="collapse"
@@ -24,8 +24,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainCollapse" style="flex-grow:0">
-                <ul class="navbar-nav">''
-                    
+                <ul class="navbar-nav">
+
                     @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
@@ -33,6 +33,11 @@
                     @if (ViewBag.éOficina == true)
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
+                    }
+                    @if (ViewBag.éOficina == true && ViewBag.éAprovada == false)
+                    {
+                        <li style="visibility: hidden">Espaçamento</li>
+                        <li style="visibility: hidden">Espaçamento</li>
                     }
                     @if (ViewBag.éOficina == true && ViewBag.éAprovada == true)
                     {
@@ -42,8 +47,8 @@
                     {
                         //List Items invisíveis de Espaçamento
                         <li style="visibility: hidden">Espaçamento</li>
-                        <li style="visibility: hidden">Espaçamento</li>
-                        <li style = "visibility: hidden" > Espaçamento </li>
+                        <li style="visibility: hidden">    Espaçamento</li>
+                        <li style="visibility: hidden"> Espaçamento</li>
                     }
 
                 </ul>

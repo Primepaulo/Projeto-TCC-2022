@@ -288,7 +288,6 @@ namespace Projeto_TCC_2022.Controllers
 
         public ActionResult OficinaApprovePartial(int Id)
         {
-            List<ItemOrçamento> itens = Model1.GetItems(Id);
             Orçamento orçamento = Model1.GetOrçamento(Id);
             if (orçamento.fk_Oficina_Id == UserID || orçamento.fk_Pessoa_Id == UserID)
             { 
@@ -599,6 +598,7 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult FormularOrçamento(ListItemViewModel ItensOrçamento)
         {
             int OrçamentoId = ItensOrçamento.OrçamentoId;
+            int count = 0;
 
             foreach (ItemViewModel item in ItensOrçamento.Itens)
             {
@@ -611,11 +611,24 @@ namespace Projeto_TCC_2022.Controllers
 
                     if (Decimal.TryParse(item.Val, out decimal x) == true)
                     {
-
                         if (item.Tipo == 1)
                         {
                             Serviço serviço = Model1.GetServiço(item.Id);
-                            Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, x, serviço.Descrição, 1, false, 1);
+
+                            List<ItemOrçamento> z = Model1.GetItemOrçamentoServiço(OrçamentoId, serviço.Id);
+
+                            if (z.Count() > 0 && count < z.Count())
+                            {
+                                Model1.AdicionarPreço(z[count], x);
+                                
+                            }
+
+                            else
+                            {
+                                Model1.AddItemOrçamento(OrçamentoId, serviço.Nome, x, serviço.Descrição, 1, false, 1);
+                            }
+
+                            
                         }
 
                         else if (item.Tipo == 2)
@@ -624,6 +637,8 @@ namespace Projeto_TCC_2022.Controllers
                             Model1.AddItemOrçamento(OrçamentoId, peça.Nome, x, peça.Descrição, 1, null, 2);
                         }
                     }
+
+                    count++;
                 }
 
                 if (item.Finalizado == true)
@@ -671,7 +686,7 @@ namespace Projeto_TCC_2022.Controllers
             List<Oficina> oficinas = new List<Oficina>();
             List<Imagem> imagens = new List<Imagem>();
             List<Agendamento> agendamentos = new List<Agendamento>();
-
+            List<Avaliação> av = new List<Avaliação>();
 
             foreach (var orçamento in orçamentos)
             {
@@ -679,12 +694,14 @@ namespace Projeto_TCC_2022.Controllers
                 oficinas.Add(Model1.GetOficinaById(orçamento.fk_Oficina_Id));
                 imagens.Add(Model1.GetImagem(orçamento.fk_Oficina_Id));
                 agendamentos.Add(Model1.GetAgendamentoByOrçamento(orçamento.Id));
+                av.Add(Model1.GetAvaliaçãoByOrçamento(orçamento.Id));
             }
 
             HistoricoOrçamento historicoOrçamento = new HistoricoOrçamento
             {
                 Orçamentos = orçamentos,
                 Carros = carros,
+                Av = av,
                 Oficinas = oficinas,
                 Imagens = imagens,
                 Agendamentos = agendamentos

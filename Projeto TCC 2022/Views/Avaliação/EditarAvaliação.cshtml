@@ -20,12 +20,13 @@
                             <h5 class="card-title">@Model.Serviços[i].Nome</h5>
                         </div>
                         <div class="col-md-4">
-                            <h6 style="color: #3f3f3f;">Quantidade</h6>
-                            <h5 class="card-title">@Model.Itens.Where(e => e.Nome == Model.Serviços[i].Nome).SingleOrDefault().Quantidade</h5>
+                            <h6 style="color: #3f3f3f;">Preço Min/Máx</h6>
+                            <h5 class="card-title">@Convert.ToDecimal(Model.Serviços[i].PreçoMin).ToString("F") 
+                            - @Convert.ToDecimal(Model.Serviços[i].PreçoMax).ToString("F")</h5>
                         </div>
                         <div class="col-md-4">
                             <h6 style="color: #3f3f3f;">Preço Cobrado</h6>
-                            <h5 class="card-title">R$ @Convert.ToDecimal(Model.Itens.Where(e => e.Nome == Model.Serviços[i].Nome).SingleOrDefault().Preço).ToString("F")</h5>
+                            <h5 class="card-title">R$ R$ @Convert.ToDecimal(Model.Itens[i].Preço).ToString("F")</h5>
                         </div>
                     </div>
                 </div>

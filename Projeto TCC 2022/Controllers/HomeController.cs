@@ -59,6 +59,32 @@ namespace Projeto_TCC_2022.Controllers
 
             Oficina oficina = Model1.GetOficinaById(UserID);
 
+            if (oficina.Finalizada == true)
+            {
+                return RedirectToAction("IndexFinalizada", "Home");
+            }
+
+            return View(oficina);
+        }
+
+        public ActionResult IndexFinalizada()
+        {
+            if (ViewBag.éAdmin == true)
+            {
+                return RedirectToAction("Index", "Administrador");
+            }
+            if (ViewBag.éPessoa == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Oficina oficina = Model1.GetOficinaById(UserID);
+
+            if (oficina.Finalizada == false)
+            {
+                return RedirectToAction("IndexOficina", "Home");
+            }
+
             return View(oficina);
         }
 

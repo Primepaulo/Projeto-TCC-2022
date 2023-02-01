@@ -1,4 +1,5 @@
-﻿using Projeto_TCC_2022.Models.ViewModels;
+﻿using Antlr.Runtime.Tree;
+using Projeto_TCC_2022.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -921,10 +922,7 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
-
-        //Pensar em fundir e passar nome no controller
-
-        public static ItemOrçamento GetItemOrçamentoServiço(int OrçamentoId, int ServiçoId)
+        public static List<ItemOrçamento> GetItemOrçamentoServiço(int OrçamentoId, int ServiçoId)
         {
             using (var context = new Model1())
             {
@@ -939,7 +937,7 @@ namespace Projeto_TCC_2022.Models
                             where ItemOrçamento.Fk_Orçamento_Id == OrçamentoId &&
                             ItemOrçamento.Nome == result.Nome
                             select ItemOrçamento;
-                var item = query.SingleOrDefault();
+                var item = query.ToList();
                 return item;
             }
         }
@@ -1311,6 +1309,17 @@ namespace Projeto_TCC_2022.Models
             }
         }
 
+        public static Avaliação GetAvaliaçãoByOrçamento (int OrçamentoId)
+        {
+            using (var context = new Model1())
+            {
+                var query = from Avaliação in context.Avaliação
+                            where Avaliação.Fk_Orçamento_Id == OrçamentoId
+                            select Avaliação;
+                var avaliação = query.Include(x => x.ItemAvaliação).SingleOrDefault();
+                return avaliação;
+            }
+        }
 
         public static Avaliação GetAvaliação(int Id)
         {

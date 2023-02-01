@@ -25,7 +25,7 @@
             </button>
             <div class="collapse navbar-collapse" id="mainCollapse" style="flex-grow:0">
                 <ul class="navbar-nav">
-                    
+
                     @if (ViewBag.éPessoa == false && ViewBag.éOficina == false && ViewBag.éAdmin == false)
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Cadastro", "Cadastro", "Cadastro", null, new { @class = "nav-link" })</li>
@@ -35,6 +35,11 @@
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Oficina", "Page", "Oficina", new { Id = ViewBag.UserID }, new { @class = "nav-link" })</li>
                     }
+                    @if (ViewBag.éOficina == true && ViewBag.éAprovada == false)
+                    {
+                        <li style="visibility: hidden">Espaçamento</li>
+                        <li style="visibility: hidden">Espaçamento</li>
+                    }
                     @if (ViewBag.éOficina == true && ViewBag.éAprovada == true)
                     {
                         <li class="nav-item nav-link">@Html.ActionLink("Sugerir Categoria", "Sugerir", "Oficina", null, new { @class = "nav-link" })</li>
@@ -43,7 +48,7 @@
                     {
                         //List Items invisíveis de Espaçamento
                         <li style="visibility: hidden">Espaçamento</li>
-                        <li style="visibility: hidden">Espaçamento</li>
+                        <li style="visibility: hidden">    Espaçamento</li>
                         <li style="visibility: hidden"> Espaçamento </li>
                     }
 

@@ -10,6 +10,10 @@
 
 <div class="w-100 text-center mb-4">
     <h2 class="bigHeader">@Model.Nome</h2>
+    @if (Model.Aprovada == false)
+    {
+        <h5 style="color: #DA042C">Aguardando Aprovação...</h5>
+    }
 </div>
 
 <div class="row w-100 position-relative">

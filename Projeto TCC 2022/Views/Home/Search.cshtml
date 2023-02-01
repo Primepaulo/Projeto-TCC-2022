@@ -12,7 +12,7 @@
             {
                 if (Model.Oficinas[i].Oficina.Aprovada == true)
                 {
-                    <div class="card">
+                    <div class="card mb-2">
                         <div class="card-body">
                             <div class="row">
                                     <div class="col-md-2">
@@ -22,12 +22,16 @@
                                         }
                                     </div>
                                     <div class="col-md-4 my-auto">
-                                        <h4 class="d-inline-block">@Model.Oficinas[i].Oficina.Nome</h4>
+                                        <h5 class="d-inline-block">@Model.Oficinas[i].Oficina.Nome</h5>
                                         <i class="bi bi-star-fill ms-2" style="color: #FFBF00"></i>
 
                                         @if (Double.IsNaN(Model.Oficinas[i].Média) == false)
                                         {
                                             média = Model.Oficinas[i].Média;
+                                        }
+                                        @if (Double.IsNaN(Model.Oficinas[i].Média) == true)
+                                        {
+                                            média = 0;
                                         }
 
                                         <span><strong>@média</strong></span>
