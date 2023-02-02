@@ -49,7 +49,7 @@ namespace Projeto_TCC_2022.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, CustomRole, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection")
+            : base("LabVS2022")
         {
         }
 

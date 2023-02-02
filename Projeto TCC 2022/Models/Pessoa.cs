@@ -48,7 +48,7 @@ namespace Projeto_TCC_2022.Models
         public string Complemento { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(256)]
         public string Email { get; set; }
 
         [StringLength(11)]

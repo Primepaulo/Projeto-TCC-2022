@@ -21,7 +21,7 @@ namespace Projeto_TCC_2022.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(256)]
         public string Email { get; set; }
 
         [Required]

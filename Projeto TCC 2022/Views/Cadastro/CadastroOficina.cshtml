@@ -163,7 +163,7 @@
         <label for="CelularTelefone_CelularTelefone1" class="control-label col-md-2">Telefone ou Celular:</label>
         <div class="col-md-10">
             <input class="form-control text-box single-line mt-3" name="CelularTelefone.CelularTelefone1" , id="CelularTelefone_CelularTelefone" data-val="true" data-val-length="O campo Telefone ou Celular deve ser uma cadeia de caracteres com um comprimento máximo de 12."
-                   data-val-length-max="12" data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="(\d{1}){10,12}" data-val-regex="Número Inválido" />
+                   data-val-length-max="12" data-val-required="O campo Telefone Celular é obrigatório" data-val-regex-pattern="[1-9]\d9?\d{4}\d{4}" data-val-regex="Número Inválido" />
             @Html.ValidationMessageFor(model => model.CelularTelefone.CelularTelefone1, "", new { @class = "text-danger" })
         </div>
     </div>
