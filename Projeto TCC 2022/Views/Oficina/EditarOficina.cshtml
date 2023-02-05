@@ -13,6 +13,11 @@
     @Html.HiddenFor(model => model.Oficina.CNPJ)
     @Html.HiddenFor(model => model.Oficina.Aprovada)
 
+    <div>
+        <a class="btn btn-outline-primary smallHeader mt-4 mb-4" href="@Url.Action("MudarImagem", "Imagem")">Mudar Imagem</a>
+    </div>
+    
+
     <div class="form-group">
         @Html.LabelFor(model => model.Oficina.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">

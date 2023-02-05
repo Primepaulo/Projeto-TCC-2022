@@ -29,9 +29,9 @@ namespace Projeto_TCC_2022.Controllers
             return View();
         }
 
-        public ActionResult MudarImagem(int Id)
+        public ActionResult MudarImagem()
         {
-            Imagem imagem = Model1.GetImagem(Id);
+            Imagem imagem = Model1.GetImagem(UserID);
             if (imagem == null)
             {
                 return HttpNotFound();
@@ -41,32 +41,35 @@ namespace Projeto_TCC_2022.Controllers
 
 
         [HttpPost]
-        public ActionResult MudarImagem([Bind(Include = "Id, Url, Fk_Oficina_Id")] Imagem imagem, HttpPostedFileBase img)
+        public ActionResult MudarImagem(HttpPostedFileBase img)
         {
-            if (ModelState.IsValid)
+            if (img.ContentLength > 0)
             {
-                try
+                Imagem imagem = Model1.GetImagem(UserID);
+                string tempo = DateTime.Now.Ticks.ToString();
+                string _FileName = Path.GetFileName(img.FileName);
+                string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), tempo + _FileName);
+                img.SaveAs(_path);
+                
+                string rpath = Path.Combine("../../UploadedFiles", tempo + _FileName);
+                
+                if (imagem != null)
                 {
-                    if (img.ContentLength > 0)
-                    {
-                        string tempo = DateTime.Now.Ticks.ToString();
-                        System.IO.File.Delete(imagem.Url);
-                        string _FileName = Path.GetFileName(img.FileName);
-                        string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
-                        img.SaveAs(_path);
-
-                        //Deveria ser update no banco e não salvar dnv
-                        string rpath = Path.Combine("../../UploadedFiles", tempo + _FileName);
-                        Model1.SalvarImagem(rpath, UserID);
-                    }
+                    string[] x = imagem.Url.Split('\\');
+                    string old = Path.Combine(Server.MapPath("/UploadedFiles"), x[1]);
+                    System.IO.File.Delete(old);
+                    imagem.Url = rpath;
+                    Model1.UpdateImagem(imagem);
                 }
-                catch (Exception ex)
+                
+                else if (imagem == null)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Model1.SalvarImagem(rpath, UserID);
                 }
-                return RedirectToAction("Page", "Oficina", UserID);
+                
             }
-            return View();
+                
+            return RedirectToAction("Page", "Oficina", new { Id = UserID });
         }
 
         [HttpPost]
