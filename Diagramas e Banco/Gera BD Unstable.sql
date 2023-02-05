@@ -354,7 +354,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Oficina](
 	[Id] [int] NOT NULL,
-	[Email] [nvarchar](50) NOT NULL,
+	[Email] [nvarchar](256) NOT NULL,
 	[CNPJ] [nvarchar](14) NOT NULL,
 	[Nome] [nvarchar](50) NOT NULL,
 	[CEP] [nvarchar](9) NOT NULL,
@@ -435,7 +435,7 @@ CREATE TABLE [dbo].[Pessoa](
 	[Rua] [nvarchar](50) NOT NULL,
 	[Número] [int] NOT NULL,
 	[Complemento] [nvarchar](30) NULL,
-	[Email] [nvarchar](50) NOT NULL,
+	[Email] [nvarchar](256) NOT NULL,
 	[CPF] [nvarchar](11) NULL,
 	[CNPJ] [nvarchar](14) NULL,
 	[Pessoa_TIPO] [int] NOT NULL,
