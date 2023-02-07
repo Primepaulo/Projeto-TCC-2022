@@ -28,12 +28,26 @@
                     </select>
                 </div>
 
+                @{
+                    var valorMin = "R$ " + Convert.ToDecimal(Model.PreçoMin).ToString("F");
+                    var valorMax = "R$ " + Convert.ToDecimal(Model.PreçoMax).ToString("F");
+
+                    if (valorMin == "R$ 0,00")
+                    {
+                        valorMin = "";
+                    }
+                    if (valorMax == "R$ 0,00")
+                    {
+                        valorMax = "";
+                    }
+                }
+
                 <h5 class="smallHeader mt-3">Preço Mínimo</h5>
-                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMin" name="PreçoMin" type="text" value="@Convert.ToDecimal(Model.PreçoMin).ToString("F")">
+                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,4}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMin" name="PreçoMin" type="text" value="@valorMin">
                 @Html.ValidationMessageFor(model => model.PreçoMin, "", new { @class = "text-danger" })
 
                 <h5 class="smallHeader mt-3">Preço Máximo</h5>
-                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMax" name="PreçoMax" type="text" value="@Convert.ToDecimal(Model.PreçoMax).ToString("F")">
+                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,4}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMax" name="PreçoMax" type="text" value="@valorMax">
                 @Html.ValidationMessageFor(model => model.PreçoMax, "", new { @class = "text-danger" })
 
 

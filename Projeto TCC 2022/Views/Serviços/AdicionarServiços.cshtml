@@ -25,11 +25,11 @@
                 </div>
 
                 <h5 class="smallHeader mt-3">Preço Mínimo</h5>
-                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMin" name="PreçoMin" type="text">
+                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,4}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMin" name="PreçoMin" type="text">
                 @Html.ValidationMessageFor(model => model.PreçoMin, "", new { @class = "text-danger" })
 
                 <h5 class="smallHeader mt-3">Preço Máximo</h5>
-                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,3}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMax" name="PreçoMax" type="text" />
+                <input class="form-control text-box single-line" data-val="true" data-val-regex-pattern="^(\d){1,4}(\.\d{1,3})*(,\d{1,4})*$" data-val-regex="Valor Inválido." id="PreçoMax" name="PreçoMax" type="text" />
                 @Html.ValidationMessageFor(model => model.PreçoMax, "", new { @class = "text-danger" })
 
 

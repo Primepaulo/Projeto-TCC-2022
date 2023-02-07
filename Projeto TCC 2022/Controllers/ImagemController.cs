@@ -32,10 +32,6 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult MudarImagem()
         {
             Imagem imagem = Model1.GetImagem(UserID);
-            if (imagem == null)
-            {
-                return HttpNotFound();
-            }
             return View(imagem);
         }
 

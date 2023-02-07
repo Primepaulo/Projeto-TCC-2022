@@ -5,7 +5,28 @@
         {
             foreach (var item in ViewBag.ServiçoOficina)
             {
-                <option value="@item.Id">@item.Nome - @item.PreçoMin.ToString("F")/@item.PreçoMax.ToString("F")</option>
+                string preçoM = "";
+                string preçoM2 = "";
+
+                if (item.PreçoMin != null)
+                {
+                    preçoM = item.PreçoMin.ToString("F");
+                }
+                else if (item.PreçoMin == null || item.PreçoMin == "")
+                {
+                    preçoM = "a definir";
+                }
+
+                if (item.PreçoMax != null)
+                {
+                    preçoM2 = item.PreçoMax.ToString("F");
+                }
+                else if (item.PreçoMax == null || item.PreçoMax == "")
+                {
+                    preçoM2 = "a definir";
+                }
+
+                <option value="@item.Id">@item.Nome - @preçoM/@preçoM2</option>
             }
         }
     </select>

@@ -10,7 +10,7 @@ namespace Projeto_TCC_2022.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         public string Nome { get; set; }
 
         public int Fk_Oficina_Id { get; set; }

@@ -6,70 +6,118 @@
 
 <div class="mx-auto w-75">
     @{
-        if (Model.Oficinas != null && Model.Oficinas.Count() != 0)
-        {
-            for (int i = 0; i < Model.Oficinas.Count(); i++)
+        if (Model != null) 
+        { 
+            if (Model.Oficinas != null)
             {
-                if (Model.Oficinas[i].Oficina.Aprovada == true)
-                {
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <div class="row">
-                                    <div class="col-md-2">
-                                        @if (Model.Imagens[i] != null)
-                                        {
-                                            <img src="@Model.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive border-0" />
-                                        }
-                                    </div>
-                                    <div class="col-md-4 my-auto">
-                                        <h5 class="d-inline-block">@Model.Oficinas[i].Oficina.Nome</h5>
-                                        <i class="bi bi-star-fill ms-2" style="color: #FFBF00"></i>
+                if (Model.Oficinas.Count() != 0) 
+                { 
+                    for (int i = 0; i < Model.Oficinas.Count(); i++)
+                    {
+                        if (Model.Oficinas[i].Oficina.Aprovada == true)
+                        {
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                            <div class="col-md-2">
+                                                @if (Model.Imagens[i] != null)
+                                                {
+                                                    <img src="@Model.Imagens[i].Url" alt="Imagem da Oficina" class="img-thumbnail img-responsive border-0" />
+                                                }
+                                            </div>
+                                            <div class="col-md-4 my-auto">
+                                                <h5 class="d-inline-block">@Model.Oficinas[i].Oficina.Nome</h5>
+                                                <i class="bi bi-star-fill ms-2" style="color: #FFBF00"></i>
 
-                                        @if (Double.IsNaN(Model.Oficinas[i].Média) == false)
-                                        {
-                                            média = Model.Oficinas[i].Média;
-                                        }
-                                        @if (Double.IsNaN(Model.Oficinas[i].Média) == true)
-                                        {
-                                            média = 0;
-                                        }
+                                                @if (Double.IsNaN(Model.Oficinas[i].Média) == false)
+                                                {
+                                                    média = Model.Oficinas[i].Média;
+                                                }
+                                                @if (Double.IsNaN(Model.Oficinas[i].Média) == true)
+                                                {
+                                                    média = 0;
+                                                }
 
-                                        <span><strong>@média</strong></span>
+                                                <span><strong>@média</strong></span>
+                                            </div>
+                                            <div class="col-md-3 my-auto">
+                                                @{ 
+                                                    System.Text.StringBuilder String = new System.Text.StringBuilder(Model.Oficinas[i].Oficina.HorarioFuncionamento);
+                                                    String.Replace("/", " - ");
+                                                    <h6 class="d-inline-block">Horário de Funcionamento: </h6>
+                                                    <h6 class="d-inline-block">@String.ToString()</h6>
+                                                }
+                                            </div>
+                                            <div class="col-md-3 my-auto">
+                                                <h6 class="d-lg-inline-block">Aceita Importado?</h6>
+                                                @if (Model.Oficinas[i].Oficina.AceitaImportado == true)
+                                                {
+                                                    <i class="bi bi-check-circle-fill ms-3" style="color: forestgreen"></i>
+                                                }
+                                                else if (Model.Oficinas[i].Oficina.AceitaImportado == false)
+                                                {
+                                                    <i class="bi bi-x-circle-fill ms-3" style="color: darkred"></i>
+                                                }
+                                            </div>
                                     </div>
-                                    <div class="col-md-3 my-auto">
-                                        @{ 
-                                            System.Text.StringBuilder String = new System.Text.StringBuilder(Model.Oficinas[i].Oficina.HorarioFuncionamento);
-                                            String.Replace("/", " - ");
-                                            <h6 class="d-inline-block">Horário de Funcionamento: </h6>
-                                            <h6 class="d-inline-block">@String.ToString()</h6>
-                                        }
-                                    </div>
-                                    <div class="col-md-3 my-auto">
-                                        <h6 class="d-lg-inline-block">Aceita Importado?</h6>
-                                        @if (Model.Oficinas[i].Oficina.AceitaImportado == true)
-                                        {
-                                            <i class="bi bi-check-circle-fill ms-3" style="color: forestgreen"></i>
-                                        }
-                                        else if (Model.Oficinas[i].Oficina.AceitaImportado == false)
-                                        {
-                                            <i class="bi bi-x-circle-fill ms-3" style="color: darkred"></i>
-                                        }
-                                    </div>
+
+                                    @if (ViewBag.Serviços != null && ViewBag.Serviços.Count > 0)
+                                    {
+                                        <div class="row mt-5">
+                                            <div class="col-md-4 offset-md-2 text-center">
+                                                <h6 class="d-inline-block">Serviço: </h6>
+                                            </div>
+                                            @{
+                                                string x = "";
+                                                string y = "";
+
+                                                if (ViewBag.Serviços[i].PreçoMin != null)
+                                                {
+                                                    x = ViewBag.Serviços[i].PreçoMin.ToString("F");
+                                                }
+                                                else if (ViewBag.Serviços[i].PreçoMin == null)
+                                                {
+                                                    x = "a definir";
+                                                }
+                                                if (ViewBag.Serviços[i].PreçoMax != null)
+                                                {
+                                                    y = ViewBag.Serviços[i].PreçoMax.ToString("F");
+                                                }
+                                                else if (ViewBag.Serviços[i].PreçoMax == null)
+                                                {
+                                                    y = "a definir";
+                                                }
+                                            }
+                                            <div class="col-md-6 text-center">
+                                                 <h6>Valor Mínimo - Valor Máximo</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 offset-md-2 text-center">
+                                                @ViewBag.Serviços[i].Nome
+                                            </div>
+                                            <div class="col-md-6 text-center">
+                                                @x - @y
+                                            </div>
+                                        </div>
+                                    }
+                            
+
+                                    <a href="@Url.Action("Page", "Oficina", new { Id = Model.Oficinas[i].Oficina.Id })" class="stretched-link"></a>
+                                </div>
                             </div>
-
-                            <a href="@Url.Action("Page", "Oficina", new { Id = Model.Oficinas[i].Oficina.Id })" class="stretched-link"></a>
-                        </div>
-                    </div>
+                        }
+                    }
                 }
-            }
 
-        }
-        else
-        {
-            <div class="text-center mt-5">
-                <h1><i class="bi bi-exclamation-triangle-fill" style="font-size:larger"></i></h1>
-                <h1>Oficina ou Serviço com os filtros desejados não foi encontrado<i class="bi bi-exclamation-lg"></i></h1>
-            </div>
+            }
+            else
+            {
+                <div class="text-center mt-5">
+                    <h1><i class="bi bi-exclamation-triangle-fill" style="font-size:larger"></i></h1>
+                    <h1>Oficina ou Serviço com os filtros desejados não foi encontrado<i class="bi bi-exclamation-lg"></i></h1>
+                </div>
+            }
         }
     }
 </div>

@@ -1,10 +1,10 @@
 ﻿@model Projeto_TCC_2022.Models.ViewModels.Page
 
 <div class="row">
-    <div class="col-md-6 d-flex">
+    <div class="col-md-9 d-flex">
         @if (Model.Imagem != null)
         {
-        <img class="rounded-circle my-auto d-inline-block" style="height: 150px;" src="@Model.Imagem.Url">
+        <img class="my-auto d-inline-block" style="height: 150px;" src="@Model.Imagem.Url">
         }
         <h3 class="d-inline-block my-auto ms-3">@Model.Oficina.Nome</h3>
 
@@ -19,7 +19,7 @@
         <span class="ms-2 my-auto"><i class="bi bi-star-fill" style="color: #FFBF00;"></i>   <Strong>@Média</Strong></span>
     </div>
 
-    <div class="col-md-2 offset-md-4 d-flex">
+    <div class="col-md-2 offset-md-1 d-flex">
         <a href="#" class="navbar-toggler my-auto" data-bs-toggle="offcanvas" data-bs-target="#detalhes">Ver Detalhes</a>
     </div>
 
@@ -132,42 +132,58 @@
 
 <h3 class="mt-3">Serviços</h3>
 
-<div class="row mx-auto mt-4">
-    @for (int i = 0; i < Model.Serviços.Count(); i++)
-    {
-        if (i > 0 && i % 2 == 0)
+<div class="mb-5">
+    <div class="row mx-auto mt-4">
+        @for (int i = 0; i < Model.Serviços.Count(); i++)
         {
+            if (i > 0 && i % 2 == 0)
+            {
             @:</div><div class="row mx-auto mt-4">
-        }
-        <div class=" ps-0 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-body pb-1">
-                    <h4 class="card-title bigHeader">@Model.Serviços[i].Nome</h4>
-                    <div class="mt-3">
-                        <h5 class="card-title" style="display: inline-block">Preço:</h5>
-                        <span class="card-text" style="display: inline-block">R$ @Convert.ToDecimal(Model.Serviços[i].PreçoMin).ToString("F") - R$ @Convert.ToDecimal(Model.Serviços[i].PreçoMax).ToString("F")</span>
-                    </div>
+            }
+            <div class=" ps-0 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body pb-1">
+                        <h4 class="card-title bigHeader">@Model.Serviços[i].Nome</h4>
+                        <div class="mt-3">
+                            <h5 class="card-title" style="display: inline-block">Preço:</h5>
 
-                    @{ 
-                        double Av = Model.Av.Where(e => e.Fk_Serviço_Id == Model.Serviços[i].Id).SingleOrDefault().Média;
+                            @{
+                                var valorMin = "R$ " + Convert.ToDecimal(Model.Serviços[i].PreçoMin).ToString("F");
+                                var valorMax = "R$ " + Convert.ToDecimal(Model.Serviços[i].PreçoMax).ToString("F");
 
-                        if (Double.IsNaN(Av) == true)
-                        {
-                            Av = 0.0;
+                                if (valorMin == "R$ 0,00")
+                                {
+                                    valorMin = "a definir";
+                                }
+                                if (valorMax == "R$ 0,00")
+                                {
+                                    valorMax = "a definir";
+                                }
+                            }
+
+                            <span class="card-text" style="display: inline-block">@valorMin - @valorMax</span>
+                        </div>
+
+                        @{
+                            double Av = Model.Av.Where(e => e.Fk_Serviço_Id == Model.Serviços[i].Id).SingleOrDefault().Média;
+
+                            if (Double.IsNaN(Av) == true)
+                            {
+                                Av = 0.0;
+                            }
                         }
-                    } 
 
-                    <div class="d-flex mt-2">
-                        <h5 class="d-inline-block my-auto">Avaliação:</h5>
-                        <span class="ms-2 my-auto"><i class="bi bi-star-fill" style="color: #FFBF00;"></i>   <Strong>@Av</Strong></span>
+                        <div class="d-flex mt-2">
+                            <h5 class="d-inline-block my-auto">Avaliação:</h5>
+                            <span class="ms-2 my-auto"><i class="bi bi-star-fill" style="color: #FFBF00;"></i>   <Strong>@Av</Strong></span>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body pt-1 mt-2">
-                    <h5 class="card-title">Descrição:</h5>
-                    <p class="card-text text">@Model.Serviços[i].Descrição</p>
+                    <div class="card-body pt-1 mt-2">
+                        <h5 class="card-title">Descrição:</h5>
+                        <p class="card-text text">@Model.Serviços[i].Descrição</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-    
+        }
+    </div>
 </div>

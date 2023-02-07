@@ -76,12 +76,12 @@ namespace Projeto_TCC_2022.Controllers
                 PreçoMin = PreçoMin.Replace(".", ",");
             }
 
-            if (PreçoMin != null)
+            if (PreçoMin != null && PreçoMin != "")
             {
                 PreçoMn = Decimal.Parse(PreçoMin);
             }
 
-            if (PreçoMax != null)
+            if (PreçoMax != null && PreçoMax != "")
             {
                 PreçoMx = Decimal.Parse(PreçoMax);
             }
@@ -134,12 +134,12 @@ namespace Projeto_TCC_2022.Controllers
                     PreçoMin = PreçoMin.Replace(".", ",");
                 }
 
-                if (PreçoMin != null)
+                if (PreçoMin != null && PreçoMin != "")
                 {
                     PreçoMn = Decimal.Parse(PreçoMin);
                 }
 
-                if (PreçoMax != null)
+                if (PreçoMax != null && PreçoMax != "")
                 {
                     PreçoMx = Decimal.Parse(PreçoMax);
                 }

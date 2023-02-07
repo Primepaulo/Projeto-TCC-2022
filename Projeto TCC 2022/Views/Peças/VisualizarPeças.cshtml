@@ -18,15 +18,29 @@
             <tbody>
                 @foreach (var item in ViewBag.Lista)
                 {
-                    <tr class="text-center">
-                        <td>@item.Nome</td>
-                        <td>@item.Marca</td>
-                        <td>R$ @item.PreçoMin.ToString("F")</td>
-                        <td>R$ @item.PreçoMax.ToString("F")</td>
-                        <td>@item.Código</td>
+                    <tr>
+                        <td class="text-center">@item.Nome</td>
+                        <td class="text-center">@item.Marca</td>
+                        @if (item.PreçoMin != null)
+                        {
+                            <td class="text-center">R$ @item.PreçoMin.ToString("F")</td>
+                        }
+                        else if (item.PreçoMin == null)
+                        {
+                            <td class="text-center">ND</td>
+                        }
+                        @if (item.PreçoMax != null)
+                        {
+                            <td class="text-center">R$ @item.PreçoMax.ToString("F")</td>
+                        }
+                        else if (item.PreçoMax == null)
+                        {
+                            <td class="text-center">ND</td>
+                        }
+                        <td class="text-center">@item.Código</td>
                         <td>@item.Descrição</td>
-                        <td>
-                            <a class="edit btn btn-primary" data-id="@item.Id" href="#">Editar</a>
+                        <td class="text-center">
+                            <a class="edit btn btn-primary mb-2" data-id="@item.Id" href="#">Editar</a>
                             <a class="excluir btn btn-danger" data-id="@item.Id" href="#">Excluir</a>
                         </td>
                     </tr>
