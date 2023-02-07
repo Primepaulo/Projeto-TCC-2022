@@ -407,7 +407,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Peça](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [nvarchar](30) NOT NULL,
+	[Nome] [nvarchar](50) NOT NULL,
 	[Fk_Oficina_Id] [int] NOT NULL,
 	[PreçoMin] [money] NULL,
 	[PreçoMax] [money] NULL,

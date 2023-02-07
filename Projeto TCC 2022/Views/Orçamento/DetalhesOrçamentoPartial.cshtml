@@ -385,26 +385,79 @@
                                 Projeto_TCC_2022.Models.Peça y = Model.Peças.Where(i => i.Nome == item.Nome).FirstOrDefault();
 
                                 var preço = "R$ ";
+                                string p1 = "";
+                                string p2 = "";
+                                if (x != null)
+                                {
+                                    if (x.PreçoMin != null)
+                                    {
+                                        p1 = Convert.ToDecimal(x.PreçoMin).ToString("F");
+                                    }
+                                    if (x.PreçoMax != null)
+                                    {
+                                        p2 = Convert.ToDecimal(x.PreçoMax).ToString("F");
+                                    }
+                                }
+
+                                if ( y != null)
+                                {
+                                    if (y.PreçoMin != null)
+                                    {
+                                        p1 = Convert.ToDecimal(y.PreçoMin).ToString("F");
+                                    }
+                                    if (y.PreçoMax != null)
+                                    {
+                                        p2 = Convert.ToDecimal(y.PreçoMax).ToString("F");
+                                    }
+                                }
+
+                                string pMin = "R$ " + p1;
+                                string pMax = "R$ " +  p2;
                                 preço += Convert.ToDecimal(item.Preço).ToString("F");
+
 
                                 if (preço == "R$ 0,00")
                                 {
-                                    preço = "Não Definido";
+                                    preço = "-";
+                                }
+
+                                if (x != null)
+                                {
+                                    if (x.PreçoMin == null)
+                                    {
+                                        pMin = "-";
+                                    }
+                                    if (x.PreçoMax == null)
+                                    {
+                                        pMax = "-";
+                                    }
+                                }
+
+                                if (y != null)
+                                {
+                                    if (y.PreçoMin == null)
+                                    {
+                                        pMin = "-";
+                                    }
+                                    if (y.PreçoMax == null)
+                                    {
+                                        pMax = "-";
+                                    }
                                 }
 
                                 <div class="col-md-3"><h5 class="bigHeader">@item.Nome</h5></div>
                                 if (x != null)
                                 {
                                     <div class="col-md-2"><h5 class="bigHeader">Serviço</h5></div>
-                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(x.PreçoMin).ToString("F")</h5></div>
-                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(x.PreçoMax).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@pMin</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@pMax</h5></div>
                                     <div class="col-md-3"><h5 class="bigHeader">@preço</h5></div>
                                 }
                                 if (y != null)
                                 {
                                     <div class="col-md-2"><h5 class="bigHeader">Peça</h5></div>
-                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(y.PreçoMin).ToString("F")</h5></div>
-                                    <div class="col-md-2"><h5 class="bigHeader">R$ @Convert.ToDecimal(y.PreçoMax).ToString("F")</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@pMin</h5></div>
+                                    <div class="col-md-2"><h5 class="bigHeader">@pMax</h5></div>
                                     <div class="col-md-2"><h5 class="bigHeader">@preço</h5></div>
                                 }
                                 if (x == null && y == null)

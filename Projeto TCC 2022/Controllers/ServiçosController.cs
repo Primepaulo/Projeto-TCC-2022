@@ -123,6 +123,9 @@ namespace Projeto_TCC_2022.Controllers
 
                 serviço.Fk_Categoria_Id = categoria.Id;
 
+                PreçoMin = PreçoMin.Replace("R$ ", "");
+                PreçoMax = PreçoMax.Replace("R$ ", "");
+
                 decimal? PreçoMn = null, PreçoMx = null;
                 if (PreçoMax.Contains("."))
                 {

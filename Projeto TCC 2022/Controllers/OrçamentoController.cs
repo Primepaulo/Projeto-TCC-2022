@@ -28,11 +28,20 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult EscolherCarro(bool Value)
         {
             string Placa = Request.Form["carro"];
-            int Id = Convert.ToInt32(Session["OficinaId"]);
+            if (Placa != "" && Placa != null)
+            {
+                int Id = Convert.ToInt32(Session["OficinaId"]);
+                Carro carro = Model1.GetCarro(Placa);
+                Session["carro"] = carro;
+                return RedirectToAction("Marcar", "Orçamento", new { Id, Value });
+            }
 
-            Carro carro = Model1.GetCarro(Placa);
-            Session["carro"] = carro;
-            return RedirectToAction("Marcar", "Orçamento", new { Id, Value });
+            if (Session["OficinaId"] != null)
+            {
+                return RedirectToAction("EscolhaCarro", "Orçamento", new { Id = Session["OficinaId"], Value });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         //Fase 0-2:
@@ -84,7 +93,9 @@ namespace Projeto_TCC_2022.Controllers
 
             DateTime Data = DateTime.Parse(ActualDate + " " + Time);
 
-            if (Model1.GetAgendamentoByHora(Data) == null)
+            Agendamento Ag = Model1.GetAgendamentoByHora(Data);
+
+            if (Ag == null)
             {
                 if (Skip != null)
                 {

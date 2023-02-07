@@ -14,7 +14,7 @@ namespace Projeto_TCC_2022.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=DefaultConnection" /*is on Web.config file at line 12 in connectionString*/)
+            : base("name=BibliotecaPC4" /*is on Web.config file at line 12 in connectionString*/)
         //Trocar também no IdentityModels.
         {
         }
@@ -235,18 +235,18 @@ namespace Projeto_TCC_2022.Models
                 var query = from Pessoa in context.Pessoa
                             where Pessoa.CPF == CPF
                             select Pessoa;
-                var cpf = query.SingleOrDefault();
+                var cpf = query.FirstOrDefault();
 
                 var query2 = from Pessoa in context.Pessoa
                              where Pessoa.CNPJ == CNPJ
                              select Pessoa;
-                var cnpj = query2.SingleOrDefault();
+                var cnpj = query2.FirstOrDefault();
 
-                if (cpf != null && CPF != "")
+                if (cpf != null && CPF != "" && CPF != null)
                 {
                     return true;
                 }
-                else if (cnpj != null && CNPJ != "")
+                else if (cnpj != null && CNPJ != "" && CNPJ != null)
                 {
                     return true;
                 }

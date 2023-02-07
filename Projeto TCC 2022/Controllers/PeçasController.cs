@@ -49,6 +49,11 @@ namespace Projeto_TCC_2022.Controllers
         public ActionResult AdicionarPeça(string Nome, string Marca, string Código, string Descrição, string PreçoMin, string PreçoMax)
         {
             decimal? PreçoMn = null, PreçoMx = null;
+
+
+            PreçoMin = PreçoMin.Replace("R$ ", "");
+            PreçoMax = PreçoMax.Replace("R$ ", "");
+
             if (PreçoMax.Contains("."))
             {
                 PreçoMax = PreçoMax.Replace(".", ",");

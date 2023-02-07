@@ -72,8 +72,7 @@ namespace Projeto_TCC_2022.Controllers
         //https://stackoverflow.com/questions/52466770/how-to-upload-image-using-a-form-in-asp-net-mvc
         public ActionResult AdicionarImagem(HttpPostedFileBase img)
         {
-            try
-            {
+            
                 if (img.ContentLength > 0)
                 {
                     string tempo = DateTime.Now.Ticks.ToString();
@@ -82,15 +81,9 @@ namespace Projeto_TCC_2022.Controllers
                     string rPath = Path.Combine("../../UploadedFiles", tempo + _FileName);
                     img.SaveAs(_path);
                     Model1.SalvarImagem(rPath, UserID);
-                    return RedirectToAction("VisualizarServiços", "Serviços");
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
-            return View();
+            return RedirectToAction("VisualizarServiços", "Serviços");
+        
         }
     }
 }
