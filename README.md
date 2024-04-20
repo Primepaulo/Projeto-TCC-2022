@@ -1,4 +1,9 @@
 # Projeto TCC Colégio Pedro II 2022 - Grupo 1
+
+## Este código é referente à um projeto de conclusão de curso feito no Colégio Pedro II.
+Este projeto foi feito somente para fins acadêmicos e de avaliação.
+Este projeto definitivamente possui diversos bugs e muitas escolhas duvidosas de design e eu aprendi muito enquanto desenvolvia ele.
+
 ## Instruções de Uso:
 
 1. Criar o Banco de Dados:
@@ -24,4 +29,6 @@ public ApplicationDbContext()
         {
         }
 ```
+
+4. Agora é só compilar e executar.
 
